@@ -9,13 +9,6 @@
 #include <unistd.h>
 #include <stdbool.h>
 
-typedef struct s_redirections
-{
-    struct s_redirections   *next;
-    int                     src;
-    int                     dst;
-}               t_redirections;
-
 typedef struct s_pipeline
 {
     struct s_pipeline   *next;
@@ -30,6 +23,8 @@ typedef struct s_node{
   struct s_node *left;
   t_separator   sep;
   t_pipeline    *p;
+  int           in;
+  int           out;
 }              t_node;
 
 
