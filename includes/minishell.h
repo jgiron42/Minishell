@@ -3,7 +3,11 @@
 # define MINISHELL_H
 
 #define NAME minishell
-
+#include <stddef.h>
+#include <limits.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <stdbool.h>
 
 typedef struct s_redirections
 {
@@ -37,12 +41,17 @@ typedef struct s_env
     struct s_env    *next;
 }               t_env;
 
-enum ERROR { OK, KO, SYSCALL_FAILURE};
+typedef enum e_status { OK, KO, SYSCALL_FAILURE} t_status;
 
 int 	remove_env(t_env **	env, char *key);
-int		set_env(t_env **env, char *key, char *value);
+t_status		set_env(t_env **env, char *key, char *value, bool is_exported);
 char	*get_env(t_env *env, char *key);
-int		add_env(t_env **env, char *key, char *value);
+int		add_env(t_env **env, char *key, char *value, bool is_exported); // use in specific case, prefer set_env()
+char	**serialize_env(t_env *env);
+t_env	*parse_env(char **envp);
+void	free_env(t_env *env);
+bool	path_has_dot(char *path);
+
 
 
 #endif
