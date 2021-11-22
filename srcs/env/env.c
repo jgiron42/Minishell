@@ -17,7 +17,6 @@ int	add_env(t_env **env, char *key, char *value, bool is_exported)
 		free(new_node->value);
 		return (SYSCALL_FAILURE);
 	}
-	new_node->value = ft_strdup(value);
 	new_node->next = NULL;
 	if (!*env)
 		*env = new_node;

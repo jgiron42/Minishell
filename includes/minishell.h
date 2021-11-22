@@ -12,19 +12,19 @@
 typedef struct s_pipeline
 {
     struct s_pipeline   *next;
-    t_redirections      *redir;
+	int           in;
+	int           out;
     char                **argv;
 }               t_pipeline;
 
 typedef enum    e_separator {AND, OR, SEMI}     t_separator;
 
-typedef struct s_node{
-  struct s_node *right;
-  struct s_node *left;
+typedef struct s_node {
+  struct s_node *next;
+  struct s_node *sublist;
+  bool			is_in_subshell;
   t_separator   sep;
   t_pipeline    *p;
-  int           in;
-  int           out;
 }              t_node;
 
 
@@ -45,6 +45,7 @@ int		add_env(t_env **env, char *key, char *value, bool is_exported); // use in s
 char	**serialize_env(t_env *env);
 t_env	*parse_env(char **envp);
 void	free_env(t_env *env);
+t_env	*dupenv(t_env *src);
 bool	path_has_dot(char *path);
 
 
