@@ -7,5 +7,11 @@ include_directories(includes)
 
 add_executable(minishell_v2
         includes/minishell.h
-        srcs/env.c
-        srcs/serialize_env.c)
+        srcs/env/env.c
+        srcs/env/serialize_env.c
+        srcs/env/dupenv.c
+        srcs/env/init_env.c
+        srcs/env/parse_env.c
+        srcs/execution/exec.c
+        srcs/utils/path_utils.c
+        )

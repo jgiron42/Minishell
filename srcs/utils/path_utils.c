@@ -93,7 +93,7 @@ char 	*ft_realpath(const char *path, char *resolved_path)
 		return (NULL);
 	}
 	splited = ft_split(path, '/');
-	if (!splitted)
+	if (!splited)
 		return (NULL);
 	if (path[0] == '/')
 		ft_strcpy(current, "/");

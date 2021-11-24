@@ -10,6 +10,7 @@
 #include <stdbool.h>
 #include <errno.h>
 #include <sys/stat.h>
+#include "../srcs/libft/libft.h"
 
 
 typedef struct s_pipeline
