@@ -1,3 +1,0 @@
-/mnt/nfs/homes/jgiron/Documents/minishell_v2/cmake-build-debug/CMakeFiles/edit_cache.dir
-/mnt/nfs/homes/jgiron/Documents/minishell_v2/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/mnt/nfs/homes/jgiron/Documents/minishell_v2/cmake-build-debug/CMakeFiles/minishell_v2.dir
