@@ -1,0 +1,4 @@
+/sgoinfre/goinfre/Perso/jgiron/jetbrains-linux/apps/CLion/ch-0/212.5457.51/bin/cmake/linux/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_DEPENDS_USE_COMPILER=FALSE -G "CodeBlocks - Unix Makefiles" /mnt/nfs/homes/jgiron/Documents/minishell_v2
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /mnt/nfs/homes/jgiron/Documents/minishell_v2/cmake-build-debug

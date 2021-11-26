@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="minishell_v2"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="clang"/>
+		<Option virtualFolders="CMake Files\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="/mnt/nfs/homes/jgiron/Documents/minishell_v2/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/mnt/nfs/homes/jgiron/Documents/minishell_v2/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/mnt/nfs/homes/jgiron/Documents/minishell_v2/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/mnt/nfs/homes/jgiron/Documents/minishell_v2/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/mnt/nfs/homes/jgiron/Documents/minishell_v2/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="/mnt/nfs/homes/jgiron/Documents/minishell_v2/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/mnt/nfs/homes/jgiron/Documents/minishell_v2/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/mnt/nfs/homes/jgiron/Documents/minishell_v2/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/mnt/nfs/homes/jgiron/Documents/minishell_v2/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/mnt/nfs/homes/jgiron/Documents/minishell_v2/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rebuild_cache">
+				<Option working_dir="/mnt/nfs/homes/jgiron/Documents/minishell_v2/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/mnt/nfs/homes/jgiron/Documents/minishell_v2/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/mnt/nfs/homes/jgiron/Documents/minishell_v2/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/mnt/nfs/homes/jgiron/Documents/minishell_v2/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/mnt/nfs/homes/jgiron/Documents/minishell_v2/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="minishell_v2">
+				<Option output="/mnt/nfs/homes/jgiron/Documents/minishell_v2/cmake-build-debug/minishell_v2" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/mnt/nfs/homes/jgiron/Documents/minishell_v2/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="clang"/>
+				<Compiler>
+					<Add directory="/mnt/nfs/homes/jgiron/Documents/minishell_v2/includes"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/llvm-12/lib/clang/12.0.0/include"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/mnt/nfs/homes/jgiron/Documents/minishell_v2/cmake-build-debug/Makefile&quot;  VERBOSE=1 minishell_v2"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/mnt/nfs/homes/jgiron/Documents/minishell_v2/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/mnt/nfs/homes/jgiron/Documents/minishell_v2/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/mnt/nfs/homes/jgiron/Documents/minishell_v2/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="minishell_v2/fast">
+				<Option output="/mnt/nfs/homes/jgiron/Documents/minishell_v2/cmake-build-debug/minishell_v2" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/mnt/nfs/homes/jgiron/Documents/minishell_v2/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="clang"/>
+				<Compiler>
+					<Add directory="/mnt/nfs/homes/jgiron/Documents/minishell_v2/includes"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/llvm-12/lib/clang/12.0.0/include"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/mnt/nfs/homes/jgiron/Documents/minishell_v2/cmake-build-debug/Makefile&quot;  VERBOSE=1 minishell_v2/fast"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/mnt/nfs/homes/jgiron/Documents/minishell_v2/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/mnt/nfs/homes/jgiron/Documents/minishell_v2/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/mnt/nfs/homes/jgiron/Documents/minishell_v2/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="/mnt/nfs/homes/jgiron/Documents/minishell_v2/includes/minishell.h">
+			<Option target="minishell_v2"/>
+		</Unit>
+		<Unit filename="/mnt/nfs/homes/jgiron/Documents/minishell_v2/srcs/env/dupenv.c">
+			<Option target="minishell_v2"/>
+		</Unit>
+		<Unit filename="/mnt/nfs/homes/jgiron/Documents/minishell_v2/srcs/env/env.c">
+			<Option target="minishell_v2"/>
+		</Unit>
+		<Unit filename="/mnt/nfs/homes/jgiron/Documents/minishell_v2/srcs/env/init_env.c">
+			<Option target="minishell_v2"/>
+		</Unit>
+		<Unit filename="/mnt/nfs/homes/jgiron/Documents/minishell_v2/srcs/env/parse_env.c">
+			<Option target="minishell_v2"/>
+		</Unit>
+		<Unit filename="/mnt/nfs/homes/jgiron/Documents/minishell_v2/srcs/env/serialize_env.c">
+			<Option target="minishell_v2"/>
+		</Unit>
+		<Unit filename="/mnt/nfs/homes/jgiron/Documents/minishell_v2/srcs/execution/exec.c">
+			<Option target="minishell_v2"/>
+		</Unit>
+		<Unit filename="/mnt/nfs/homes/jgiron/Documents/minishell_v2/srcs/utils/path_utils.c">
+			<Option target="minishell_v2"/>
+		</Unit>
+		<Unit filename="/mnt/nfs/homes/jgiron/Documents/minishell_v2/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>
