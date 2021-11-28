@@ -9,6 +9,7 @@
 #include <unistd.h>
 #include <stdbool.h>
 #include <errno.h>
+#include <stdio.h>
 #include <sys/stat.h>
 #include "../srcs/libft/libft.h"
 
@@ -40,17 +41,30 @@ typedef struct s_env
     struct s_env    *next;
 }               t_env;
 
-typedef enum e_status { OK, KO, SYSCALL_FAILURE} t_status;
+typedef enum e_status { OK, KO, FATAL} t_status;
 
-int 	remove_env(t_env **	env, char *key);
-t_status		set_env(t_env **env, char *key, char *value, bool is_exported);
-char	*get_env(t_env *env, char *key);
-int		add_env(t_env **env, char *key, char *value, bool is_exported); // use in specific case, prefer set_env()
-char	**serialize_env(t_env *env);
-t_env	*parse_env(char **envp);
-void	free_env(t_env *env);
-t_env	*dupenv(t_env *src);
-bool	path_has_dot(char *path);
+extern char		g_err;
+
+
+// env manip:
+int 		remove_env(t_env **	env, char *key);
+int			add_env(t_env **env, char *key, char *value, bool is_exported); // use in specific case, prefer set_env()
+t_status	set_env(t_env **env, char *key, char *value, bool is_exported);
+t_status	export_env(t_env *env, char *key);
+char		*get_env_val(t_env *env, char *key);
+t_env		*get_env_ptr(t_env *env, char *key);
+void		free_env(t_env *env);
+t_env		*dupenv(t_env *src);
+// env conversion:
+char		**serialize_env(t_env *env);
+t_status	parse_env(char **envp, t_env **env);
+//env initialisation:
+t_status	init_env(t_env **env);
+// path_utils:
+bool		path_has_dot(char *path);
+char 		*ft_realpath(const char *path, char *resolved_path);
+// utils
+char		*my_get_working_directory(const char *for_whom);
 
 
 

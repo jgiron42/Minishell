@@ -7,7 +7,7 @@ int	add_env(t_env **env, char *key, char *value, bool is_exported)
 
 	new_node = malloc(sizeof(t_env));
 	if (!new_node)
-		return (SYSCALL_FAILURE);
+		return (FATAL);
 	new_node->key = ft_strdup(key);
 	new_node->value = ft_strdup(value);
 	new_node->is_exported = is_exported;
@@ -15,7 +15,7 @@ int	add_env(t_env **env, char *key, char *value, bool is_exported)
 	{
 		free(new_node->key);
 		free(new_node->value);
-		return (SYSCALL_FAILURE);
+		return (FATAL);
 	}
 	new_node->next = NULL;
 	if (!*env)
@@ -30,12 +30,23 @@ int	add_env(t_env **env, char *key, char *value, bool is_exported)
 	return (OK);
 }
 
-char	*get_env(t_env *env, char *key)
+char	*get_env_val(t_env *env, char *key)
 {
 	while(env)
 	{
 		if (!ft_strcmp(key, env->key))
 			return (env->value);
+		env = env->next;
+	}
+	return (NULL);
+}
+
+t_env		*get_env_ptr(t_env *env, char *key)
+{
+	while(env)
+	{
+		if (!ft_strcmp(key, env->key))
+			return (env);
 		env = env->next;
 	}
 	return (NULL);
@@ -50,8 +61,10 @@ t_status		set_env(t_env **env, char *key, char *value, bool is_exported)
 	{
 		if (!ft_strcmp(key, tmp->key))
 		{
+			if (value == tmp->value)
+				return (OK);
 			free(tmp->value);
-			tmp->value = value;
+			tmp->value = ft_strdup(value);
 			return (OK);
 		}
 		tmp = tmp->next;
@@ -96,4 +109,18 @@ void free_env(t_env *env)
 		free(env);
 		env = tmp;
 	}
+}
+
+t_status	export_env(t_env *env, char *key)
+{
+	while(env)
+	{
+		if (!ft_strcmp(key, env->key))
+		{
+			env->is_exported = true;
+			return (OK);
+		}
+		env = env->next;
+	}
+	return (KO);
 }

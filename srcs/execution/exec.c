@@ -3,6 +3,8 @@
 //
 #include "minishell.h"
 
+char 		g_err;
+
 t_status	exec_pipeline(t_pipeline *p, t_env **env)
 {
 
@@ -16,7 +18,7 @@ t_status	exec_node(t_node *node, t_env **env, bool subshell)
 	{
 		new_env = dupenv(*env);
 		if (!new_env)
-			return (SYSCALL_FAILURE);
+			return (FATAL);
 		return(exec_node(node, &new_env, false));
 	}
 	while (node)
@@ -25,8 +27,8 @@ t_status	exec_node(t_node *node, t_env **env, bool subshell)
 			return (exec_node(node->sublist, env, node->is_in_subshell));
 		else
 			return (exec_pipeline(node->p, env));
-		if ((node->sep == AND && g_status != 0) ||
-			(node->sep == OR && g_status == 0))
+		if ((node->sep == AND && g_err != 0) ||
+			(node->sep == OR && g_err == 0))
 			break;
 		node = node->next;
 	}

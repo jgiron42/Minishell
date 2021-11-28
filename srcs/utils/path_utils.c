@@ -26,7 +26,7 @@ bool	path_has_dot(char *path)
 	return (0);
 }
 
-t_status path_append(char *path, char *component)
+t_status path_push(char *path, char *component)
 {
 	if (ft_strlen(path) + ft_strlen(component) + 1 >= PATH_MAX || ft_strlen(component) > NAME_MAX)
 	{
@@ -35,6 +35,7 @@ t_status path_append(char *path, char *component)
 	}
 	path += ft_strlen(path);
 	*path = '/';
+	++path;
 	while (*component)
 	{
 		*path = *component;
@@ -59,6 +60,8 @@ void path_pop(char *path)
 
 static	t_status compute_path(char *current, char **splitted) {
 	struct stat statbuf;
+	char		buf[NAME_MAX + 1];
+	ssize_t 		ret;
 
 	while(*splitted)
 	{
@@ -66,11 +69,27 @@ static	t_status compute_path(char *current, char **splitted) {
 			path_pop(current);
 		else if (ft_strcmp(*splitted, "."))
 		{
-			if (path_append(current, *splitted) == KO)
+			if (path_push(current, *splitted) == KO)
 				return (KO);
-			stat(current, &statbuf);
-			if (statbuf.st_mode & S_IFLNK && readlink(current, current, PATH_MAX) < 0)
-				return (KO);
+			lstat(current, &statbuf);
+//			printf("=========|||\n");
+			if (S_ISLNK(statbuf.st_mode))
+			{
+				ret = readlink(current, buf, NAME_MAX);
+				if (ret <= 0)
+					return (KO);
+				buf[ret] = 0;
+				if (*buf != '/')
+				{
+					path_pop(current);
+					path_push(current, buf);
+				}
+				else
+					ft_strcpy(current, buf);
+				return (OK);
+			}
+//			printf("=========>> %s\n", current);
+
 		}
 		++splitted;
 	}
@@ -95,10 +114,7 @@ char 	*ft_realpath(const char *path, char *resolved_path)
 	splited = ft_split(path, '/');
 	if (!splited)
 		return (NULL);
-	if (path[0] == '/')
-		ft_strcpy(current, "/");
-	else
-		current[0] = 0;
+	current[0] = 0;
 	if (compute_path(current, splited) == KO)
 	{
 		ft_free_split(splited);

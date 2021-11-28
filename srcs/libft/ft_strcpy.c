@@ -1,4 +1,13 @@
-//
-// Created by joachim on 25/11/2021.
-//
 
+
+char *ft_strcpy(char *dest, const char *src)
+{
+	while(*src)
+	{
+		*dest = *src;
+		++dest;
+		++src;
+	}
+	*dest = 0;
+	return dest;
+}

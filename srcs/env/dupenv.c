@@ -16,13 +16,13 @@ t_env *dupenv(t_env *src)
 		{
 			if (!ret)
 			{
-				if (add_env(&ret, src->key, src->value, true) == SYSCALL_FAILURE)
+				if (add_env(&ret, src->key, src->value, true) == FATAL)
 					return (NULL);
 				ret = tmp;
 			}
 			else
 			{
-				if (add_env(&tmp->next, src->key, src->value, true) == SYSCALL_FAILURE) {
+				if (add_env(&tmp->next, src->key, src->value, true) == FATAL) {
 					free_env(ret);
 					return (NULL);
 				}

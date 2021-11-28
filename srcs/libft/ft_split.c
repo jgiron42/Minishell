@@ -103,3 +103,13 @@ char	**ft_split(char const *s, char c)
 	tab[word] = NULL;
 	return (tab);
 }
+
+void	ft_free_split(char **array)
+{
+	int	i;
+
+	i = 0;
+	while (array[i])
+		free(array[i++]);
+	free(array);
+}

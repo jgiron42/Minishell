@@ -9,11 +9,15 @@ int main(int argc, char **argv, char **envp)
 {
 	t_env	*env;
 
-	env = parse_env(envp);
-	if (!env || init_env(&env) == SYSCALL_FAILURE)
+	if (parse_env(envp, &env) == FATAL || init_env(&env) == FATAL)
 	{
 		free_env(env);
 		return (1);
 	}
-
+	// TEST:
+	char **zbeub = serialize_env(env);
+	for (int i = 0; zbeub[i]; ++i)
+		printf("%s\n", zbeub[i]);
+	free_env(env);
+	ft_free_split(zbeub);
 }

@@ -13,10 +13,16 @@ static char *join_key_value(char *key, char *value)
 	if (!ret)
 		return (NULL);
 	while (*key)
+	{
 		ret[i++] = *key;
+		++key;
+	}
 	ret[i++] = '=';
 	while (*value)
+	{
 		ret[i++] = *value;
+		++value;
+	}
 	ret[i] = 0;
 	return (ret);
 }
@@ -49,13 +55,14 @@ char **serialize_env(t_env *env)
 	{
 		if (env->is_exported)
 			ret[i] = join_key_value(env->key, env->value);
-		if (!ret[i++])
+		if (env->is_exported && !ret[i++])
 		{
 			while (i > 0)
 				free(ret[i--]);
 			free(ret);
 			return (NULL);
 		}
+		env = env->next;
 	}
 	ret[i] = NULL;
 	return (ret);

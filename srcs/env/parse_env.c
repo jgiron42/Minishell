@@ -4,12 +4,11 @@
 
 #include "minishell.h"
 
-t_env	*parse_env(char **envp)
+t_status	parse_env(char **envp, t_env **env)
 {
-	t_env	*env;
 	char	*equal;
 
-	env = NULL;
+	*env = NULL;
 	while (*envp)
 	{
 		equal = *envp;
@@ -19,8 +18,10 @@ t_env	*parse_env(char **envp)
 		++equal;
 		if (equal)
 		{
-			add_env(&env, *envp, equal, true);
+			if (add_env(env, *envp, equal, true) == FATAL)
+				return (FATAL);
 		}
+		envp++;
 	}
-	return (env);
+	return (OK);
 }
