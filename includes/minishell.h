@@ -12,6 +12,9 @@
 #include <stdio.h>
 #include <sys/stat.h>
 #include "../srcs/libft/libft.h"
+#include <stdio.h>
+#include <readline/readline.h>
+#include <readline/history.h>
 
 
 typedef struct s_pipeline

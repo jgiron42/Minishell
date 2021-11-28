@@ -52,3 +52,31 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	result = ft_cpy(s1, s2);
 	return (result);
 }
+
+char	*ft_strjoinf1(char const *s1, char const *s2)
+{
+	char *ret;
+
+	ret = ft_strjoin(s1, s2);
+	free((char *)s1);
+	return (ret);
+}
+
+char	*ft_strjoinf2(char const *s1, char const *s2)
+{
+	char *ret;
+
+	ret = ft_strjoin(s1, s2);
+	free((char *)s2);
+	return (ret);
+}
+
+char	*ft_strjoinff(char const *s1, char const *s2)
+{
+	char *ret;
+
+	ret = ft_strjoin(s1, s2);
+	free((char *)s1);
+	free((char *)s2);
+	return (ret);
+}
