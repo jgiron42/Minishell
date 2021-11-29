@@ -44,7 +44,13 @@ char	kill(char **argv, t_env **env)
 			ft_putstrfd(2, NAME + ": kill: missing argument\n");
 			return (1);
 		}
-		while (ft_strcmp(array[++i], *argv));
+		to_upper(argv[1]);
+		while (array[++i] && ft_strcmp(array[i], *argv));
+		if (!array[i])
+		{
+			ft_putstrfd(2, NAME + ": kill: invalid signal name\n");
+			return (1);
+		}
 		if (kill(ft_atoi(argv[1]), i) == -1)
 		{
 			perror(NAME + ": kill");

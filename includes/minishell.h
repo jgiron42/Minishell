@@ -16,12 +16,19 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
-enum	e_command_type {simple, pipeline, list, grouping};
+typedef struct s_env
+{
+	char            *key;
+	char            *value;
+	bool            is_exported;
+	struct s_env    *next;
+}               t_env;
 
 typedef struct	s_simple {
 	int		in;
 	int		out;
 	char	**argv;
+	t_env	*env;
 }				t_simple;
 
 typedef struct	s_grouping
@@ -36,6 +43,8 @@ union	u_command {
 	struct s_list		*list;
 	struct s_grouping	grouping;
 };
+
+enum	e_command_type {simple, pipeline, list, grouping};
 
 typedef struct s_command {
 	enum e_command_type type;
@@ -68,13 +77,6 @@ typedef struct s_node {
 }              t_node;
 
 
-typedef struct s_env
-{
-    char            *key;
-    char            *value;
-    bool            is_exported;
-    struct s_env    *next;
-}               t_env;
 
 typedef enum e_status { OK, KO, FATAL} t_status;
 
@@ -100,6 +102,8 @@ bool		path_has_dot(char *path);
 char 		*ft_realpath(const char *path, char *resolved_path);
 // utils
 char		*my_get_working_directory(const char *for_whom);
+// exec
+t_status	exec_command(t_command cmd, t_env **env);
 
 
 
