@@ -16,16 +16,48 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
+enum	e_command_type {simple, pipeline, list, grouping};
+
+typedef struct	s_simple {
+	int		in;
+	int		out;
+	char	**argv;
+}				t_simple;
+
+typedef struct	s_grouping
+{
+	struct s_command	*command;
+	bool				is_in_subshell;
+}				t_grouping;
+
+union	u_command {
+	struct s_simple		simple;
+	struct s_pipeline	*pipeline;
+	struct s_list		*list;
+	struct s_grouping	grouping;
+};
+
+typedef struct s_command {
+	enum e_command_type type;
+	union u_command		command;
+}				t_command;
 
 typedef struct s_pipeline
 {
-    struct s_pipeline   *next;
-	int           in;
-	int           out;
-    char                **argv;
+	struct s_pipeline   *next;
+	struct s_command	command;
 }               t_pipeline;
 
 typedef enum    e_separator {AND, OR, SEMI}     t_separator;
+
+typedef struct s_list
+{
+	struct s_list		*next;
+	struct s_pipeline	*pipeline;
+	enum e_separator	sep;
+}               t_list;
+
+
 
 typedef struct s_node {
   struct s_node *next;
