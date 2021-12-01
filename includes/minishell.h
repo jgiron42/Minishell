@@ -11,6 +11,7 @@
 #include <errno.h>
 #include <stdio.h>
 #include <sys/stat.h>
+#include <sys/wait.h>
 #include "../srcs/libft/libft.h"
 #include <stdio.h>
 #include <readline/readline.h>
@@ -25,10 +26,7 @@ typedef struct s_env
 }               t_env;
 
 typedef struct	s_simple {
-	int		in;
-	int		out;
-	char	**argv;
-	t_env	*env;
+
 }				t_simple;
 
 typedef struct	s_grouping
@@ -44,7 +42,7 @@ union	u_command {
 	struct s_grouping	grouping;
 };
 
-enum	e_command_type {simple, pipeline, list, grouping};
+enum	e_command_type {SIMPLE, PIPELINE, LIST, GROUPING};
 
 typedef struct s_command {
 	enum e_command_type type;
@@ -76,9 +74,9 @@ typedef struct s_node {
   t_pipeline    *p;
 }              t_node;
 
-
-
 typedef enum e_status { OK, KO, FATAL} t_status;
+
+typedef char	t_builtin(char **, t_env **);
 
 extern char		g_err;
 
@@ -104,6 +102,10 @@ char 		*ft_realpath(const char *path, char *resolved_path);
 char		*my_get_working_directory(const char *for_whom);
 // exec
 t_status	exec_command(t_command cmd, t_env **env);
+t_status	perform_assignments(t_env **env, t_simple cmd,bool export); // Lara
+t_builtin	*is_special_built_in(char *name);
+t_builtin	*is_built_in(char *name);
+
 
 
 

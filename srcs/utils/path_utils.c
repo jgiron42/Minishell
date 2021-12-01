@@ -62,8 +62,14 @@ static	t_status compute_path(char *current, char **splitted) {
 	struct stat statbuf;
 	char		buf[NAME_MAX + 1];
 	ssize_t 		ret;
+	int				link;
 
+	link = 0;
+#ifdef LINK_MAX
+	while(*splitted && link < LINK_MAX)
+#else
 	while(*splitted)
+#endif
 	{
 		if (!ft_strcmp(*splitted, ".."))
 			path_pop(current);
@@ -78,6 +84,7 @@ static	t_status compute_path(char *current, char **splitted) {
 				ret = readlink(current, buf, NAME_MAX);
 				if (ret <= 0)
 					return (KO);
+				link++;
 				buf[ret] = 0;
 				if (*buf != '/')
 				{

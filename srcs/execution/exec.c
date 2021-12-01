@@ -9,23 +9,41 @@ typedef		t_status (*t_command_handler)(union u_command, t_env **);
 
 t_status	exec_simple(union u_command cmd, t_env **env)
 {
-	t_simple s;
+	t_simple	s;
+	char		**argv;
+	t_env		*new_env;
 
 	s = cmd.simple;
-
+	// expand all but redirections and assignments -> argv
+	// perform redirections
+	if ((!argv[0] || is_special_built_in(argv[0])) && perform_assignments(env, s, false) == FATAL)
+		return (FATAL);
+	if (!argv[0])
+		return (OK);
+	if (is_special_built_in(argv[0]))
+		return (exec_builtin(argv, s, env, is_special_built_in(argv[0])));
+	new_env = dupenv(*env);
+	if (!new_env)
+		return (FATAL);
+	perform_assignments(&new_env, s, true);
+	if (is_built_in(argv[0]))
+		return (exec_builtin(argv, s, new_env, is_built_in(argv[0])));
+	else
+		return (exec_program(argv, s, new_env));
 }
 
 t_status	exec_pipeline(union u_command cmd, t_env **env)
 {
 	t_pipeline *p;
 	int			next_pipe[2];
-	int			prev_pipe[2];
+	int			prev_pipe_read;
 	int 		ret;
 	int			to_wait;
+	int			status;
 
-	to_wait = 0;
+	to_wait = -1;
 	p = cmd.pipeline;
-	prev_pipe[0] = -1;
+	prev_pipe_read = -1;
 	while (p)
 	{
 		next_pipe[0] = -1;
@@ -43,13 +61,31 @@ t_status	exec_pipeline(union u_command cmd, t_env **env)
 		else if (!ret)
 		{
 			if (p->next)
-				dup2(next_pipe[0]);
+			{
+				dup2(next_pipe[1], 1);
+				close(next_pipe[0]);
+			}
+			if (prev_pipe_read != -1)
+				dup2(prev_pipe_read, 0);
+			exec_command(p->command, env);
+			exit(g_err);
 		}
+		if (prev_pipe_read != -1)
+			close(prev_pipe_read);
+		if (next_pipe[0] != -1)
+			close(next_pipe[1]);
+		prev_pipe_read = next_pipe[0];
 		to_wait++;
-		exec_command(p->command, env);
 		p = p->next;
 	}
-
+	waitpid(ret, &status, 0);
+	while (to_wait > 0)
+		wait(NULL);
+	if (WIFEXITED(status))
+		g_err = WEXITSTATUS(status);
+	else
+		g_err = WTERMSIG(status);
+	return (OK);
 }
 
 t_status	exec_list(union u_command cmd, t_env **env)
