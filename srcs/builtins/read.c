@@ -71,7 +71,7 @@ static char	assign(char **argv, t_env **env, char *buf)
 	return (0);
 }
 
-char	read_shell(char **argv, t_env **env)
+char	read_shell(char **argv, t_env *renv, t_env **wenv)
 {
 	char	*ret;
 	char	*ps2;
@@ -83,7 +83,7 @@ char	read_shell(char **argv, t_env **env)
 	{
 		ret = readline(ps2);
 		if (!ps2)
-			ps2 = get_env(*env, "PS2");
+			ps2 = get_env(renv, "PS2");
 		if (!ret)
 			break;
 		buf = ft_strjoinff(buf, ret);
@@ -95,5 +95,5 @@ char	read_shell(char **argv, t_env **env)
 		if (option['r'] || !escape(buf))
 			break;
 	}
-	return (assign(argv, env, buf));
+	return (assign(argv, wenv, buf));
 }

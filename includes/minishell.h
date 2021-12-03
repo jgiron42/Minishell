@@ -27,6 +27,9 @@ typedef struct s_env
 
 typedef struct	s_simple {
 
+	char **argv;
+	t_env	*renv;
+	t_env	**wenv;
 }				t_simple;
 
 typedef struct	s_grouping
@@ -76,7 +79,7 @@ typedef struct s_node {
 
 typedef enum e_status { OK, KO, FATAL} t_status;
 
-typedef char	t_builtin(char **, t_env **);
+typedef char	t_builtin(char **, t_env *, t_env **);
 
 extern char		g_err;
 

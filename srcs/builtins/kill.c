@@ -2,7 +2,7 @@
 // Created by jgiron on 11/26/21.
 //
 
-char	kill(char **argv, t_env **env)
+char	kill(char **argv, t_env *renv, t_env **wenv)
 {
 	char	options[256];
 	const char *array[] = {"HUP", "INT", "QUIT", "ILL", "TRAP", "ABRT", "BUS",
