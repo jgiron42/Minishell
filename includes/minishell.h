@@ -16,9 +16,10 @@
 #include <stdio.h>
 #include <readline/readline.h>
 #include <readline/history.h>
+#include "../srcs/containers/containers.h"
 
 typedef struct s_env
-{
+{                  
 	char            *key;
 	char            *value;
 	bool            is_exported;
