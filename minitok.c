@@ -1,5 +1,7 @@
 #include "mini.h"
 
+// () / {} pour grouping
+// token ()
 // char *keys[] = { "<", "<<",
 // t_token values[] = {LESS, GREAT, PIPE}
 // size_t i;
@@ -43,6 +45,10 @@ t_token	c_type(t_quote nb, char *str, size_t *len)
 		type = AND_IF;
 		(*len)++;
 	}
+	else if (str[*len] == '(')
+		type = LPARENTHESIS;
+	else if (str[*len] == ')')
+		type = RPARENTHESIS;
 	else if (ft_isspace(str[*len]))
 	{
 		if (nb)
@@ -89,7 +95,8 @@ size_t	create_t_arg(char *str, t_arg **line)
 	node->arg = ft_strndup(len + 1, str);
 	if (!node->arg)
 		exit(2);
-	ft_lstadd_back(line, node);
+	if (node->type != INVALID)
+		ft_lstadd_back(line, node);
 	return (len);
 }
 
@@ -106,8 +113,11 @@ int	main(int argc, char **argv)
 	while (i < ft_strlen(argv[1]))
 	{
 		i += create_t_arg(argv[1] + i, &line);
-		printf("La string || %s ||\n type de token : %s\n nb de quote :%s\n", line->arg, ft_itoa(line->type), ft_itoa(line->nb));
-		line = line->next;
+		if (line)
+		{
+			printf("La string || %s ||\n type de token : %s\n nb de quote :%s\n", line->arg, ft_itoa(line->type), ft_itoa(line->nb));
+			line = line->next;
+		}
 	}
 	return (0);
 }
