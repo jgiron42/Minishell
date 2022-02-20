@@ -27,7 +27,7 @@ static char *join_key_value(char *key, char *value)
 	return (ret);
 }
 
-static size_t	get_env_size(t_env *env)
+static size_t	get_env_size(t_var_list *env)
 {
 	size_t	ret;
 
@@ -40,10 +40,10 @@ static size_t	get_env_size(t_env *env)
 	return (ret);
 }
 
-char **serialize_env(t_env *env)
+char **serialize_env(t_var_list *env)
 {
 	ssize_t	i;
-	t_env	*tmp;
+	t_var_list	*tmp;
 	char	**ret;
 
 	tmp = env;

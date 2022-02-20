@@ -18,19 +18,19 @@
 #include <readline/history.h>
 #include "../srcs/containers/containers.h"
 
-typedef struct s_env
+typedef struct s_var_list
 {                  
 	char            *key;
 	char            *value;
 	bool            is_exported;
-	struct s_env    *next;
-}               t_env;
+	struct s_var_list    *next;
+}               t_var_list;
 
 typedef struct	s_simple {
 
 	char **argv;
-	t_env	*renv;
-	t_env	**wenv;
+	t_var_list	*renv;
+	t_var_list	**wenv;
 }				t_simple;
 
 typedef struct	s_grouping
@@ -68,8 +68,6 @@ typedef struct s_list
 	enum e_separator	sep;
 }               t_list;
 
-
-
 typedef struct s_node {
   struct s_node *next;
   struct s_node *sublist;
@@ -78,35 +76,39 @@ typedef struct s_node {
   t_pipeline    *p;
 }              t_node;
 
+typedef struct	s_env {
+	t_var_list *vars;
+}				t_env;
+
 typedef enum e_status { OK, KO, FATAL} t_status;
 
-typedef char	t_builtin(char **, t_env *, t_env **);
+typedef char	t_builtin(char **, t_var_list *, t_var_list **);
 
 extern char		g_err;
 
 
 // env manip:
-int 		remove_env(t_env **	env, char *key);
-int			add_env(t_env **env, char *key, char *value, bool is_exported); // use in specific case, prefer set_env()
-t_status	set_env(t_env **env, char *key, char *value, bool is_exported);
-t_status	export_env(t_env *env, char *key);
-char		*get_env_val(t_env *env, char *key);
-t_env		*get_env_ptr(t_env *env, char *key);
-void		free_env(t_env *env);
-t_env		*dupenv(t_env *src);
+int 		remove_env(t_var_list **	env, char *key);
+int			add_env(t_var_list **env, char *key, char *value, bool is_exported); // use in specific case, prefer set_env()
+t_status	set_env(t_var_list **env, char *key, char *value, bool is_exported);
+t_status	export_env(t_var_list *env, char *key);
+char		*get_env_val(t_var_list *env, char *key);
+t_var_list		*get_env_ptr(t_var_list *env, char *key);
+void		free_env(t_var_list *env);
+t_var_list		*dupenv(t_var_list *src);
 // env conversion:
-char		**serialize_env(t_env *env);
-t_status	parse_env(char **envp, t_env **env);
+char		**serialize_env(t_var_list *env);
+t_status	parse_env(char **envp, t_var_list **env);
 //env initialisation:
-t_status	init_env(t_env **env);
+t_status	init_env(t_var_list **env);
 // path_utils:
 bool		path_has_dot(char *path);
 char 		*ft_realpath(const char *path, char *resolved_path);
 // utils
 char		*my_get_working_directory(const char *for_whom);
 // exec
-t_status	exec_command(t_command cmd, t_env **env);
-t_status	perform_assignments(t_env **env, t_simple cmd,bool export); // Lara
+t_status	exec_command(t_command cmd, t_env *env);
+t_status	perform_assignments(t_var_list **env, t_simple cmd, bool export); // Lara
 t_builtin	*is_special_built_in(char *name);
 t_builtin	*is_built_in(char *name);
 

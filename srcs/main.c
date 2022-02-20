@@ -7,7 +7,7 @@
 
 int main(int argc, char **argv, char **envp)
 {
-	t_env	*env;
+	t_var_list	*env;
 
 	if (parse_env(envp, &env) == FATAL || init_env(&env) == FATAL)
 	{

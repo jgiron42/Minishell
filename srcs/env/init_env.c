@@ -4,7 +4,7 @@
 
 #include "minishell.h"
 
-static t_status init_pwd(t_env **env)
+static t_status init_pwd(t_var_list **env)
 {
 	char	*current;
 	char	*real_current;
@@ -30,7 +30,7 @@ static t_status init_pwd(t_env **env)
 	return (ret);
 }
 
-static t_status init_shlvl(t_env **env)
+static t_status init_shlvl(t_var_list **env)
 {
 	char	*current;
 
@@ -49,7 +49,7 @@ static t_status init_shlvl(t_env **env)
 	return (OK);
 }
 
-t_status init_env(t_env **env)
+t_status init_env(t_var_list **env)
 {
 	//IFS
 	if (set_env(env, "PS1", "$ ", false) == FATAL ||

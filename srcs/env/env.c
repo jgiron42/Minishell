@@ -1,11 +1,11 @@
 #include "minishell.h"
 
-int	add_env(t_env **env, char *key, char *value, bool is_exported)
+int	add_env(t_var_list **env, char *key, char *value, bool is_exported)
 {
-	t_env *new_node;
-	t_env *tmp;
+	t_var_list *new_node;
+	t_var_list *tmp;
 
-	new_node = malloc(sizeof(t_env));
+	new_node = malloc(sizeof(t_var_list));
 	if (!new_node)
 		return (FATAL);
 	new_node->key = ft_strdup(key);
@@ -30,7 +30,7 @@ int	add_env(t_env **env, char *key, char *value, bool is_exported)
 	return (OK);
 }
 
-char	*get_env_val(t_env *env, char *key)
+char	*get_env_val(t_var_list *env, char *key)
 {
 	while(env)
 	{
@@ -41,7 +41,7 @@ char	*get_env_val(t_env *env, char *key)
 	return (NULL);
 }
 
-t_env		*get_env_ptr(t_env *env, char *key)
+t_var_list		*get_env_ptr(t_var_list *env, char *key)
 {
 	while(env)
 	{
@@ -52,9 +52,9 @@ t_env		*get_env_ptr(t_env *env, char *key)
 	return (NULL);
 }
 
-t_status		set_env(t_env **env, char *key, char *value, bool is_exported)
+t_status		set_env(t_var_list **env, char *key, char *value, bool is_exported)
 {
-	t_env *tmp;
+	t_var_list *tmp;
 
 	tmp = *env;
 	while(tmp)
@@ -72,10 +72,10 @@ t_status		set_env(t_env **env, char *key, char *value, bool is_exported)
 	return (add_env(env, key, value, is_exported));
 }
 
-int 	remove_env(t_env **	env, char *key)
+int 	remove_env(t_var_list **	env, char *key)
 {
-	t_env *tmp;
-	t_env *old;
+	t_var_list *tmp;
+	t_var_list *old;
 
 	tmp = *env;
 	old = NULL;
@@ -97,9 +97,9 @@ int 	remove_env(t_env **	env, char *key)
 	return (KO);
 }
 
-void free_env(t_env *env)
+void free_env(t_var_list *env)
 {
-	t_env	*tmp;
+	t_var_list	*tmp;
 
 	while (env)
 	{
@@ -111,7 +111,7 @@ void free_env(t_env *env)
 	}
 }
 
-t_status	export_env(t_env *env, char *key)
+t_status	export_env(t_var_list *env, char *key)
 {
 	while(env)
 	{

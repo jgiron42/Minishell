@@ -4,7 +4,7 @@
 
 #include "minishell.h"
 
-t_status	parse_env(char **envp, t_env **env)
+t_status	parse_env(char **envp, t_var_list **env)
 {
 	char	*equal;
 

@@ -4,10 +4,10 @@
 
 #include "minishell.h"
 
-t_env *dupenv(t_env *src)
+t_var_list *dupenv(t_var_list *src)
 {
-	t_env	*ret;
-	t_env	*tmp;
+	t_var_list	*ret;
+	t_var_list	*tmp;
 
 	ret = NULL;
 	while (src)

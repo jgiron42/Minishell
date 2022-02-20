@@ -5,9 +5,9 @@
 
 char 		g_err;
 
-typedef		t_status (*t_command_handler)(union u_command, t_env **);
+typedef		t_status (*t_command_handler)(union u_command, t_env *env);
 
-t_status	exec_simple(union u_command cmd, t_env **env)
+t_status	exec_simple(union u_command cmd, t_env *env)
 {
 	t_simple	s;
 
@@ -26,7 +26,7 @@ t_status	exec_simple(union u_command cmd, t_env **env)
 		return (exec_program(s, env));
 }
 
-t_status	exec_pipeline(union u_command cmd, t_env **env)
+t_status	exec_pipeline(union u_command cmd, t_env *env)
 {
 	t_pipeline *p;
 	int			next_pipe[2];
@@ -82,7 +82,7 @@ t_status	exec_pipeline(union u_command cmd, t_env **env)
 	return (OK);
 }
 
-t_status	exec_list(union u_command cmd, t_env **env)
+t_status	exec_list(union u_command cmd, t_env *env)
 {
 	t_list *l;
 	t_status ret;
@@ -100,22 +100,23 @@ t_status	exec_list(union u_command cmd, t_env **env)
 	return (ret);
 }
 
-t_status	exec_grouping(union u_command cmd, t_env **env)
+t_status	exec_grouping(union u_command cmd, t_env *env)
 {
 	t_grouping	g;
-	t_env		*new_env;
+	t_env		new_env;
 
+	new_env = *env;
 	g = cmd.grouping;
 	if (g.is_in_subshell)
 	{
-		new_env = dupenv(*env);
-		if (!new_env)
+		new_env.vars = dupenv(new_env. vars);
+		if (!new_env.vars)
 			return (FATAL);
 	}
 	return(exec_command(*g.command, &new_env));
 }
 
-t_status	exec_command(t_command cmd, t_env **env)
+t_status	exec_command(t_command cmd, t_env *env)
 {
 	t_command_handler a[] = {
 			&exec_simple,
