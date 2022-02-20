@@ -3,6 +3,7 @@
 
 #define NAME minishell
 #include <stddef.h>
+#include <fcntl.h>
 #include <limits.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -29,10 +30,11 @@ enum e_redir {INPUT, OUTPUT, APPEND, HERE, DUPIN, DUPOUT, RW};
 
 typedef struct	s_redir {
 	enum	e_redir type;
-	int		n;
 	char	*word;
-	int		here_fd;
-	struct	s_redir *next;
+	int		newfd; // output:1, input: 0, append: 1, here: 0
+	int		oldfd;
+	int		fd_save;
+	struct	s_redir *next; // ls a c > b  > d
 }				t_redir;
 
 typedef struct	s_simple {
@@ -87,7 +89,8 @@ typedef struct s_node {
 }              t_node;
 
 typedef struct	s_env {
-	t_var_list *vars;
+	t_var_list	*vars;
+	t_bool_vec	opened_files;
 }				t_env;
 
 typedef enum e_status { OK, KO, FATAL} t_status;
@@ -121,8 +124,5 @@ t_status	exec_command(t_command cmd, t_env *env);
 t_status	perform_assignments(t_var_list **env, t_simple cmd, bool export); // Lara
 t_builtin	*is_special_built_in(char *name);
 t_builtin	*is_built_in(char *name);
-
-
-
 
 #endif
