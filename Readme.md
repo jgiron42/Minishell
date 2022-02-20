@@ -2,6 +2,14 @@
 ![Tableau](https://github.com/jgiron42/minishell_v2/blob/parsing/Tableau.png)
 
 /* -------------------------------------------------------
+   The grammar symbols
+   ------------------------------------------------------- */
+
+	%token  WORD
+	%token  AND_IF    OR_IF	DLESS DGREAT 	PIPE	LESS	GREAT
+	/*      '&&'      '||'	 '<<'   '>>'	'|'		'<'     '>'  '('		')'
+
+/* -------------------------------------------------------
    The Grammar
    ------------------------------------------------------- */
 
@@ -39,6 +47,26 @@ simple_command   : cmd_prefix cmd_word cmd_suffix
 cmd_name         : WORD                   /* Apply rule 7a */ the first word
 
 cmd_word         : WORD                   /* Apply rule 7b */ not the first word
+
+
+	[Assignment preceding command name]
+
+			[When the first word]
+
+				If the TOKEN does not contain the character '=', rule 1 is applied. Otherwise, 7b shall be applied.
+
+	[Not the first word]
+
+		If the TOKEN contains an unquoted (as determined while applying rule 4 from Token Recognition) <equals-sign> character that is not part of an embedded parameter expansion, command substitution, or arithmetic expansion construct (as determined while applying rule 5 from Token Recognition):
+
+		If the TOKEN begins with '=', then rule 1 shall be applied.
+
+		If all the characters in the TOKEN preceding the first such <equals-sign> form a valid name (see XBD Name), the token ASSIGNMENT_WORD shall be returned.
+
+		Otherwise, it is unspecified whether rule 1 is applied or ASSIGNMENT_WORD is returned.
+
+		Otherwise, 	the token WORD shall be returned.
+
 
 cmd_prefix       :            io_redirect
                  | cmd_prefix io_redirect
