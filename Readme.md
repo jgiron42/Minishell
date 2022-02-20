@@ -51,9 +51,9 @@ cmd_word         : WORD                   /* Apply rule 7b */ not the first word
 
 	[Assignment preceding command name]
 
-			[When the first word]
+		[When the first word]
 
-				If the TOKEN does not contain the character '=', rule 1 is applied. Otherwise, 7b shall be applied.
+			If the TOKEN does not contain the character '=', rule 1 is applied. Otherwise, 7b shall be applied.
 
 	[Not the first word]
 
