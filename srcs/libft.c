@@ -12,11 +12,11 @@ size_t	ft_strlen(const char *s)
 	return (i);
 }
 
-t_arg	*ft_lstnew(t_token token)
+t_token_list	*ft_lstnew(t_token_type	 token)
 {
-	t_arg *new;
+	t_token_list *new;
 
-	if (!(new = (t_arg *)malloc(sizeof(t_arg))))
+	if (!(new = (t_token_list *)malloc(sizeof(t_token_list))))
 		return (NULL);
 	new->arg = NULL;
 	new->type = token;
@@ -157,9 +157,9 @@ void	*ft_calloc(size_t count, size_t size)
 
 /// modifier pour minichoux
 
-void	ft_lstadd_back(t_arg **alst, t_arg *new)
+void	ft_lstadd_back(t_token_list **alst, t_token_list *new)
 {
-	t_arg	*tmp;
+	t_token_list	*tmp;
 
 	if (!(*alst))
 	{

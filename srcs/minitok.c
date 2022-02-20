@@ -1,46 +1,32 @@
 #include "mini.h"
 
 // () / {} pour grouping
-// token ()
-// cas pariculier : INVALID, WORD,
-// size_t i;
 
-t_token	c_type(t_quote nb, char *str, size_t *len)
+t_token_type	c_type(t_quote nb, char *str, size_t *len)
 {
 	int				i;
 	const char		*operator[] = {"<<", ">>", "&&", "||",
 		">", "<", "|", "(", ")"};
-	const t_token	type[] = {DLESS, DGREAT, AND_IF, OR_IF, GREAT, LESS,
+	const t_token_type	type[] = {DLESS, DGREAT, AND_IF, OR_IF, GREAT, LESS,
 		PIPE, LPARENTHESIS, RPARENTHESIS, WORD, INVALID};
 
 	i = 0;
 	while (i < 9 && ft_strncmp((const char *)str + (*len), operator[i], ft_strlen(operator[i])))
 			i++;
-	// printf("-Pour str[len]%c, %d\n", str[*len], type[i]);
-	// printf("Nombre de quote : %d, retour de isspace : %d\n" , nb, ft_isspace(str[*len]));
 	if (i < 9)
-	{
 		(*len) += !!operator[i][1];
-	}
 	else if (!nb && ft_isspace(str[*len]))
-	{
-		// printf("---Pour str[len]%c, %d\n", str[*len], type[i]);
 		return (INVALID);
-	}
 	else
-	{
-		// printf("---Pour str[len]%c, %d\n", str[*len], type[i]);
 		return (WORD);
-	}
-	// printf("---Pour str[len]%c, %d\n", str[*len], type[i]);
 	return (type[i]);
 }
 
 
-size_t	create_t_arg(char *str, t_arg **line)
+size_t	create_t_token_list(char *str, t_token_list**line)
 {
 	size_t	len;
-	t_arg	*node;
+	t_token_list	*node;
 	size_t	tmp;
 
 	len = 0;
@@ -82,7 +68,7 @@ size_t	create_t_arg(char *str, t_arg **line)
 
 int	main(int argc, char **argv)
 {
-	t_arg	*line;
+	t_token_list	*line;
 	size_t	i;
 
 	(void)argc;
@@ -91,8 +77,7 @@ int	main(int argc, char **argv)
 	line = NULL;
 	while (i < ft_strlen(argv[1]))
 	{
-		// printf("La taille parcourue est de : %zu\n", i );
-		i += create_t_arg(argv[1] + i, &line);
+		i += create_t_token_list(argv[1] + i, &line);
 		if (line)
 		{
 			printf("La string || %s ||\n type de token : %s\n nb de quote :%s\n", line->arg, ft_itoa(line->type), ft_itoa(line->nb));
