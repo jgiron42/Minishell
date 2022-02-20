@@ -1,5 +1,5 @@
-#ifndef MINI_H
-# define MINI_H
+#ifndef PARSING_H
+# define PARSING_H
 
 # include <unistd.h>
 # include <stdlib.h>
