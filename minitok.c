@@ -2,74 +2,52 @@
 
 // () / {} pour grouping
 // token ()
-// char *keys[] = { "<", "<<",
-// t_token values[] = {LESS, GREAT, PIPE}
+// cas pariculier : INVALID, WORD,
 // size_t i;
 
 t_token	c_type(t_quote nb, char *str, size_t *len)
 {
-	t_token type;
+	int				i;
+	const char		*operator[] = {"<<", ">>", "&&", "||",
+		">", "<", "|", "(", ")"};
+	const t_token	type[] = {DLESS, DGREAT, AND_IF, OR_IF, GREAT, LESS,
+		PIPE, LPARENTHESIS, RPARENTHESIS, WORD, INVALID};
 
-	if (!nb && str[*len] == '<')
+	i = 0;
+	while (i < 9 && ft_strncmp((const char *)str + (*len), operator[i], ft_strlen(operator[i])))
+			i++;
+	// printf("-Pour str[len]%c, %d\n", str[*len], type[i]);
+	// printf("Nombre de quote : %d, retour de isspace : %d\n" , nb, ft_isspace(str[*len]));
+	if (i < 9)
 	{
-		if (str[*len + 1] == '<')
-		{
-			type = DLESS;
-			(*len)++;
-		}
-		else
-			type = LESS;
+		(*len) += !!operator[i][1];
 	}
-	else if (!nb && str[*len] == '>')
+	else if (!nb && ft_isspace(str[*len]))
 	{
-		if (str[*len + 1] == '>')
-		{
-			type = DGREAT;
-			(*len)++;
-		}
-		else
-			type = GREAT;
-	}
-	else if (!nb && str[*len] == '|')
-	{
-		if (str[*len + 1] == '|')
-		{
-			type = OR_IF;
-			(*len)++;
-		}
-		else
-			type = PIPE;
-	}
-	else if (!nb && str[*len] == '&' && str[*len + 1] == '&')
-	{
-		type = AND_IF;
-		(*len)++;
-	}
-	else if (str[*len] == '(')
-		type = LPARENTHESIS;
-	else if (str[*len] == ')')
-		type = RPARENTHESIS;
-	else if (ft_isspace(str[*len]))
-	{
-		if (nb)
-			type = WORD;
-		else
-			type = INVALID;
+		// printf("---Pour str[len]%c, %d\n", str[*len], type[i]);
+		return (INVALID);
 	}
 	else
-		type = WORD;
-	return (type);
+	{
+		// printf("---Pour str[len]%c, %d\n", str[*len], type[i]);
+		return (WORD);
+	}
+	// printf("---Pour str[len]%c, %d\n", str[*len], type[i]);
+	return (type[i]);
 }
+
 
 size_t	create_t_arg(char *str, t_arg **line)
 {
 	size_t	len;
 	t_arg	*node;
+	size_t	tmp;
 
 	len = 0;
+	tmp = len;
 	node = NULL;
-	node = ft_lstnew(c_type(NONE, str, &len));
-	while (str[len] && node->type == c_type(node->nb, str, &len))
+	node = ft_lstnew(c_type(NONE, str, &tmp));
+	while (str[len] && WORD == c_type(node->nb, str, &len))
 	{
 		if (str[len] == '\'')
 		{
@@ -87,12 +65,14 @@ size_t	create_t_arg(char *str, t_arg **line)
 		}
 		len++;
 	}
+	if (len == tmp)
+		len++;
 	if (!str[len] && node->nb)
 	{
 		printf("\033[0;31merreur syntax: missing closing quote\n");
 		exit(1);
 	}
-	node->arg = ft_strndup(len + 1, str);
+	node->arg = ft_strndup(len, str);
 	if (!node->arg)
 		exit(2);
 	if (node->type != INVALID)
@@ -104,14 +84,14 @@ int	main(int argc, char **argv)
 {
 	t_arg	*line;
 	size_t	i;
-	//
+
 	(void)argc;
 	(void)**argv;
-
 	i = 0;
 	line = NULL;
 	while (i < ft_strlen(argv[1]))
 	{
+		// printf("La taille parcourue est de : %zu\n", i );
 		i += create_t_arg(argv[1] + i, &line);
 		if (line)
 		{
