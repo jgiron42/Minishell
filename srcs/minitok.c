@@ -23,7 +23,7 @@ t_token_type	c_type(t_quote nb, char *str, size_t *len)
 }
 
 
-size_t	create_t_token_list(char *str, t_token_list**line)
+size_t	create_t_token_list(char *str, t_token_list **line)
 {
 	size_t	len;
 	t_token_list	*node;
@@ -72,7 +72,6 @@ int	main(int argc, char **argv)
 	size_t	i;
 
 	(void)argc;
-	(void)**argv;
 	i = 0;
 	line = NULL;
 	while (i < ft_strlen(argv[1]))
