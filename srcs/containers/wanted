@@ -1,1 +1,2 @@
 vector char* str_vec
+vector bool   bool_vec
