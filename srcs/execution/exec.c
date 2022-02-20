@@ -73,7 +73,7 @@ t_status	exec_pipeline(union u_command cmd, t_env *env)
 		p = p->next;
 	}
 	waitpid(ret, &status, 0);
-	while (to_wait > 0)
+	while (--to_wait >= 0)
 		wait(NULL);
 	if (WIFEXITED(status))
 		g_err = WEXITSTATUS(status);

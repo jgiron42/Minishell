@@ -1,4 +1,3 @@
-
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
@@ -26,9 +25,19 @@ typedef struct s_var_list
 	struct s_var_list    *next;
 }               t_var_list;
 
-typedef struct	s_simple {
+enum e_redir {INPUT, OUTPUT, APPEND, HERE, DUPIN, DUPOUT, RW};
 
-	char **argv;
+typedef struct	s_redir {
+	enum	e_redir type;
+	int		n;
+	char	*word;
+	int		here_fd;
+	struct	s_redir *next;
+}				t_redir;
+
+typedef struct	s_simple {
+	t_redir		*redir_list;
+	char		**argv;
 	t_var_list	*renv;
 	t_var_list	**wenv;
 }				t_simple;
@@ -36,6 +45,7 @@ typedef struct	s_simple {
 typedef struct	s_grouping
 {
 	struct s_command	*command;
+	t_redir				*redir_list;
 	bool				is_in_subshell;
 }				t_grouping;
 
