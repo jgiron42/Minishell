@@ -1,5 +1,8 @@
 
+![alt text](https://github.com/jgiron42/minishell_v2/blob/parsing/img.pdf)
+
 img.pdf
+
 /* -------------------------------------------------------
    The Grammar
    ------------------------------------------------------- */
