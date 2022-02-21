@@ -19,7 +19,7 @@
 #include "../srcs/containers/containers.h"
 
 typedef struct s_var_list
-{                  
+{
 	char            *key;
 	char            *value;
 	bool            is_exported;
@@ -29,8 +29,8 @@ typedef struct s_var_list
 enum e_redir {INPUT, OUTPUT, APPEND, HERE, DUPIN, DUPOUT, RW};
 
 typedef struct	s_redir {
-	enum	e_redir type;
-	char	*word;
+	enum	e_redir type;	//Lara
+	char	*word;	//Lara
 	int		newfd; // output:1, input: 0, append: 1, here: 0
 	int		oldfd;
 	int		fd_save;
@@ -38,8 +38,8 @@ typedef struct	s_redir {
 }				t_redir;
 
 typedef struct	s_simple {
-	t_redir		*redir_list;
-	char		**argv;
+	t_redir		*redir_list; //Lara
+	char		**argv;			//Lara
 	t_var_list	*renv;
 	t_var_list	**wenv;
 }				t_simple;
@@ -71,27 +71,27 @@ typedef struct s_pipeline
 	struct s_command	command;
 }               t_pipeline;
 
-typedef enum    e_separator {AND, OR, SEMI}     t_separator;
+//utilisation de AND_IF OR_IF et SEMI
 
 typedef struct s_list
 {
 	struct s_list		*next;
 	struct s_pipeline	*pipeline;
-	enum e_separator	sep;
+	t_token_type		sep;
 }               t_list;
 
 typedef struct s_node {
   struct s_node *next;
   struct s_node *sublist;
   bool			is_in_subshell;
-  t_separator   sep;
+  t_token_type   sep;
   t_pipeline    *p;
 }              t_node;
-
-typedef struct	s_env {
-	t_var_list	*vars;
-	t_bool_vec	opened_files;
-}				t_env;
+//
+// typedef struct	s_env {
+// 	t_var_list	*vars;
+// 	t_bool_vec	opened_files;
+// }				t_env;
 
 typedef enum e_status { OK, KO, FATAL} t_status;
 
@@ -120,7 +120,7 @@ char 		*ft_realpath(const char *path, char *resolved_path);
 // utils
 char		*my_get_working_directory(const char *for_whom);
 // exec
-t_status	exec_command(t_command cmd, t_env *env);
+// t_status	exec_command(t_command cmd, t_env *env);
 t_status	perform_assignments(t_var_list **env, t_simple cmd, bool export); // Lara
 t_builtin	*is_special_built_in(char *name);
 t_builtin	*is_built_in(char *name);

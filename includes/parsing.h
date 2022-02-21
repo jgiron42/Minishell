@@ -5,9 +5,9 @@
 # include <stdlib.h>
 # include <stdio.h>
 
-typedef enum	e_token_type {INVALID, WORD, GREAT, LESS, DLESS, DGREAT, PIPE, AND_IF, OR_IF, LPARENTHESIS, RPARENTHESIS}	t_token_type;
-							// 0		1		2	3		4		5	6		7		8		9			10
-typedef enum	e_quote {NONE, SIMPLE, DOUBLE}	t_quote;
+typedef enum	e_token_type {INVALID, WORD, GREAT, LESS, DLESS, DGREAT, PIPE, AND_IF, OR_IF, LPARENTHESIS, RPARENTHESIS, SEMI}	t_token_type;
+							// 0		1		2	3		4		5	6		7		8		9			10				11
+typedef enum	e_quote {NONE, ONE, DOUBLE}	t_quote;
 
 typedef struct s_token_list
 {

@@ -37,10 +37,10 @@ size_t	create_t_token_list(char *str, t_token_list **line)
 	{
 		if (str[len] == '\'')
 		{
-			if (node->nb == SIMPLE)
+			if (node->nb == ONE)
 				node->nb = NONE;
 			else
-				node->nb = SIMPLE;
+				node->nb = ONE;
 		}
 		else if (str[len] == '"')
 		{
@@ -69,6 +69,7 @@ size_t	create_t_token_list(char *str, t_token_list **line)
 int	main(int argc, char **argv)
 {
 	t_token_list	*line;
+	// t_command		*tree;
 	size_t	i;
 
 	(void)argc;
@@ -82,6 +83,8 @@ int	main(int argc, char **argv)
 			printf("La string || %s ||\n type de token : %s\n nb de quote :%s\n", line->arg, ft_itoa(line->type), ft_itoa(line->nb));
 			line = line->next;
 		}
+		// tree = parsing(&line);
+
 	}
 	return (0);
 }

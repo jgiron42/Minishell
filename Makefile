@@ -6,7 +6,7 @@
 #    By: ereali <ereali@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/10/18 05:33:00 by ereali            #+#    #+#              #
-#    Updated: 2022/02/20 23:54:17 by ereali           ###   ########.fr        #
+#    Updated: 2022/02/21 02:11:46 by ereali           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,7 +30,7 @@ vpath %.h $(foreach dir, $(INC_DIR), $(dir):)
 SRC = tokeniser.c parsing.c libft.c
 
 ##List every .h found inside INC_DIR
-INC = parsing.h
+INC = parsing.h minishell.h
 
 ##Transform and place every .o from SRC
 OBJ = $(addprefix $(OBJ_DIR)/, $(SRC:%.c=%.o))
