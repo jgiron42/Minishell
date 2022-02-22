@@ -1,4 +1,5 @@
 #include "parsing.h"
+#include "minishell.h"
 
 // () / {} pour grouping
 
@@ -66,25 +67,36 @@ size_t	create_t_token_list(char *str, t_token_list **line)
 	return (len);
 }
 
+void ft_prin(t_token_list	**line)
+{
+	t_token_list	*tmp;
+
+	tmp= (*line);
+	while (tmp)
+	{
+		printf("La string || %s ||\n type de token : %s\n nb de quote :%s\n", (tmp)->arg, ft_itoa(tmp->type), ft_itoa(tmp->nb));
+		tmp = tmp->next;
+	}
+	if (!line)
+	{
+		printf("empty\n");
+		exit(3);
+	}
+}
 int	main(int argc, char **argv)
 {
 	t_token_list	*line;
-	// t_command		*tree;
+	t_command		*tree;
 	size_t	i;
 
 	(void)argc;
 	i = 0;
 	line = NULL;
 	while (i < ft_strlen(argv[1]))
-	{
 		i += create_t_token_list(argv[1] + i, &line);
-		if (line)
-		{
-			printf("La string || %s ||\n type de token : %s\n nb de quote :%s\n", line->arg, ft_itoa(line->type), ft_itoa(line->nb));
-			line = line->next;
-		}
-		// tree = parsing(&line);
+	ft_prin(&line);
+	tree = parsing(&line,line);
+	(void)tree;
 
-	}
 	return (0);
 }

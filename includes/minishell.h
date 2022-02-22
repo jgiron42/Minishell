@@ -17,6 +17,7 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 #include "../srcs/containers/containers.h"
+#include "parsing.h"
 
 typedef struct s_var_list
 {
@@ -39,7 +40,7 @@ typedef struct	s_redir {
 
 typedef struct	s_simple {
 	t_redir		*redir_list; //Lara
-	char		**argv;			//Lara
+	t_token_list *argv;			//Lara
 	t_var_list	*renv;
 	t_var_list	**wenv;
 }				t_simple;
@@ -124,5 +125,8 @@ char		*my_get_working_directory(const char *for_whom);
 t_status	perform_assignments(t_var_list **env, t_simple cmd, bool export); // Lara
 t_builtin	*is_special_built_in(char *name);
 t_builtin	*is_built_in(char *name);
+
+//parsing :
+t_command		*parsing(t_token_list **list, t_token_list *current);
 
 #endif
