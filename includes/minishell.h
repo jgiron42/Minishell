@@ -29,12 +29,12 @@ typedef struct s_var_list
 enum e_redir {INPUT, OUTPUT, APPEND, HERE, DUPIN, DUPOUT, RW};
 
 typedef struct	s_redir {
-	enum	e_redir type;
-	char	*word;
-	int		newfd; // output:1, input: 0, append: 1, here: 0
-	int		oldfd;
-	int		fd_save;
-	struct	s_redir *next; // ls a c > b  > d
+	enum e_redir	type;
+	char			*word;
+	int				newfd; // output:1, input: 0, append: 1, here: 0
+	int				oldfd;
+	int				fd_save; // init to -1
+	struct s_redir	*next; // ls a c > b  > d
 }				t_redir;
 
 typedef struct	s_simple {
