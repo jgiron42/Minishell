@@ -40,7 +40,7 @@ typedef struct	s_redir {
 
 typedef struct	s_simple {
 	t_redir		*redir_list; //Lara
-	t_token_list *argv;			//Lara
+	t_token_list *argv;		//Lara
 	t_var_list	*renv;
 	t_var_list	**wenv;
 }				t_simple;
@@ -127,6 +127,7 @@ t_builtin	*is_special_built_in(char *name);
 t_builtin	*is_built_in(char *name);
 
 //parsing :
-t_command		*parsing(t_token_list **list, t_token_list *current);
+t_command	*parsing(t_token_list **current, t_token_type expected);
+void		ft_lstadd_back_redir(t_redir **alst, t_redir *new);
 
 #endif

@@ -72,17 +72,40 @@ void ft_prin(t_token_list	**line)
 	t_token_list	*tmp;
 
 	tmp= (*line);
-	while (tmp)
-	{
-		printf("La string || %s ||\n type de token : %s\n nb de quote :%s\n", (tmp)->arg, ft_itoa(tmp->type), ft_itoa(tmp->nb));
-		tmp = tmp->next;
-	}
 	if (!line)
 	{
 		printf("empty\n");
 		exit(3);
 	}
+	while (tmp)
+	{
+		printf("La string || %s ||\n type de token : %d\n nb de quote :%d\n", (tmp)->arg, tmp->type, tmp->nb);
+		tmp = tmp->next;
+	}
+
 }
+
+void ft_prin_redir(t_redir	**line)
+{
+	t_redir	*tmp;
+
+	if (!line)
+	{
+		printf("empty\n");
+		exit(3);
+	}
+	tmp= (*line);
+
+	while (tmp)
+	{
+		printf("Le type || %d ||\n ", (tmp)->type);
+		printf("le word suivant : %s\n", tmp->word);
+		printf("int du fd :%d\n", tmp->newfd);
+		tmp = tmp->next;
+	}
+
+}
+
 int	main(int argc, char **argv)
 {
 	t_token_list	*line;
@@ -95,8 +118,13 @@ int	main(int argc, char **argv)
 	while (i < ft_strlen(argv[1]))
 		i += create_t_token_list(argv[1] + i, &line);
 	ft_prin(&line);
-	tree = parsing(&line,line);
-	(void)tree;
-
+	tree = parsing(&line, END);
+	if ((tree && tree->type == SIMPLE))
+	{
+		if (tree->command.simple.argv)
+			// ft_prin(&(tree->command.simple.argv));
+		printf("salut \n");
+		ft_prin_redir(&(tree->command.simple.redir_list));
+	}
 	return (0);
 }

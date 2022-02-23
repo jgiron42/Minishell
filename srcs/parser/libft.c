@@ -179,6 +179,27 @@ void	ft_lstadd_back(t_token_list **alst, t_token_list *new)
 	}
 }
 
+void		ft_lstadd_back_redir(t_redir **alst, t_redir *new)
+{
+	t_redir	*tmp;
+
+	if (!(*alst))
+	{
+		(*alst) = new;
+		new->next = NULL;
+	}
+	else if (new)
+	{
+		tmp = (*alst);
+		while (tmp->next)
+		{
+			tmp = tmp->next;
+		}
+		tmp->next = new;
+		new->next = NULL;
+	}
+}
+
 char	*ft_strndup(size_t n, const char *s1)
 {
 	size_t		i;

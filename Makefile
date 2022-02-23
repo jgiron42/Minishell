@@ -6,11 +6,11 @@
 #    By: ereali <ereali@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/10/18 05:33:00 by ereali            #+#    #+#              #
-#    Updated: 2022/02/21 21:12:48 by ereali           ###   ########.fr        #
+#    Updated: 2022/02/22 20:35:45 by ereali           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = token
+NAME = parsing
 
 INC_DIR = 	$(shell find includes -type d)
 
@@ -48,7 +48,7 @@ all: $(NAME)
 
 $(NAME): $(OBJ)
 				@echo "Compiling $(NAME) ...\c"
-				$(CC) $(OBJ) $(CFLAGS) $(IFLAGS) -o token
+				$(CC) $(OBJ) $(CFLAGS) $(IFLAGS) -o $(NAME)
 				@echo " DONE"
 
 $(OBJ_DIR)/%.o : %.c
