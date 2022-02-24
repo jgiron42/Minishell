@@ -5,12 +5,11 @@
 
 //	penser prorteger si nul etc ..
 // fonction check type puis print en fct
-// 	fonction par struct: t_grouping / t_list / t_pipeline / t_simple / t_redir
-// 	fonction redir
+// 	fonction par struct: t_grouping / t_list / t_pipeline
 //	fonction here doc
 //	prototype possible t_command *parsing(t_token_list *list,char *deliniter)
 
-t_command *ft_newcmd(enum e_command_type cmd_type, union u_command command)
+t_command *ft_newcmd(enum e_command_type cmd_type)
 {
 	t_command *new;
 
@@ -18,14 +17,15 @@ t_command *ft_newcmd(enum e_command_type cmd_type, union u_command command)
 	if (!new)
 		return (NULL);
 	new->type = cmd_type;
-	new->command = command;
 	return (new);
 }
 
 t_redir	*new_redir_list(t_token_list **current)
 {
 	t_redir *new;
+	t_token_list *cpy;
 
+	printf("je suis passer dans redir\n" );
 	new = (t_redir *)malloc(sizeof(t_redir));
 	if (!new)
 		return (NULL);
@@ -45,8 +45,9 @@ t_redir	*new_redir_list(t_token_list **current)
 		new->newfd = 1;
 	if ((*current)->next && (*current)->next->type == WORD)
 	{
-		(*current) = (*current)->next;
-		new->word = (*current)->arg;
+		(*current) = ((*current)->next);
+		cpy = ft_lstcpy(*current);
+		new->word = (cpy)->arg;
 	}
 	else
 	{
@@ -56,29 +57,20 @@ t_redir	*new_redir_list(t_token_list **current)
 	return (new);
 }
 
-
 t_command *parse_simple(t_token_list **current)
 {
 	t_command	*tree;
-	union u_command	 unio;
-	t_simple	simple;
-	t_redir		*redir_list;
+	t_token_list *cpy;
 
-	redir_list = NULL;
-	tree = ft_newcmd(SIMPLE, unio);
-	unio.simple = simple;
-	simple.argv = NULL;
-	simple.redir_list = redir_list;
+	tree = ft_newcmd(SIMPLE);
+	tree->command.simple.argv = NULL;
 	while ((*current) && (*current)->type >= WORD && (*current)->type <= DGREAT)
 	{
+		cpy = ft_lstcpy(*current);
 		if ((*current)->type == WORD)
-		{
-				ft_lstadd_back(&(simple.argv), (*current));
-		}
-		else if (!redir_list)
-			redir_list = new_redir_list(current);
+			ft_lstadd_back(&(tree->command.simple.argv), cpy);
 		else
-			ft_lstadd_back_redir(&redir_list, new_redir_list(current));
+			ft_lstadd_back_redir(&tree->command.simple.redir_list, new_redir_list(current));
 		(*current) = (*current)->next;
 	}
 	return (tree);
@@ -129,16 +121,15 @@ t_command *parsing(t_token_list **current, t_token_type expected)
 		// {
 		// 	tree = parse_grouping();
 		// }
-		// else if ((*current)->type == PIPE)
-		// {
-		// 	tree = parse_pipe();
-		// }
+		else if ((*current)->type == PIPE)
+		{
+			tree = parse_pipe();
+		}
 		// else if ((*current)->type == OR_IF || (*current)->type == AND_IF)
 		// {
 		// 	tree = parse_list();
 		// }
 		printf("Je suis passer dans la boucle de parsing\n" );
-
 	}
 	printf("Je suis passer dans parsing\n");
 	return (tree);

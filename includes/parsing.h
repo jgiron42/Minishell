@@ -6,7 +6,7 @@
 # include <stdio.h>
 
 typedef enum	e_token_type {INVALID, WORD = 1, GREAT = 2, LESS = 4, DLESS = 8, DGREAT = 16, PIPE = 32, AND_IF = 64, OR_IF = 128, LPARENTHESIS = 256, RPARENTHESIS = 512, SEMI = 1024, END = 2048}	t_token_type;
-							// 0		1		2	3		4		5	6		7		8		9			10				11
+							// 0	1		2		3		4		5	6		7		8		9			10				11
 typedef enum	e_quote {NONE, ONE, DOUBLE}	t_quote;
 
 typedef struct s_token_list
@@ -28,5 +28,7 @@ void			ft_lstadd_back(t_token_list **alst, t_token_list *new);
 void			ft_putnbr_fd(int n, int fd);
 char			*ft_itoa(int n);
 char			*ft_strndup(size_t n, const char *s1);
+t_token_list	*ft_lstcpy(t_token_list	 *current);
+
 
 #endif

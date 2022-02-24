@@ -127,6 +127,9 @@ t_builtin	*is_special_built_in(char *name);
 t_builtin	*is_built_in(char *name);
 
 //parsing :
+void ft_prin(t_token_list	**line);
+void ft_prin_redir(t_redir	**line);
+
 t_command	*parsing(t_token_list **current, t_token_type expected);
 void		ft_lstadd_back_redir(t_redir **alst, t_redir *new);
 

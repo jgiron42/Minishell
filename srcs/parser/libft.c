@@ -13,6 +13,7 @@ size_t	ft_strlen(const char *s)
 	return (i);
 }
 
+
 t_token_list	*ft_lstnew(t_token_type	 token)
 {
 	t_token_list *new;
@@ -24,6 +25,15 @@ t_token_list	*ft_lstnew(t_token_type	 token)
 	new->nb = NONE;
 	new->next = NULL;
 	return (new);
+}
+
+t_token_list	*ft_lstcpy(t_token_list	 *current)
+{
+	t_token_list	 *cpy;
+
+	cpy = ft_lstnew(current->type);
+	cpy->arg = (current)->arg;
+	return (cpy);
 }
 
 int ft_isspace(char c)

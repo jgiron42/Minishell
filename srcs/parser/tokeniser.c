@@ -72,7 +72,7 @@ void ft_prin(t_token_list	**line)
 	t_token_list	*tmp;
 
 	tmp= (*line);
-	if (!line)
+	if (!tmp)
 	{
 		printf("empty\n");
 		exit(3);
@@ -89,13 +89,12 @@ void ft_prin_redir(t_redir	**line)
 {
 	t_redir	*tmp;
 
-	if (!line)
+	tmp = (*line);
+	if (!tmp)
 	{
 		printf("empty\n");
 		exit(3);
 	}
-	tmp= (*line);
-
 	while (tmp)
 	{
 		printf("Le type || %d ||\n ", (tmp)->type);
@@ -122,8 +121,12 @@ int	main(int argc, char **argv)
 	if ((tree && tree->type == SIMPLE))
 	{
 		if (tree->command.simple.argv)
-			// ft_prin(&(tree->command.simple.argv));
-		printf("salut \n");
+		{
+			printf("-----------------argv---------------------\n" );
+			ft_prin(&(tree->command.simple.argv));
+			printf("---------------END------------\n" );
+		}
+		// printf("-------redir------------\n");
 		ft_prin_redir(&(tree->command.simple.redir_list));
 	}
 	return (0);
