@@ -114,23 +114,13 @@ t_command *parsing(t_token_list **current, t_token_type expected)
 	while ((*current) && !(expected & (*current)->type))
 	{
 		if ((*current)->type >= WORD && (*current)->type <= DGREAT)
-		{
 			tree = parse_simple(current);
-		}
 		// else if ((*current)->type == LPARENTHESIS)
-		// {
 		// 	tree = parse_grouping();
-		// }
 		else if ((*current)->type == PIPE)
-		{
 			tree = parse_pipe();
-		}
 		// else if ((*current)->type == OR_IF || (*current)->type == AND_IF)
-		// {
 		// 	tree = parse_list();
-		// }
-		printf("Je suis passer dans la boucle de parsing\n" );
 	}
-	printf("Je suis passer dans parsing\n");
 	return (tree);
 }
