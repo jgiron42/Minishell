@@ -3,7 +3,7 @@
 
 // () / {} pour grouping
 
-t_token_type	c_type(t_quote nb, char *str, size_t *len)
+t_token_type	c_type(t_quote nb, char *str, size_t len)
 {
 	int				i;
 	const char		*operator[] = {"<<", ">>", "&&", "||",
@@ -12,13 +12,12 @@ t_token_type	c_type(t_quote nb, char *str, size_t *len)
 		PIPE, LPARENTHESIS, RPARENTHESIS, WORD, INVALID};
 
 	i = 0;
-	while (i < 9 && ft_strncmp((const char *)str + *len, operator[i], ft_strlen(operator[i])))
+	// printf("ls caractere est %c, ces quote sont : %d , la len est a \n", );
+	while (i < 9 && ft_strncmp((const char *)str + (len), operator[i], ft_strlen(operator[i])))
 			i++;
-	if (i < 9)
-			(*len) += !!operator[i][1];
-	else if (!nb && ft_isspace(str[*len]))
+	if (i > 8 && !nb && ft_isspace(str[len]))
 		return (INVALID);
-	else
+	else if (i > 8)
 		return (WORD);
 	return (type[i]);
 }
@@ -30,11 +29,12 @@ size_t	create_t_token_list(char *str, t_token_list **line)
 	t_token_list	*node;
 	size_t	tmp;
 
+printf("coucou\n");
 	len = 0;
 	tmp = len;
 	node = NULL;
-	node = ft_lstnew(c_type(NONE, str, &tmp));
-	while (str[len] && WORD == c_type(node->nb, str, &len))
+	node = ft_lstnew(c_type(NONE, str, tmp));
+	while (str[len] && WORD == c_type(node->nb, str, len))
 	{
 		if (str[len] == '\'')
 		{
@@ -52,7 +52,11 @@ size_t	create_t_token_list(char *str, t_token_list **line)
 		}
 		len++;
 	}
-	if (len == tmp && node->type != WORD)
+	if (node->type != WORD)
+	{
+		len ++;
+	}
+	if (node->type == DLESS || node->type == DGREAT || node->type == OR_IF || node->type == AND_IF)
 		len++;
 	if (!str[len] && node->nb)
 	{
