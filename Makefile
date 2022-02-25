@@ -6,7 +6,7 @@
 #    By: ereali <ereali@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/10/18 05:33:00 by ereali            #+#    #+#              #
-#    Updated: 2022/02/25 18:52:30 by ereali           ###   ########.fr        #
+#    Updated: 2022/02/25 19:21:33 by ereali           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,7 @@ vpath %.c $(foreach dir, $(SRC_DIR), $(dir):)
 vpath %.h $(foreach dir, $(INC_DIR), $(dir):)
 
 ##List every .c found inside SRC_DIR
-SRC = tokeniser.c parsing.c libft.c
+SRC = tokeniser.c parsing.c libft.c parse_grouping.c parse_list.c parse_pipe.c parse_simple.c print.c
 
 ##List every .h found inside INC_DIR
 INC = parsing.h minishell.h

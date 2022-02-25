@@ -12,7 +12,7 @@ t_token_type	c_type(t_quote nb, char *str, size_t *len)
 		PIPE, LPARENTHESIS, RPARENTHESIS, WORD, INVALID};
 
 	i = 0;
-	while (i < 9 && ft_strncmp((const char *)str + (len), operator[i], ft_strlen(operator[i])))
+	while (i < 9 && ft_strncmp((const char *)str + *len, operator[i], ft_strlen(operator[i])))
 			i++;
 	if (i < 9)
 			(*len) += !!operator[i][1];
