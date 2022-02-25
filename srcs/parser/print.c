@@ -4,6 +4,44 @@ void ft_print_pipe(t_pipeline **line);
 void ft_print_grouping(t_grouping **line);
 void ft_print_list(t_list **line);
 
+void ft_prin(t_token_list	**line)
+{
+	t_token_list	*tmp;
+
+	tmp = (*line);
+	if (!tmp)
+	{
+		printf("empty\n");
+		exit(3);
+	}
+	while (tmp)
+	{
+		printf("La string || %s ||\n type de token : %d\n nb de quote :%d\n", (tmp)->arg, tmp->type, tmp->nb);
+		tmp = tmp->next;
+	}
+
+}
+
+void ft_prin_redir(t_redir	**line)
+{
+	t_redir	*tmp;
+
+	tmp = (*line);
+	if (!tmp)
+	{
+		printf("empty redir\n");
+		exit(3);
+	}
+	while (tmp)
+	{
+		printf("Le type || %d ||\n ", (tmp)->type);
+		printf("le word suivant : %s\n", tmp->word);
+		printf("int du fd :%d\n", tmp->newfd);
+		tmp = tmp->next;
+	}
+
+}
+
 void ft_print_pipe(t_pipeline **line)
 {
 	t_pipeline	*tmp;

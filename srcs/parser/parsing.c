@@ -27,9 +27,7 @@ void		ft_lstadd_back_redir(t_redir **alst, t_redir *new)
 	{
 		tmp = (*alst);
 		while (tmp->next)
-		{
 			tmp = tmp->next;
-		}
 		tmp->next = new;
 		new->next = NULL;
 	}
@@ -40,7 +38,6 @@ t_redir	*new_redir_list(t_token_list **current)
 	t_redir *new;
 	t_token_list *cpy;
 
-	printf("je suis passer dans redir\n" );
 	new = (t_redir *)malloc(sizeof(t_redir));
 	if (!new)
 		return (NULL);

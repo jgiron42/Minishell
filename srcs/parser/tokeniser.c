@@ -12,7 +12,6 @@ t_token_type	c_type(t_quote nb, char *str, size_t len)
 		PIPE, LPARENTHESIS, RPARENTHESIS, WORD, INVALID};
 
 	i = 0;
-	// printf("ls caractere est %c, ces quote sont : %d , la len est a \n", );
 	while (i < 9 && ft_strncmp((const char *)str + (len), operator[i], ft_strlen(operator[i])))
 			i++;
 	if (i > 8 && !nb && ft_isspace(str[len]))
@@ -22,18 +21,14 @@ t_token_type	c_type(t_quote nb, char *str, size_t len)
 	return (type[i]);
 }
 
-
 size_t	create_t_token_list(char *str, t_token_list **line)
 {
 	size_t	len;
 	t_token_list	*node;
-	size_t	tmp;
 
-printf("coucou\n");
 	len = 0;
-	tmp = len;
 	node = NULL;
-	node = ft_lstnew(c_type(NONE, str, tmp));
+	node = ft_lstnew(c_type(NONE, str, len));
 	while (str[len] && WORD == c_type(node->nb, str, len))
 	{
 		if (str[len] == '\'')
@@ -53,9 +48,7 @@ printf("coucou\n");
 		len++;
 	}
 	if (node->type != WORD)
-	{
 		len ++;
-	}
 	if (node->type == DLESS || node->type == DGREAT || node->type == OR_IF || node->type == AND_IF)
 		len++;
 	if (!str[len] && node->nb)
@@ -69,44 +62,6 @@ printf("coucou\n");
 	if (node->type != INVALID)
 		ft_lstadd_back(line, node);
 	return (len);
-}
-
-void ft_prin(t_token_list	**line)
-{
-	t_token_list	*tmp;
-
-	tmp = (*line);
-	if (!tmp)
-	{
-		printf("empty\n");
-		exit(3);
-	}
-	while (tmp)
-	{
-		printf("La string || %s ||\n type de token : %d\n nb de quote :%d\n", (tmp)->arg, tmp->type, tmp->nb);
-		tmp = tmp->next;
-	}
-
-}
-
-void ft_prin_redir(t_redir	**line)
-{
-	t_redir	*tmp;
-
-	tmp = (*line);
-	if (!tmp)
-	{
-		printf("empty redir\n");
-		exit(3);
-	}
-	while (tmp)
-	{
-		printf("Le type || %d ||\n ", (tmp)->type);
-		printf("le word suivant : %s\n", tmp->word);
-		printf("int du fd :%d\n", tmp->newfd);
-		tmp = tmp->next;
-	}
-
 }
 
 int	main(int argc, char **argv)
