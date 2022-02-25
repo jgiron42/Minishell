@@ -26,7 +26,7 @@ typedef struct s_var_list
 	struct s_var_list    *next;
 }               t_var_list;
 
-enum e_redir {INPUT, OUTPUT, APPEND, HERE, DUPIN, DUPOUT, RW};
+enum e_redir {INPUT, OUTPUT, CLOBBER, APPEND, HERE, DUPIN, DUPOUT, RW};
 
 typedef struct	s_redir {
 	enum e_redir	type;
@@ -88,9 +88,11 @@ typedef struct s_node {
   t_pipeline    *p;
 }              t_node;
 
+enum	e_fd_status {FD_CLOSE, FD_OPEN, FD_TMP};
+
 typedef struct	s_env {
 	t_var_list	*vars;
-	t_bool_vec	opened_files;
+	t_char_vec	opened_files;
 }				t_env;
 
 typedef enum e_status { OK, KO, FATAL} t_status;
@@ -120,7 +122,10 @@ char 		*ft_realpath(const char *path, char *resolved_path);
 // utils
 char		*my_get_working_directory(const char *for_whom);
 // exec
+t_status	get_g_err(pid_t pid);
 t_status	exec_command(t_command cmd, t_env *env);
+t_status	perform_redirection(t_env *env, t_redir *list);
+t_status	reset_redirection(t_env *env, t_redir *list);
 t_status	perform_assignments(t_var_list **env, t_simple cmd, bool export); // Lara
 t_builtin	*is_special_built_in(char *name);
 t_builtin	*is_built_in(char *name);

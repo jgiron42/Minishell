@@ -13,7 +13,8 @@ t_status	exec_simple(union u_command cmd, t_env *env)
 
 	s = cmd.simple;
 	// expand all but redirections and assignments -> argv
-	// perform redirections
+	if (perform_redirection(env, s.redir_list) == FATAL)
+		return (FATAL);
 	if (!s.argv[0] && perform_assignments(env, s, false) == FATAL)
 		return (FATAL);
 	if (!s.argv[0])
@@ -24,6 +25,8 @@ t_status	exec_simple(union u_command cmd, t_env *env)
 		return (exec_regular_builtin(s, env));
 	else
 		return (exec_program(s, env));
+	if (reset_redirection(env, s.redir_list) == FATAL)
+		return (FATAL);
 }
 
 t_status	exec_pipeline(union u_command cmd, t_env *env)
@@ -72,13 +75,10 @@ t_status	exec_pipeline(union u_command cmd, t_env *env)
 		to_wait++;
 		p = p->next;
 	}
-	waitpid(ret, &status, 0);
+	get_g_err(ret);
 	while (--to_wait >= 0)
-		wait(NULL);
-	if (WIFEXITED(status))
-		g_err = WEXITSTATUS(status);
-	else
-		g_err = WTERMSIG(status);
+		if (wait(NULL) == -1 && errno == EINTR)
+			return (FATAL);
 	return (OK);
 }
 
@@ -104,16 +104,23 @@ t_status	exec_grouping(union u_command cmd, t_env *env)
 {
 	t_grouping	g;
 	t_env		new_env;
+	int			ret;
 
 	new_env = *env;
 	g = cmd.grouping;
+	if (perform_redirection(env, g.redir_list) == FATAL)
+		return (FATAL);
 	if (g.is_in_subshell)
 	{
+		//TODO: fork
 		new_env.vars = dupenv(new_env. vars);
 		if (!new_env.vars)
 			return (FATAL);
 	}
-	return(exec_command(*g.command, &new_env));
+	ret = exec_command(*g.command, &new_env);
+	if (reset_redirection(env, g.redir_list) == FATAL)
+		return (FATAL);
+	return (ret);
 }
 
 t_status	exec_command(t_command cmd, t_env *env)

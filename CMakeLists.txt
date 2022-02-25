@@ -58,6 +58,6 @@ add_executable(minishell_v2
         srcs/utils/my_get_working_directory.c
         srcs/main.c
         srcs/execution/command_name.c
-        srcs/execution/redirections.c)
+        srcs/execution/redirections.c srcs/execution/utils.c srcs/execution/exec_program.c)
 
 target_link_libraries(minishell_v2 LIBFT)
