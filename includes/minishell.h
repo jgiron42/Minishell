@@ -52,7 +52,7 @@ union	u_command {
 	struct s_grouping	*grouping;
 };
 
-enum	e_command_type {SIMPLE, PIPELINE, LIST, GROUPING};
+enum	e_command_type {SIMPLE, PIPELINE, LIST, GROUPING, ERROR};
 
 typedef struct s_command {
 	enum e_command_type type;

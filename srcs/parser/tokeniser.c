@@ -15,7 +15,7 @@ t_token_type	c_type(t_quote nb, char *str, size_t *len)
 	while (i < 9 && ft_strncmp((const char *)str + (*len), operator[i], ft_strlen(operator[i])))
 			i++;
 	if (i < 9)
-		(*len) += !!operator[i][1];
+			(*len) += !!operator[i][1];
 	else if (!nb && ft_isspace(str[*len]))
 		return (INVALID);
 	else
@@ -52,7 +52,7 @@ size_t	create_t_token_list(char *str, t_token_list **line)
 		}
 		len++;
 	}
-	if (len == tmp)
+	if (len == tmp && node->type != WORD)
 		len++;
 	if (!str[len] && node->nb)
 	{

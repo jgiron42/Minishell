@@ -1,13 +1,7 @@
 #include "minishell.h"
 
-//jo voie une fonction avec t_tokenlist list et valeur qui demande a retourner a parse
-//
-
 //	penser prorteger si nul etc ..
-// fonction check type puis print en fct
-// 	fonction par struct: t_grouping / t_list / t_pipeline
 //	fonction here doc
-//	prototype possible t_command *parsing(t_token_list *list,char *deliniter)
 //
 // t_command *ft_newcmd(type)
 // {
@@ -19,6 +13,9 @@
 // 	new->type = cmd_type;
 // 	return (new);
 // }
+void ft_print_pipe(t_pipeline **line);
+void ft_print_grouping(t_grouping **line);
+void ft_print_list(t_list **line);
 
 t_redir	*new_redir_list(t_token_list **current)
 {
@@ -78,6 +75,32 @@ t_command parse_simple(t_token_list **current)
 	return (tree);
 }
 
+void ft_print_grouping(t_grouping **line)
+{
+	t_grouping	*tmp;
+
+	tmp = (*line);
+	if (!tmp)
+	{
+		printf("empty list\n");
+		exit(3);
+	}
+		if (tmp->command.type == SIMPLE)
+		{
+			ft_prin(&(tmp->command.command.simple.argv));
+		}
+		if (tmp->command.type == PIPELINE)
+		{
+			ft_print_pipe(&(tmp->command.command.pipeline));
+		}
+		if (tmp->command.type == LIST)
+		{
+			ft_print_list(&(tmp->command.command.list));
+		}
+			printf("-------redir------------\n");
+			ft_prin_redir(&(tmp->redir_list));
+}
+
 t_grouping *ft_new_grouping(t_command command)
 {
 	t_grouping *new;
@@ -87,6 +110,7 @@ t_grouping *ft_new_grouping(t_command command)
 		return (NULL);
 	new->is_in_subshell = 1;
 	new->command = command;
+	new->redir_list = NULL;
 	return (new);
 }
 
@@ -95,6 +119,7 @@ t_command parse_grouping(t_token_list **current)
 	t_command tree;
 
 	// tree = ft_newcmd(PIPELINE);
+	tree = (t_command){};
 	tree.type = GROUPING;
 	(*current) = (*current)->next;
 	if (!(*current) || ((*current)->type > DGREAT && (*current)->type < LPARENTHESIS))
@@ -108,15 +133,19 @@ t_command parse_grouping(t_token_list **current)
 		printf("\033[0;31merreur syntax: no closing parenthesis\n");
 		exit(5);
 	}
+	else
+		(*current) = (*current)->next;
 	while ((*current) && (*current)->type <= DGREAT && (*current)->type >= GREAT)
 	{
 		ft_lstadd_back_redir(&(tree.command.grouping->redir_list), new_redir_list(current));
 		(*current) = (*current)->next;
 	}
-	// printf("----------------GROUPINGPRINT----------------\n");
-	// ft_print_pipe(&first);
-	// printf("----------------END----------------\n");
+	// if (*current)
+	// 	printf("last arg %s\n", (*current)->arg);
 
+	printf("----------------GROUPINGPRINT----------------\n");
+	ft_print_grouping(&(tree.command.grouping));
+	printf("----------------END----------------\n");
 	return(tree);
 }
 
@@ -148,6 +177,10 @@ void ft_print_pipe(t_pipeline **line)
 		{
 			ft_prin(&(tmp->command.command.simple.argv));
 		}
+		if (tmp->command.type == GROUPING)
+		{
+			ft_print_grouping(&(tmp->command.command.grouping));
+		}
 		tmp = tmp->next;
 	}
 }
@@ -171,12 +204,12 @@ t_command parse_pipe(t_token_list **current, t_command prev_command)
 			printf("\033[0;31merreur syntax: wrong token after pipe\n");
 			exit(5);
 		}
-		tmp->next = ft_new_pipe(parsing(current, AND_IF | OR_IF | PIPE));
+		tmp->next = ft_new_pipe(parsing(current, AND_IF | OR_IF | PIPE | RPARENTHESIS));
 		tmp = tmp->next;
 	}
-	// printf("----------------PIPEPRINT----------------\n");
-	// ft_print_pipe(&first);
-	// printf("----------------END----------------\n");
+	printf("----------------PIPEPRINT----------------\n");
+	ft_print_pipe(&first);
+	printf("----------------END----------------\n");
 
 	return(tree);
 }
@@ -218,6 +251,10 @@ void ft_print_list(t_list **line)
 		{
 			ft_print_pipe(&(tmp->command.command.pipeline));
 		}
+		if (tmp->command.type == GROUPING)
+		{
+			ft_print_grouping(&(tmp->command.command.grouping));
+		}
 		tmp = tmp->next;
 	}
 }
@@ -240,12 +277,12 @@ t_command parse_list(t_token_list **current, t_command prev_command)
 			printf("\033[0;31merreur syntax: wrong token after list\n");
 			exit(5);
 		}
-		tmp->next = ft_new_list(parsing(current, AND_IF | OR_IF ), *current);
+		tmp->next = ft_new_list(parsing(current, AND_IF | OR_IF| RPARENTHESIS ), *current);
 		tmp = tmp->next;
 	}
-	printf("----------------LISTPRINT----------------\n");
-	ft_print_list(&first);
-	printf("----------------END----------------\n");
+	// printf("----------------LISTPRINT----------------\n");
+	// ft_print_list(&first);
+	// printf("----------------END----------------\n");
 
 	return (tree);
 }
@@ -272,6 +309,11 @@ t_command parsing(t_token_list **current, t_token_type expected)
 			tree = parse_pipe(current, tree);
 		else if ((*current)->type == OR_IF || (*current)->type == AND_IF)
 			tree = parse_list(current, tree);
+		else if ((*current)->type == RPARENTHESIS)
+		{
+			printf("\033[0;31mWrong syntax token\n");
+			break;
+		}
 	}
 	return (tree);
 }
