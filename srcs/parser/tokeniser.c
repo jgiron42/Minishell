@@ -71,7 +71,7 @@ void ft_prin(t_token_list	**line)
 {
 	t_token_list	*tmp;
 
-	tmp= (*line);
+	tmp = (*line);
 	if (!tmp)
 	{
 		printf("empty\n");
@@ -92,7 +92,7 @@ void ft_prin_redir(t_redir	**line)
 	tmp = (*line);
 	if (!tmp)
 	{
-		printf("empty\n");
+		printf("empty redir\n");
 		exit(3);
 	}
 	while (tmp)
@@ -108,7 +108,7 @@ void ft_prin_redir(t_redir	**line)
 int	main(int argc, char **argv)
 {
 	t_token_list	*line;
-	t_command		*tree;
+	t_command		tree;
 	size_t	i;
 
 	(void)argc;
@@ -118,16 +118,17 @@ int	main(int argc, char **argv)
 		i += create_t_token_list(argv[1] + i, &line);
 	ft_prin(&line);
 	tree = parsing(&line, END);
-	if ((tree && tree->type == SIMPLE))
-	{
-		if (tree->command.simple.argv)
-		{
-			printf("-----------------argv---------------------\n" );
-			ft_prin(&(tree->command.simple.argv));
-			printf("---------------END------------\n" );
-		}
-		// printf("-------redir------------\n");
-		ft_prin_redir(&(tree->command.simple.redir_list));
-	}
+	// if (tree.type == SIMPLE)
+	// {
+	// 	if (tree.command.simple.argv)
+	// 	{
+	// 		printf("-----------------argv---------------------\n" );
+	// 		ft_prin(&(tree.command.simple.argv));
+	// 		printf("---------------END------------\n" );
+	// 	}
+	// 	// printf("-------redir------------\n");
+	// 	// ft_prin_redir(&(tree.command.simple.redir_list));
+	// }
+
 	return (0);
 }

@@ -45,18 +45,11 @@ typedef struct	s_simple {
 	t_var_list	**wenv;
 }				t_simple;
 
-typedef struct	s_grouping
-{
-	struct s_command	*command;
-	t_redir				*redir_list;
-	bool				is_in_subshell;
-}				t_grouping;
-
 union	u_command {
 	struct s_simple		simple;
 	struct s_pipeline	*pipeline;
 	struct s_list		*list;
-	struct s_grouping	grouping;
+	struct s_grouping	*grouping;
 };
 
 enum	e_command_type {SIMPLE, PIPELINE, LIST, GROUPING};
@@ -72,12 +65,19 @@ typedef struct s_pipeline
 	struct s_command	command;
 }               t_pipeline;
 
+typedef struct	s_grouping
+{
+	struct s_command	command;
+	t_redir				*redir_list;
+	bool				is_in_subshell;
+}				t_grouping;
+
 //utilisation de AND_IF OR_IF et SEMI
 
 typedef struct s_list
 {
 	struct s_list		*next;
-	struct s_pipeline	*pipeline;
+	struct s_command	command;
 	t_token_type		sep;
 }               t_list;
 
@@ -130,7 +130,7 @@ t_builtin	*is_built_in(char *name);
 void ft_prin(t_token_list	**line);
 void ft_prin_redir(t_redir	**line);
 
-t_command	*parsing(t_token_list **current, t_token_type expected);
+t_command	parsing(t_token_list **current, t_token_type expected);
 void		ft_lstadd_back_redir(t_redir **alst, t_redir *new);
 
 #endif
