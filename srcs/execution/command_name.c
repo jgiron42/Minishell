@@ -23,7 +23,7 @@ t_builtin	*is_special_built_in(char *name)
 //			"unset",
 			NULL
 	};
-	const t_builtin *f[] =
+	 t_builtin *f[] =
 			{
 //			&shell_exit,
 //			&shell_export,
@@ -60,7 +60,7 @@ t_builtin	*is_built_in(char *name) {
 //		"wait",
 		NULL
 	};
-	const t_builtin *f[] =
+	 t_builtin *f[] =
 			{
 //					&shell_cd,
 //					&shell_false,

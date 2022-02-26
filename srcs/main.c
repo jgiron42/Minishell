@@ -54,6 +54,8 @@ int main(int argc, char **argv, char **envp)
 {
 	t_env		env;
 
+	(void)argc;
+	(void)argv;
 	if (parse_env(envp, &env) != FATAL && init_env(&env) != FATAL)
 		loop(&env);
 	perror(NAME);

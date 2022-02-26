@@ -5,15 +5,20 @@ typedef	void (*t_command_destructor)(union u_command c);
 
 void destroy_simple(union u_command c)
 {
+	(void)c;
 }
 void destroy_pipeline(union u_command c)
 {
+	(void)c;
+
 }
 void destroy_list(union u_command c)
 {
+	(void)c;
 }
 void destroy_grouping(union u_command c)
 {
+	(void)c;
 }
 void destroy_tree(t_command c)
 {

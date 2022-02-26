@@ -37,5 +37,5 @@ t_str_vec ft_split_ifs(char *str, t_env *env)
 		str_vec_push(&ret, ft_strdup(str));
 		return (ret);
 	}
-
+	return (ret);
 }
