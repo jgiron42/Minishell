@@ -1,5 +1,5 @@
 
-![Tableau](https://github.com/jgiron42/minishell_v2/blob/parsing/Tableau.png)
+![Tableau](https://github.com/jgiron42/minishell_v2/blob/parsing/includes/Tableau.png)
 
 /* -------------------------------------------------------
    The grammar symbols
@@ -105,5 +105,23 @@ here_end         : WORD                      /* Apply rule 3 */
 				Quote removal shall be applied to the word to determine the delimiter
 				that is used to find the end of the here-document that begins after the next <newline>.
 
-1name=ab
-bash: 1name=ab: command not found
+Expansion :
+Bonus : attention les doubles quote empeches l'expansion des wildcard '*'
+
+$	:
+		peut etre suivi par :
+			A numeric character
+
+			The name of one of the special parameters (see Special Parameters)
+
+			A valid first character of a variable name
+
+			A <left-curly-bracket> ( '{' )
+
+			A <left-parenthesis>
+
+	|	si suivi de quote n'expand pas et quote remove
+
+ASSIGNEMENT WORD = ne dois pas commencer par un nombre
+exemple :
+	bash: 1name=ab: command not found

@@ -131,7 +131,16 @@ t_builtin	*is_built_in(char *name);
 //parsing :
 void ft_prin(t_token_list	**line);
 void ft_prin_redir(t_redir	**line);
+void ft_print_pipe(t_pipeline **line);
+void ft_print_list(t_list **line);
+void ft_print_grouping(t_grouping **line);
 
+t_command parsing(t_token_list **current, t_token_type expected);
+t_redir	*new_redir_list(t_token_list **current);
+t_command parse_grouping(t_token_list **current);
+t_command parse_pipe(t_token_list **current, t_command prev_command);
+t_command parse_list(t_token_list **current, t_command prev_command);
+t_command parse_simple(t_token_list **current);
 t_command	parsing(t_token_list **current, t_token_type expected);
 void		ft_lstadd_back_redir(t_redir **alst, t_redir *new);
 

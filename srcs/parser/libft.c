@@ -13,7 +13,6 @@ size_t	ft_strlen(const char *s)
 	return (i);
 }
 
-
 t_token_list	*ft_lstnew(t_token_type	 token)
 {
 	t_token_list *new;
@@ -164,50 +163,6 @@ void	*ft_calloc(size_t count, size_t size)
 		return (NULL);
 	ft_bzero(s, count * size);
 	return (s);
-}
-
-/// modifier pour minichoux
-
-void	ft_lstadd_back(t_token_list **alst, t_token_list *new)
-{
-	t_token_list	*tmp;
-
-	if (!(*alst))
-	{
-		(*alst) = new;
-		new->next = NULL;
-	}
-	else if (new)
-	{
-		tmp = (*alst);
-		while (tmp->next)
-		{
-			tmp = tmp->next;
-		}
-		tmp->next = new;
-		new->next = NULL;
-	}
-}
-
-void		ft_lstadd_back_redir(t_redir **alst, t_redir *new)
-{
-	t_redir	*tmp;
-
-	if (!(*alst))
-	{
-		(*alst) = new;
-		new->next = NULL;
-	}
-	else if (new)
-	{
-		tmp = (*alst);
-		while (tmp->next)
-		{
-			tmp = tmp->next;
-		}
-		tmp->next = new;
-		new->next = NULL;
-	}
 }
 
 char	*ft_strndup(size_t n, const char *s1)
