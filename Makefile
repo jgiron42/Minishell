@@ -6,11 +6,11 @@
 #    By: ereali <ereali@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/10/18 05:33:00 by ereali            #+#    #+#              #
-#    Updated: 2022/02/20 23:54:17 by ereali           ###   ########.fr        #
+#    Updated: 2022/02/23 20:51:02 by ereali           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = token
+NAME = parsing
 
 INC_DIR = 	$(shell find includes -type d)
 
@@ -30,25 +30,25 @@ vpath %.h $(foreach dir, $(INC_DIR), $(dir):)
 SRC = tokeniser.c parsing.c libft.c
 
 ##List every .h found inside INC_DIR
-INC = parsing.h
+INC = parsing.h minishell.h
 
 ##Transform and place every .o from SRC
 OBJ = $(addprefix $(OBJ_DIR)/, $(SRC:%.c=%.o))
 
 ##Basics	 flags
-CFLAGS =	-Wall -Wextra -Werror -g3 -fsanitize=address
+CFLAGS =	-Wall -Wextra -Werror -g3 #-fsanitize=address
 
 ##Create the flags to includes every .h needed by this program
 IFLAGS =	$(foreach dir, $(INC_DIR), -I $(dir))
 
 ##Define the compiler to use
-CC =	gcc
+CC =	clang
 
 all: $(NAME)
 
 $(NAME): $(OBJ)
 				@echo "Compiling $(NAME) ...\c"
-				$(CC) $(OBJ) $(CFLAGS) $(IFLAGS) -o token
+				$(CC) $(OBJ) $(CFLAGS) $(IFLAGS) -o $(NAME)
 				@echo " DONE"
 
 $(OBJ_DIR)/%.o : %.c

@@ -113,7 +113,7 @@ t_status	exec_grouping(union u_command cmd, t_env *env)
 	if (g.is_in_subshell)
 	{
 		//TODO: fork
-		new_env.vars = dupenv(new_env. vars);
+		new_env.vars = dup_var_list(new_env.vars);
 		if (!new_env.vars)
 			return (FATAL);
 	}

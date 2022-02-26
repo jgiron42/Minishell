@@ -1,4 +1,5 @@
 #include "parsing.h"
+#include "minishell.h"
 
 // () / {} pour grouping
 
@@ -28,27 +29,32 @@ size_t	create_t_token_list(char *str, t_token_list **line)
 	size_t	len;
 	t_token_list	*node;
 	size_t	tmp;
+	bool	escaped = false;
 
 	len = 0;
 	tmp = len;
 	node = NULL;
 	node = ft_lstnew(c_type(NONE, str, &tmp));
-	while (str[len] && WORD == c_type(node->nb, str, &len))
+	while (str[len] && (escaped || WORD == c_type(node->nb, str, &len)))
 	{
-		if (str[len] == '\'')
+		if (str[len] == '\'' && !escaped)
 		{
-			if (node->nb == SIMPLE)
+			if (node->nb == ONE)
 				node->nb = NONE;
 			else
-				node->nb = SIMPLE;
+				node->nb = ONE;
 		}
-		else if (str[len] == '"')
+		else if (str[len] == '"' && !escaped)
 		{
 			if (node->nb == DOUBLE)
 				node->nb = NONE;
 			else
 				node->nb = DOUBLE;
 		}
+		else if (str[len] == '\\' && node->nb != ONE && !escaped)
+			escaped = true;
+		else if (escaped)
+			escaped = false;
 		len++;
 	}
 	if (len == tmp)
@@ -66,22 +72,70 @@ size_t	create_t_token_list(char *str, t_token_list **line)
 	return (len);
 }
 
+void ft_prin(t_token_list	**line)
+{
+	t_token_list	*tmp;
+
+	tmp = (*line);
+	if (!tmp)
+	{
+		printf("empty\n");
+		exit(3);
+	}
+	while (tmp)
+	{
+		printf("La string || %s ||\n type de token : %d\n nb de quote :%d\n", (tmp)->arg, tmp->type, tmp->nb);
+		tmp = tmp->next;
+	}
+
+}
+
+void ft_prin_redir(t_redir	**line)
+{
+	t_redir	*tmp;
+
+	tmp = (*line);
+	if (!tmp)
+	{
+		printf("empty redir\n");
+		exit(3);
+	}
+	while (tmp)
+	{
+		printf("Le type || %d ||\n ", (tmp)->type);
+		printf("le word suivant : %s\n", tmp->word);
+		printf("int du fd :%d\n", tmp->newfd);
+		tmp = tmp->next;
+	}
+
+}
+
+t_token_list	*tokenise(char *str);
+
 int	main(int argc, char **argv)
 {
 	t_token_list	*line;
+	t_command		tree;
 	size_t	i;
 
 	(void)argc;
 	i = 0;
 	line = NULL;
 	while (i < ft_strlen(argv[1]))
-	{
 		i += create_t_token_list(argv[1] + i, &line);
-		if (line)
-		{
-			printf("La string || %s ||\n type de token : %s\n nb de quote :%s\n", line->arg, ft_itoa(line->type), ft_itoa(line->nb));
-			line = line->next;
-		}
-	}
+	ft_prin(&line);
+	tree = parsing(&line, END);
+	// if (tree.type == SIMPLE)
+	// {
+	// 	if (tree.command.simple.argv)
+	// 	{
+	// 		printf("-----------------argv---------------------\n" );
+	// 		ft_prin(&(tree.command.simple.argv));
+	// 		printf("---------------END------------\n" );
+	// 	}
+	// 	// printf("-------redir------------\n");
+	// 	// ft_prin_redir(&(tree.command.simple.redir_list));
+	// }
+
 	return (0);
 }
