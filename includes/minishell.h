@@ -41,6 +41,7 @@ typedef struct	s_redir {
 typedef struct	s_simple {
 	t_redir		*redir_list; //Lara
 	t_token_list *argv;		//Lara
+	char		**argv_array;
 	t_var_list	*renv;
 	t_var_list	**wenv;
 }				t_simple;
@@ -102,7 +103,7 @@ extern char		g_err;
 
 
 // env manip:
-int 		remove_env(t_var_list **	env, char *key);
+int 		remove_env(t_var_list **env, char *key);
 int			add_env(t_var_list **env, char *key, char *value, bool is_exported); // use in specific case, prefer set_env()
 t_status	set_env(t_var_list **env, char *key, char *value, bool is_exported);
 t_status	export_env(t_var_list *env, char *key);

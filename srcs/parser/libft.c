@@ -43,59 +43,6 @@ int ft_isspace(char c)
 	return (0);
 }
 
-static size_t	size_int(int n)
-{
-	size_t	i;
-
-	i = 0;
-	if (n < 0)
-	{
-		n = -n;
-		i++;
-	}
-	while (n > 9)
-	{
-		n = n / 10;
-		i++;
-	}
-	return (i);
-}
-
-static char		*write_n(char *str, int n, size_t i)
-{
-	while (n > 9)
-	{
-		str[i] = n % 10 + '0';
-		n = n / 10;
-		i--;
-	}
-	str[i] = n + '0';
-	return (str);
-}
-
-char			*ft_itoa(int n)
-{
-	char	*str;
-	size_t	j;
-
-	if (n == -2147483648)
-	{
-		str = ft_strndup(12, "-2147483648\0");
-		return (str);
-	}
-	j = size_int(n);
-	if (!(str = (char *)malloc(sizeof(char) * (j + 2))))
-		return (NULL);
-	if (n < 0)
-	{
-		str[0] = '-';
-		n = -n;
-	}
-	str = write_n(str, n, j);
-	str[j + 1] = '\0';
-	return (str);
-}
-
 // void	ft_putnbr_fd(int n, int fd)
 // {
 // 	if (n == -2147483648)
@@ -114,34 +61,6 @@ char			*ft_itoa(int n)
 // 	ft_putchar_fd('0' + n % 10, fd);
 // }
 
-int	ft_atoi(char *str)
-{
-	int		negatif;
-	int		i;
-	int		nb;
-
-	negatif = 0;
-	i = 0;
-	nb = 0;
-	if (str[i] == '\0')
-		return (0);
-	while (str[i] == ' ' || str[i] == '\t' || str[i] == '\v' || str[i] == '\n'
-		|| str[i] == '\r' || str[i] == '\f')
-		i++;
-	if (str[i] == '-')
-		negatif = 1;
-	if (str[i] == '+' || str[i] == '-')
-		i++;
-	while (str[i] >= '0' && str[i] <= '9')
-	{
-		nb = nb * 10;
-		nb = nb + str[i] - '0';
-		i++;
-	}
-	if (negatif == 1)
-		return (-nb);
-	return (nb);
-}
 void	ft_bzero(void *s, size_t n)
 {
 	size_t	i;
@@ -168,12 +87,10 @@ void	*ft_calloc(size_t count, size_t size)
 char	*ft_strndup(size_t n, const char *s1)
 {
 	size_t		i;
-	int		len;
 	char	*cpy;
 
 	i = 0;
-	len = ft_strlen(s1);
-	cpy = (char *)malloc(sizeof(*cpy) * (len + 1));
+	cpy = (char *)malloc(sizeof(*cpy) * (n + 1));
 	if (!(cpy))
 		return (NULL);
 	while (s1[i] && i < n)
