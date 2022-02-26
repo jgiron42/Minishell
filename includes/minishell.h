@@ -1,7 +1,7 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-#define NAME minishell
+#define NAME "minishell"
 #include <stddef.h>
 #include <fcntl.h>
 #include <limits.h>
@@ -51,9 +51,10 @@ union	u_command {
 	struct s_pipeline	*pipeline;
 	struct s_list		*list;
 	struct s_grouping	*grouping;
+	t_token_type		error_type;
 };
 
-enum	e_command_type {SIMPLE, PIPELINE, LIST, GROUPING, ERROR};
+enum	e_command_type {SIMPLE, PIPELINE, LIST, GROUPING, PARSE_ERROR};
 
 typedef struct s_command {
 	enum e_command_type type;
@@ -103,14 +104,14 @@ extern char		g_err;
 
 
 // env manip:
-int 		remove_env(t_var_list **env, char *key);
-int			add_env(t_var_list **env, char *key, char *value, bool is_exported); // use in specific case, prefer set_env()
-t_status	set_env(t_var_list **env, char *key, char *value, bool is_exported);
+int 		remove_var(t_env *env, char *key);
+int			add_var(t_env *env, char *key, char *value, bool is_exported); // use in specific case, prefer set_var()
+t_status	set_var(t_env *env, char *key, char *value, bool is_exported);
 t_status	export_env(t_var_list *env, char *key);
-char		*get_env_val(t_var_list *env, char *key);
-t_var_list		*get_env_ptr(t_var_list *env, char *key);
-void		free_env(t_var_list *env);
-t_var_list		*dupenv(t_var_list *src);
+char		*get_var_val(t_env *env, char *key);
+t_var_list		*get_var_ptr(t_env *env, char *key);
+void			free_env(t_env *env);
+t_var_list		*dup_var_list(t_var_list *src);
 // env conversion:
 char		**serialize_env(t_var_list *env);
 t_status	parse_env(char **envp, t_var_list **env);
@@ -122,7 +123,7 @@ char 		*ft_realpath(const char *path, char *resolved_path);
 // utils
 char		*my_get_working_directory(const char *for_whom);
 // exec
-// t_status	exec_command(t_command cmd, t_env *env);
+t_status	exec_command(t_command cmd, t_env *env);
 t_status	perform_assignments(t_var_list **env, t_simple cmd, bool export); // Lara
 t_builtin	*is_special_built_in(char *name);
 t_builtin	*is_built_in(char *name);

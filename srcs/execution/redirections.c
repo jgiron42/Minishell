@@ -17,13 +17,13 @@ t_status	open_redir(t_env *env, t_redir *r)
 {
 	int new_fd;
 
-	if (r->type == OUTPUT)
+	if (r->type == OUTPUT) // >
 		new_fd = open(r->word, O_CREAT | O_WRONLY | O_TRUNC, 00644);
-	else if (r->type == APPEND)
+	else if (r->type == APPEND) // >>
 		new_fd = open(r->word, O_CREAT | O_WRONLY | O_APPEND, 00644);
-	else if (r->type == INPUT)
+	else if (r->type == INPUT) // <
 		new_fd = open(r->word, O_RDONLY);
-	else // (r->type == RW)
+	else // (r->type == RW)  <>
 		new_fd = open(r->word, O_RDWR | O_CREAT | O_TRUNC, 00644);
 	if (new_fd == -1)
 		return (FATAL);
@@ -41,8 +41,7 @@ t_status perform_redirection(t_env *env, t_redir *list)
 		if (list->type != HERE && list->type != DUPIN && list->type != DUPOUT &&
 			open_redir(env, list) == FATAL)
 			return (FATAL);
-		if (list->type == OUTPUT)
-			redir(list->oldfd, list->newfd, &list->fd_save, env);
+		redir(list->oldfd, list->newfd, &list->fd_save, env);
 		list = list->next;
 	}
 }

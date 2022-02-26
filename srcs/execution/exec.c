@@ -12,6 +12,14 @@ t_status	exec_simple(union u_command cmd, t_env *env)
 	t_simple	s;
 
 	s = cmd.simple;
+	expand_simple(&s);
+	/*
+	 *  A="a     b"
+	 *  B="c"
+	 *  word_list:	{echo}, {$A$B}
+	 *  expand:		{echo} {a     bc}
+	 *  split:		"echo", "a", "bc"
+	 */
 	// expand all but redirections and assignments -> argv
 	// perform redirections
 	if (!s.argv[0] && perform_assignments(env, s, false) == FATAL)
@@ -109,7 +117,7 @@ t_status	exec_grouping(union u_command cmd, t_env *env)
 	g = cmd.grouping;
 	if (g.is_in_subshell)
 	{
-		new_env.vars = dupenv(new_env. vars);
+		new_env.vars = dup_var_list(new_env.vars);
 		if (!new_env.vars)
 			return (FATAL);
 	}
