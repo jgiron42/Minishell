@@ -1,33 +1,5 @@
 #include "minishell.h"
 
-char	*ft_strreplace(char *s, char *to_add, size_t start_add, size_t to_pass)
-{
-	char	*ret;
-	size_t	i;
-	size_t	j;
-
-	i = 0;
-	j = 0;
-	ret = (char *)malloc(sizeof(*ret) * (ft_strlen(to_add) + ft_strlen(s)
-		- (to_pass - start_add) + 1));
-	if (!(ret))
-		return (NULL);
-	while (i < start_add && s[i])
-		ret[i] = s[i++];
-	while (to_add[j])
-		ret[i + j] = to_add[j++];
-	j = i + j;
-	while (s[to_pass])
-	{
-		ret[j] = s[to_pass];
-		to_pass++;
-		j++;
-	}
-	free(s);
-	ret[j] = '\0';
-	return (ret);
-}
-
 int	isvalid_name_letter(char c)
 {
 	if (c == '_' || ft_isalnum(c))

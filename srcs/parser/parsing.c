@@ -105,7 +105,7 @@ t_status 	parse_tree(t_token_list *current, t_command *tree)
 	*tree = parsing(&current, END);
 	if (tree->type == PARSE_FATAL)
 	{
-		destroy_tree(*tree);
+		// destroy_tree(*tree);
 		return (FATAL);
 	}
 	else if (tree->type == PARSE_ERROR || (current &&current->type != END))

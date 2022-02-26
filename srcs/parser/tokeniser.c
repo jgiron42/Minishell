@@ -26,7 +26,6 @@ size_t	create_t_token_list(const char *str, t_token_list **line)
 {
 	size_t	len;
 	t_token_list	*node;
-	size_t	tmp;
 	bool	escaped = false;
 
 	len = 0;
@@ -87,31 +86,31 @@ t_token_list	*tokenise(char *str)
 }
 
 
-//
-//int	main(int argc, char **argv)
-//{
-//	t_token_list	*line;
-//	t_command		tree;
-//	size_t	i;
-//
-//	(void)argc;
-//	i = 0;
-//	line = NULL;
-//	while (i < ft_strlen(argv[1]))
-//		i += create_t_token_list(argv[1] + i, &line);
-//	ft_prin(&line);
-//	tree = parsing(&line, END);
-//	// if (tree.type == SIMPLE)
-//	// {
-//	// 	if (tree.command.simple.argv)
-//	// 	{
-//	// 		printf("-----------------argv---------------------\n" );
-//	// 		ft_prin(&(tree.command.simple.argv));
-//	// 		printf("---------------END------------\n" );
-//	// 	}
-//	// 	// printf("-------redir------------\n");
-//	// 	// ft_prin_redir(&(tree.command.simple.redir_list));
-//	// }
-//
-//	return (0);
-//}
+
+int	main(int argc, char **argv)
+{
+	t_token_list	*line;
+	t_command		tree;
+	size_t	i;
+
+	(void)argc;
+	i = 0;
+	line = NULL;
+	while (i < ft_strlen(argv[1]))
+		i += create_t_token_list(argv[1] + i, &line);
+	ft_prin(&line);
+	tree = parsing(&line, END);
+	// if (tree.type == SIMPLE)
+	// {
+	// 	if (tree.command.simple.argv)
+	// 	{
+	// 		printf("-----------------argv---------------------\n" );
+	// 		ft_prin(&(tree.command.simple.argv));
+	// 		printf("---------------END------------\n" );
+	// 	}
+	// 	// printf("-------redir------------\n");
+	// 	// ft_prin_redir(&(tree.command.simple.redir_list));
+	// }
+
+	return (0);
+}
