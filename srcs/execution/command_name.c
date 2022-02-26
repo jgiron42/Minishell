@@ -12,15 +12,15 @@ t_builtin	*is_special_built_in(char *name)
 //			".",
 //			"eval",
 //			"exec",
-			"exit",
-			"export",
+//			"exit",
+//			"export",
 //			"readonly",
 //			"return",
 //			"set",
 //			"shift",
 //			"times",
 //			"trap",
-			"unset",
+//			"unset",
 			NULL
 	};
 	const t_builtin *f[] =
@@ -31,8 +31,8 @@ t_builtin	*is_special_built_in(char *name)
 			};
 	int	i;
 
-	i = 0;
-	while (list[i])
+	i = -1;
+	while (list[++i])
 		if (!ft_strcmp(list[i], name))
 			return (f[i]);
 	return (NULL);
@@ -42,19 +42,19 @@ t_builtin	*is_built_in(char *name) {
 	const char *list[] = {
 //		"alias",
 //		"bg",
-		"cd",
+//		"cd",
 //		"command",
-		"false",
+//		"false",
 //		"fc",
 //		"fg",
 //		"getopts",
 //		"hash",
 //		"jobs",
-		"kill",
+//		"kill",
 //		"newgrp",
-		"pwd",
-		"read",
-		"true",
+//		"pwd",
+//		"read",
+//		"true",
 //		"umask",
 //		"unalias",
 //		"wait",
@@ -71,8 +71,8 @@ t_builtin	*is_built_in(char *name) {
 			};
 	int	i;
 
-	i = 0;
-	while (list[i])
+	i = -1;
+	while (list[++i])
 		if (!ft_strcmp(list[i], name))
 			return (f[i]);
 	return (NULL);

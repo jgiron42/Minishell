@@ -9,12 +9,19 @@ t_NAME	NAME_init()
 int			NAME_reserve(t_NAME *v, int new_cap)
 {
 	type_NAME	*tmp;
+	int			i;
 
 	if (new_cap < v->capacity)
 		return (1);
 	tmp = malloc(sizeof(type_NAME) * new_cap);
 	if (!tmp)
 		return (0);
+	i = 0;
+	while (i < v->size)
+	{
+		tmp[i] = v->data[i];
+		++i;
+	}
 	v->data = tmp;
 	v->capacity = new_cap;
 	return (1);
@@ -22,7 +29,7 @@ int			NAME_reserve(t_NAME *v, int new_cap)
 
 int			NAME_push(t_NAME *v, type_NAME value)
 {
-	if (v->size <= v->capacity)
+	if (v->size >= v->capacity)
 	{
 		if (v->capacity == 0 && NAME_reserve(v, 1) == 0)
 			return (0);

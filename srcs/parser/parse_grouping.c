@@ -41,8 +41,8 @@ t_command parse_grouping(t_token_list **current)
 	}
 	// if (*current)
 	// 	printf("last arg %s\n", (*current)->arg);
-	printf("----------------GROUPINGPRINT----------------\n");
-	ft_print_grouping(&(tree.command.grouping));
-	printf("----------------END----------------\n");
+//	printf("----------------GROUPINGPRINT----------------\n");
+//	ft_print_grouping(&(tree.command.grouping));
+//	printf("----------------END----------------\n");
 	return(tree);
 }

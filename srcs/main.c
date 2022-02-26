@@ -36,13 +36,18 @@ t_status	loop(t_env *env)
 	while (1)
 	{
 		line = readline(get_var_val(env, "PS1"));
-//		if (!line)
-//			ft_exit(env);
-		printf("%s\n", line);
+		if (!line)
+			ft_exit(env);
+		add_history(line);
 		if (ft_shell(env, line) == FATAL)
+		{
+			free(line);
+			clear_history();
 			return (FATAL);
+		}
+		clear_history();
+		free(line);
 	}
-	return (FATAL);
 }
 
 int main(int argc, char **argv, char **envp)

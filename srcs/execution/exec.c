@@ -7,28 +7,53 @@ char 		g_err;
 
 typedef		t_status (*t_command_handler)(union u_command, t_env *env);
 
+t_status	command_not_found(char *name)
+{
+	ft_putstr_fd(name, 2);
+	ft_putstr_fd(": command not found\n", 2);
+	g_err = 127;
+	return (OK);
+}
+
 t_status	exec_simple(union u_command cmd, t_env *env)
 {
 	t_simple	s;
+	int			ret;
+	char		*name;
 
 	s = cmd.simple;
-	printf("|%s|\n",s.argv_tokens->arg);
-	return (OK);
+	t_str_vec v;
+	v = str_vec_init();
+	while (s.argv_tokens)
+	{
+		str_vec_push(&v, s.argv_tokens->arg);
+		s.argv_tokens = s.argv_tokens->next;
+	}
 	// expand all but redirections and assignments -> argv_tokens
+	str_vec_push(&v, NULL);
+	s.argv = v.data;
 	if (perform_redirection(env, s.redir_list) == FATAL)
 		return (FATAL);
 //	if (!s.argv[0] && perform_assignments(env, s, false) == FATAL)
 //		return (FATAL);
 	if (!s.argv[0])
-		return (OK);
-	if (is_special_built_in(s.argv[0]))
-		return (exec_special_builtin(s, env));
-	if (is_built_in(s.argv[0]))
-		return (exec_regular_builtin(s, env));
-	else
-		return (exec_program(s, env));
+		ret = OK; // TODO" reset redir
+	else if (ft_strchr(s.argv[0], '/'))
+		ret = exec_program(s.argv[0], s, env);
+	else if (is_special_built_in(s.argv[0]))
+		ret = exec_special_builtin(s, env);
+	else if (is_built_in(s.argv[0]))
+		ret = exec_regular_builtin(s, env);
+	else {
+		ret = path_find(s.argv[0], env,&name);
+		if (ret == OK)
+			ret = exec_program(name, s, env);
+		else
+			ret = command_not_found(s.argv[0]);
+	}
 	if (reset_redirection(env, s.redir_list) == FATAL)
 		return (FATAL);
+	return (ret);
 }
 
 t_status	exec_pipeline(union u_command cmd, t_env *env)
@@ -108,6 +133,7 @@ t_status	exec_grouping(union u_command cmd, t_env *env)
 	t_grouping	*g;
 	t_env		new_env;
 	int			ret;
+	pid_t		pid;
 
 	new_env = *env;
 	g = cmd.grouping;
@@ -115,12 +141,19 @@ t_status	exec_grouping(union u_command cmd, t_env *env)
 		return (FATAL);
 	if (g->is_in_subshell)
 	{
-		//TODO: fork
 		new_env.vars = dup_var_list(new_env.vars);
 		if (!new_env.vars)
 			return (FATAL);
+		pid = fork();
+		if (pid == -1)
+			return (FATAL);
 	}
-	ret = exec_command(g->command, &new_env);
+	if (!g->is_in_subshell || !pid)
+		ret = exec_command(g->command, &new_env);
+	if (g->is_in_subshell && !pid)
+		exit(g_err);
+	if (g->is_in_subshell && pid)
+		get_g_err(pid);
 	if (reset_redirection(env, g->redir_list) == FATAL)
 		return (FATAL);
 	return (ret);

@@ -34,9 +34,9 @@ t_command parse_pipe(t_token_list **current, t_command prev_command)
 		tmp->next = ft_new_pipe(parsing(current, AND_IF | OR_IF | PIPE | RPARENTHESIS | END));
 		tmp = tmp->next;
 	}
-	printf("----------------PIPEPRINT----------------\n");
-	ft_print_pipe(&first);
-	printf("----------------END----------------\n");
+//	printf("----------------PIPEPRINT----------------\n");
+//	ft_print_pipe(&first);
+//	printf("----------------END----------------\n");
 
 	return(tree);
 }

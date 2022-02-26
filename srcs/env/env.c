@@ -32,22 +32,28 @@ int	add_var(t_env *env, char *key, char *value, bool is_exported)
 
 char	*get_var_val(t_env *env, char *key)
 {
-	while(env->vars)
+	t_var_list *tmp;
+
+	tmp = env->vars;
+	while(tmp)
 	{
-		if (!ft_strcmp(key, env->vars->key))
-			return (env->vars->value);
-		env->vars = env->vars->next;
+		if (!ft_strcmp(key, tmp->key))
+			return (tmp->value);
+		tmp = tmp->next;
 	}
 	return (NULL);
 }
 
 t_var_list		*get_var_ptr(t_env *env, char *key)
 {
-	while(env->vars)
+	t_var_list *tmp;
+
+	tmp = env->vars;
+	while(tmp)
 	{
-		if (!ft_strcmp(key, env->vars->key))
-			return (env->vars);
-		env->vars = env->vars->next;
+		if (!ft_strcmp(key, tmp->key))
+			return (tmp);
+		tmp = tmp->next;
 	}
 	return (NULL);
 }
@@ -114,14 +120,17 @@ void free_env(t_env *env)
 
 t_status	export_var(t_env *env, char *key)
 {
-	while(env->vars)
+	t_var_list *tmp;
+
+	tmp = env->vars;
+	while(tmp)
 	{
-		if (!ft_strcmp(key, env->vars->key))
+		if (!ft_strcmp(key, tmp->key))
 		{
-			env->vars->is_exported = true;
+			tmp->is_exported = true;
 			return (OK);
 		}
-		env->vars = env->vars->next;
+		tmp = tmp->next;
 	}
 	return (KO);
 }

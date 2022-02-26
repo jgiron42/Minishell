@@ -116,6 +116,5 @@ t_status 	parse_tree(t_token_list *current, t_command *tree)
 		//TODO : parse_error((*current)->type)
 		return (KO);
 	}
-	printf("command type: %d\n", tree->type);
 	return (OK);
 }

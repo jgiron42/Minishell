@@ -9,12 +9,19 @@ t_str_vec	str_vec_init()
 int			str_vec_reserve(t_str_vec *v, int new_cap)
 {
 	type_str_vec	*tmp;
+	int			i;
 
 	if (new_cap < v->capacity)
 		return (1);
 	tmp = malloc(sizeof(type_str_vec) * new_cap);
 	if (!tmp)
 		return (0);
+	i = 0;
+	while (i < v->size)
+	{
+		tmp[i] = v->data[i];
+		++i;
+	}
 	v->data = tmp;
 	v->capacity = new_cap;
 	return (1);
@@ -22,7 +29,7 @@ int			str_vec_reserve(t_str_vec *v, int new_cap)
 
 int			str_vec_push(t_str_vec *v, type_str_vec value)
 {
-	if (v->size <= v->capacity)
+	if (v->size >= v->capacity)
 	{
 		if (v->capacity == 0 && str_vec_reserve(v, 1) == 0)
 			return (0);

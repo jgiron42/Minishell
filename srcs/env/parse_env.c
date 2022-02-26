@@ -8,7 +8,7 @@ t_status	parse_env(char **envp, t_env *env)
 {
 	char	*equal;
 
-	env->vars = NULL;
+	*env = (t_env){};
 	while (*envp)
 	{
 		equal = *envp;

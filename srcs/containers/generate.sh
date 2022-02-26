@@ -1,7 +1,13 @@
 #!/bin/sh
+
 echo "#ifndef MINISHELL_V2_CONTAINERS_H
 #define MINISHELL_V2_CONTAINERS_H" > containers.h
-while read cont type name
+if [ -n "$1" ]
+then
+  cat $1
+else
+  cat
+fi | while read cont type name
 do
   [ -z "$name" ] && name="$type"_"$cont"
   [ -d "$name" ] || mkdir $name

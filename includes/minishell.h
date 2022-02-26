@@ -127,6 +127,7 @@ char 		*ft_realpath(const char *path, char *resolved_path);
 char		*my_get_working_directory(const char *for_whom);
 void	my_getopt(char ***argv, char *option, char dest[256]);
 // exec
+t_status	path_find(char *name, t_env *env, char **dst);
 t_status	get_g_err(pid_t pid);
 t_status	exec_command(t_command cmd, t_env *env);
 t_status	perform_redirection(t_env *env, t_redir *list);
@@ -136,7 +137,8 @@ t_builtin	*is_special_built_in(char *name);
 t_builtin	*is_built_in(char *name);
 t_status	exec_special_builtin(t_simple s, t_env *env);
 t_status	exec_regular_builtin(t_simple s, t_env *env);
-t_status exec_program(t_simple s, t_env *env);
+t_status exec_program(char *name, t_simple s, t_env *env);
+void	ft_exit(t_env *env);
 
 //parsing :
 t_token_list	*tokenise(char *str);

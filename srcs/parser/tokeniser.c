@@ -87,7 +87,7 @@ t_token_list	*tokenise(char *str)
 //	if (!end)
 //		;
 //	ft_lstadd_back(&line, end);
-	ft_prin(&line);
+//	ft_prin(&line);
 	return (line);
 }
 

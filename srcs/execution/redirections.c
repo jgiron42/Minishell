@@ -2,7 +2,7 @@
 
 t_status	redir(int oldfd, int newfd, int *save, t_env *env)
 {
-	if (save &&	env->opened_files.size > newfd && env->opened_files.data[newfd])
+	if (save)
 	{
 		*save = dup (newfd);
 		if (*save == -1)
