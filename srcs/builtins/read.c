@@ -27,13 +27,13 @@ static bool	escape(char *str)
 	return (is_escaped);
 }
 
-static char	assign(char **argv, t_env **env, char *buf)
+static char	assign(char **argv, t_env *env, char *buf)
 {
 	int	i;
 	char *charset;
 	char *tmp;
 
-	charset = get_env(*env, "IFS");
+	charset = get_var_val(env, "IFS");
 	i = 0;
 	while (buf[i])
 	{
@@ -42,13 +42,13 @@ static char	assign(char **argv, t_env **env, char *buf)
 			if (i == 1)
 				buf++;
 			else {
-				tmp = ft_substr(buf, i);
+				tmp = ft_substr(buf, 0, i);
 				if (!tmp)
 				{
 					perror("read");
 					return (1);
 				}
-				if (set_env(env, *argv,  tmp) == KO)
+				if (set_var(env, *argv,  tmp, false) == KO)
 					return (1);
 				buf += i;
 				argv++;
@@ -59,19 +59,19 @@ static char	assign(char **argv, t_env **env, char *buf)
 	}
 	while (*argv)
 	{
-		tmp = ft_substr(buf, i);
+		tmp = ft_substr(buf, 0, i);
 		if (!tmp)
 		{
 			perror("read");
 			return (1);
 		}
-		set_env(env, *argv,  tmp);
+		set_var(env, *argv,  tmp, false);
 		++argv;
 	}
 	return (0);
 }
 
-char	read_shell(char **argv, t_env *renv, t_env **wenv)
+char	read_shell(char **argv, t_env *env)
 {
 	char	*ret;
 	char	*ps2;
@@ -83,7 +83,7 @@ char	read_shell(char **argv, t_env *renv, t_env **wenv)
 	{
 		ret = readline(ps2);
 		if (!ps2)
-			ps2 = get_env(renv, "PS2");
+			ps2 = get_var_val(env, "PS2");
 		if (!ret)
 			break;
 		buf = ft_strjoinff(buf, ret);
@@ -95,5 +95,5 @@ char	read_shell(char **argv, t_env *renv, t_env **wenv)
 		if (option['r'] || !escape(buf))
 			break;
 	}
-	return (assign(argv, wenv, buf));
+	return (assign(argv, env, buf));
 }

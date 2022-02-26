@@ -1,11 +1,11 @@
 //
 // Created by jgiron on 11/26/21.
 //
+#include "minishell.h"
 
-char	true(char **argv, t_env *renv, t_env **wenv)
+char	shell_true(char **argv, t_env *env)
 {
 	(void)argv;
-	(void)renv;
-	(void)wenv;
+	(void)env;
 	return (0);
 }

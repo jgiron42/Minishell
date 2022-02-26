@@ -43,21 +43,10 @@ add_library(LIBFT
         srcs/libft/ft_strtrim.c
         srcs/libft/ft_substr.c
         srcs/libft/ft_tolower.c
-        srcs/libft/ft_toupper.c
-        )
+        srcs/libft/ft_toupper.c)
 
-add_executable(minishell_v2
-        includes/minishell.h
-        srcs/env/env.c
-        srcs/env/serialize_env.c
-        srcs/env/dupenv.c
-        srcs/env/init_env.c
-        srcs/env/parse_env.c
-        srcs/execution/exec.c
-        srcs/utils/path_utils.c
-        srcs/utils/my_get_working_directory.c
-        srcs/main.c
-        srcs/execution/command_name.c
-        srcs/execution/redirections.c srcs/execution/utils.c srcs/execution/exec_program.c)
+file(GLOB SOURCES srcs/*/*.c srcs/containers/*_vec/*.c  includes/*.h)
 
-target_link_libraries(minishell_v2 LIBFT)
+add_executable(minishell_v2 ${SOURCES})
+
+target_link_libraries(minishell_v2 LIBFT readline)

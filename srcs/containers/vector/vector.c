@@ -95,9 +95,9 @@ int			NAME_resize(t_NAME *v, int new_size, type_NAME value)
 	else
 	{
 		if (new_size > v->capacity) {
-			if (new_size < v.capacity * 2 && !NAME_reserve(v, v->capacity * 2))
+			if (new_size < v->capacity * 2 && !NAME_reserve(v, v->capacity * 2))
 				return (0);
-			else if (new_size > v.capacity * 2 && !NAME_reserve(v, new_size))
+			else if (new_size > v->capacity * 2 && !NAME_reserve(v, new_size))
 				return (0);
 		}
 		while (--new_size >= v->size)

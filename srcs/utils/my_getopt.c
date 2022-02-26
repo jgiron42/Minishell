@@ -1,6 +1,7 @@
 //
 // Created by jgiron on 11/26/21.
 //
+#include "minishell.h"
 
 void	my_getopt(char ***argv, char *option, char dest[256])
 {
@@ -8,7 +9,10 @@ void	my_getopt(char ***argv, char *option, char dest[256])
 
 	i = 0;
 	while (i < 256)
+	{
 		dest[i] = 0;
+		++i;
+	}
 	while (**argv && ***argv == '-')
 	{
 		i = 0;

@@ -3,7 +3,7 @@
 
 // () / {} pour grouping
 
-t_token_type	c_type(t_quote nb, char *str, size_t *len)
+t_token_type	c_type(t_quote nb, const char *str, size_t *len)
 {
 	int				i;
 	const char		*operator[] = {"<<", ">>", "&&", "||",
@@ -24,7 +24,7 @@ t_token_type	c_type(t_quote nb, char *str, size_t *len)
 }
 
 
-size_t	create_t_token_list(char *str, t_token_list **line)
+size_t	create_t_token_list(const char *str, t_token_list **line)
 {
 	size_t	len;
 	t_token_list	*node;
@@ -110,7 +110,18 @@ void ft_prin_redir(t_redir	**line)
 
 }
 
-t_token_list	*tokenise(char *str);
+t_token_list	*tokenise(char *str)
+{
+
+	t_token_list	*line;
+	size_t	i;
+
+	i = 0;
+	line = NULL;
+	while (i < ft_strlen(str))
+		i += create_t_token_list(str + i, &line); //TODO: gestion d'erreurs
+	return (line);
+}
 
 int	main(int argc, char **argv)
 {

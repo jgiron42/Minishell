@@ -18,6 +18,7 @@
 #include <readline/history.h>
 #include "../srcs/containers/containers.h"
 #include "parsing.h"
+#include <readline/readline.h>
 
 typedef struct s_var_list
 {
@@ -40,8 +41,8 @@ typedef struct	s_redir {
 
 typedef struct	s_simple {
 	t_redir		*redir_list; //Lara
-	t_token_list *argv;		//Lara
-	char		**argv_array;
+	t_token_list *argv_tokens;		//Lara
+	char		**argv;
 	t_var_list	*renv;
 	t_var_list	**wenv;
 }				t_simple;
@@ -54,7 +55,7 @@ union	u_command {
 	t_token_type		error_type;
 };
 
-enum	e_command_type {SIMPLE, PIPELINE, LIST, GROUPING, PARSE_ERROR};
+enum	e_command_type {SIMPLE, PIPELINE, LIST, GROUPING, PARSE_ERROR, PARSE_FATAL};
 
 typedef struct s_command {
 	enum e_command_type type;
@@ -113,29 +114,35 @@ t_status	export_env(t_var_list *env, char *key);
 char		*get_var_val(t_env *env, char *key);
 t_var_list		*get_var_ptr(t_env *env, char *key);
 void			free_env(t_env *env);
-t_var_list		*dup_var_list(t_var_list *src);
+t_var_list *dup_var_list(t_var_list *src);
 // env conversion:
 char		**serialize_env(t_var_list *env);
-t_status	parse_env(char **envp, t_var_list **env);
+t_status	parse_env(char **envp, t_env *env);
 //env initialisation:
-t_status	init_env(t_var_list **env);
+t_status	init_env(t_env *env);
 // path_utils:
 bool		path_has_dot(char *path);
 char 		*ft_realpath(const char *path, char *resolved_path);
 // utils
 char		*my_get_working_directory(const char *for_whom);
+void	my_getopt(char ***argv, char *option, char dest[256]);
 // exec
 t_status	get_g_err(pid_t pid);
 t_status	exec_command(t_command cmd, t_env *env);
 t_status	perform_redirection(t_env *env, t_redir *list);
 t_status	reset_redirection(t_env *env, t_redir *list);
-t_status	perform_assignments(t_var_list **env, t_simple cmd, bool export); // Lara
+t_status	perform_assignments(t_env *env, t_simple cmd, bool export); // Lara
 t_builtin	*is_special_built_in(char *name);
 t_builtin	*is_built_in(char *name);
+t_status	exec_special_builtin(t_simple s, t_env *env);
+t_status	exec_regular_builtin(t_simple s, t_env *env);
 
 //parsing :
+t_token_list	*tokenise(char *str);
+t_status 	parse_tree(t_token_list *current, t_command *tree);
 void ft_prin(t_token_list	**line);
 void ft_prin_redir(t_redir	**line);
+void destroy_tree(t_command c);
 
 t_command	parsing(t_token_list **current, t_token_type expected);
 void		ft_lstadd_back_redir(t_redir **alst, t_redir *new);

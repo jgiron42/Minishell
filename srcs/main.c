@@ -17,8 +17,12 @@ t_status	ft_shell(t_env *env, char *line)
 		return (OK);
 	ret = parse_tree(tokens, &tree);
 	if (ret != OK)
+	{
+		//TODO: destroy_token_list(tokens)
 		return (ret);
-	return (exec_command(tree, env));
+	}
+	return (OK);
+//	return (exec_command(tree, env));
 }
 /*
  * A="coucou      ca "
@@ -33,10 +37,11 @@ t_status	loop(t_env *env)
 	while (1)
 	{
 		line = readline(get_var_val(env, "PS1"));
-		if (!line)
-			ft_exit(env);
-		if (ft_shell(env, line) == FATAL)
-			return (FATAL);
+//		if (!line)
+//			ft_exit(env);
+		printf("%s\n", line);
+//		if (ft_shell(env, line) == FATAL)
+//			return (FATAL);
 	}
 	return (FATAL);
 }
@@ -45,7 +50,7 @@ int main(int argc, char **argv, char **envp)
 {
 	t_env		env;
 
-	if (parse_env(envp, &env.vars) != FATAL && init_env(&env.vars) != FATAL)
+	if (parse_env(envp, &env) != FATAL && init_env(&env) != FATAL)
 		loop(&env);
 	perror(NAME);
 	free_env(&env);

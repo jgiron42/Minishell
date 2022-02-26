@@ -275,3 +275,20 @@ t_command parsing(t_token_list **current, t_token_type expected)
 	}
 	return (tree);
 }
+
+t_status 	parse_tree(t_token_list *current, t_command *tree)
+{
+	*tree = parsing(&current, END);
+	if (tree->type == PARSE_FATAL)
+	{
+		destroy_tree(*tree);
+		return (FATAL);
+	}
+	else if (tree->type == PARSE_ERROR || current->type != END)
+	{
+		//TODO : parse_error((*current)->type)
+		return (KO);
+	}
+	else
+		return (OK);
+}

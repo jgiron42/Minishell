@@ -12,11 +12,11 @@ t_status	exec_simple(union u_command cmd, t_env *env)
 	t_simple	s;
 
 	s = cmd.simple;
-	// expand all but redirections and assignments -> argv
+	// expand all but redirections and assignments -> argv_tokens
 	if (perform_redirection(env, s.redir_list) == FATAL)
 		return (FATAL);
-	if (!s.argv[0] && perform_assignments(env, s, false) == FATAL)
-		return (FATAL);
+//	if (!s.argv[0] && perform_assignments(env, s, false) == FATAL)
+//		return (FATAL);
 	if (!s.argv[0])
 		return (OK);
 	if (is_special_built_in(s.argv[0]))
@@ -90,10 +90,10 @@ t_status	exec_list(union u_command cmd, t_env *env)
 	l = cmd.list;
 	while (l)
 	{
-		ret = exec_pipeline((union u_command)l->pipeline, env);
+		ret = exec_command(l->command, env);
 		if ( ret != OK ||
-			(l->sep == AND && g_err != 0) ||
-			(l->sep == OR && g_err == 0))
+			(l->sep == AND_IF && g_err != 0) ||
+			(l->sep == OR_IF && g_err == 0))
 			break;
 		l = l->next;
 	}
@@ -102,23 +102,23 @@ t_status	exec_list(union u_command cmd, t_env *env)
 
 t_status	exec_grouping(union u_command cmd, t_env *env)
 {
-	t_grouping	g;
+	t_grouping	*g;
 	t_env		new_env;
 	int			ret;
 
 	new_env = *env;
 	g = cmd.grouping;
-	if (perform_redirection(env, g.redir_list) == FATAL)
+	if (perform_redirection(env, g->redir_list) == FATAL)
 		return (FATAL);
-	if (g.is_in_subshell)
+	if (g->is_in_subshell)
 	{
 		//TODO: fork
 		new_env.vars = dup_var_list(new_env.vars);
 		if (!new_env.vars)
 			return (FATAL);
 	}
-	ret = exec_command(*g.command, &new_env);
-	if (reset_redirection(env, g.redir_list) == FATAL)
+	ret = exec_command(g->command, &new_env);
+	if (reset_redirection(env, g->redir_list) == FATAL)
 		return (FATAL);
 	return (ret);
 }

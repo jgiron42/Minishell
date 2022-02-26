@@ -6,30 +6,17 @@
 
 t_var_list *dup_var_list(t_var_list *src)
 {
-	t_var_list	*ret;
-	t_var_list	*tmp;
+	t_env	ret;
 
-	ret = NULL;
+	ret.vars = NULL;
 	while (src)
 	{
 		if (src->is_exported)
 		{
-			if (!ret)
-			{
-				if (add_var(&ret, src->key, src->value, true) == FATAL)
-					return (NULL);
-				ret = tmp;
-			}
-			else
-			{
-				if (add_var(&tmp->next, src->key, src->value, true) == FATAL) {
-					free_env(ret);
-					return (NULL);
-				}
-				tmp = tmp->next;
-			}
+			if (add_var(&ret, src->key, src->value, true) == FATAL)
+				return (NULL);
 		}
 		src = src->next;
 	}
-	return (ret);
+	return (ret.vars);
 }

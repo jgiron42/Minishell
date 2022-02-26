@@ -4,11 +4,11 @@
 
 #include "minishell.h"
 
-t_status	parse_env(char **envp, t_var_list **env)
+t_status	parse_env(char **envp, t_env *env)
 {
 	char	*equal;
 
-	*env = NULL;
+	env->vars = NULL;
 	while (*envp)
 	{
 		equal = *envp;

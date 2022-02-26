@@ -4,7 +4,7 @@
 
 #include "minishell.h"
 
-static t_status init_pwd(t_var_list **env)
+static t_status init_pwd(t_env *env)
 {
 	char	*current;
 	char	*real_current;
@@ -14,7 +14,7 @@ static t_status init_pwd(t_var_list **env)
 	true_pwd = my_get_working_directory("shell-init");
 	if (!true_pwd && errno == ENOMEM)
 		return (FATAL);
-	current = get_var_val(*env, "PWD");
+	current = get_var_val(env, "PWD");
 	real_current = ft_realpath(current, NULL); // unauthorized function
 //	printf("===========> %s\n", current);
 //	printf("===========> %s\n", real_current);
@@ -30,11 +30,11 @@ static t_status init_pwd(t_var_list **env)
 	return (ret);
 }
 
-static t_status init_shlvl(t_var_list **env)
+static t_status init_shlvl(t_env *env)
 {
 	char	*current;
 
-	current = get_var_val(*env, "SHLVL");
+	current = get_var_val(env, "SHLVL");
 	if (!current)
 		return (set_var(env, "SHLVL", "0", true));
 	current = ft_itoa(ft_atoi(current) + 1);
@@ -49,11 +49,11 @@ static t_status init_shlvl(t_var_list **env)
 	return (OK);
 }
 
-t_status init_env(t_var_list **env)
+t_status init_env(t_env *env)
 {
-	//IFS
 	if (set_var(env, "PS1", "$ ", false) == FATAL ||
-			set_var(env, "PS2", "> ", false) == FATAL ||
+		set_var(env, "PS2", "> ", false) == FATAL ||
+		set_var(env, "IFS", " \t\n", false) == FATAL ||
 		init_pwd(env) == FATAL ||
 		init_shlvl(env) == FATAL)
 		return (FATAL);

@@ -1,11 +1,11 @@
 //
 // Created by jgiron on 11/26/21.
 //
-
-char	kill(char **argv, t_env *renv, t_env **wenv)
+#include "minishell.h"
+char	shell_kill(char **argv, t_env *env)
 {
 	char	options[256];
-	const char *array[] = {"HUP", "INT", "QUIT", "ILL", "TRAP", "ABRT", "BUS",
+	 char *array[] = {"HUP", "INT", "QUIT", "ILL", "TRAP", "ABRT", "BUS",
 						  "FPE", "KILL", "USR1", "SEGV", "USR2", "PIPE", "ALRM",
 						  "TERM", "STKFLT", "CHLD", "CONT", "STOP", "TSTP",
 						  "TTIN", "TTOU", "URG", "XCPU", "XFSZ", "VTALRM", "PROF",
@@ -24,36 +24,36 @@ char	kill(char **argv, t_env *renv, t_env **wenv)
 	if (!options['l'])
 		my_getopt(&argv, "s", options);
 	else if (*argv)
-		ft_putstr(array[ft_atoi(**argv)]);
+		ft_putstr_fd(array[ft_atoi(*argv)], 1);
 	else
 	{
 		i = -1;
 		while (array[++i])
 		{
-			ft_putstr(array[i]);
+			ft_putstr_fd(array[i], 1);
 			write(1, " ", 1);
 		}
 	}
 	if (options['s']) {
 		i = -1;
 		if (!*argv) {
-			ft_putstrfd(2, NAME + ": kill: -s: option requires an argument\n");
+			ft_putstr_fd(NAME ": kill: -s: option requires an argument\n", 2);
 			return (1);
 		}
 		if (!argv[1]) {
-			ft_putstrfd(2, NAME + ": kill: missing argument\n");
+			ft_putstr_fd(NAME ": kill: missing argument\n", 2);
 			return (1);
 		}
-		to_upper(argv[1]);
+//		TODO: ft_toupper(argv[1]);
 		while (array[++i] && ft_strcmp(array[i], *argv));
 		if (!array[i])
 		{
-			ft_putstrfd(2, NAME + ": kill: invalid signal name\n");
+			ft_putstr_fd(NAME ": kill: invalid signal name\n", 2);
 			return (1);
 		}
 		if (kill(ft_atoi(argv[1]), i) == -1)
 		{
-			perror(NAME + ": kill");
+			perror(NAME ": kill");
 			return (1);
 		}
 	}

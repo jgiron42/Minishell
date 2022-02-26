@@ -25,9 +25,9 @@ t_builtin	*is_special_built_in(char *name)
 	};
 	const t_builtin *f[] =
 			{
-			&shell_exit,
-			&shell_export,
-			&shell_unset
+//			&shell_exit,
+//			&shell_export,
+//			&shell_unset
 			};
 	int	i;
 
@@ -62,12 +62,12 @@ t_builtin	*is_built_in(char *name) {
 	};
 	const t_builtin *f[] =
 			{
-					&shell_cd,
-					&shell_false,
-					&shell_kill,
-					&shell_pwd,
-					&shell_read,
-					&shell_true
+//					&shell_cd,
+//					&shell_false,
+//					&shell_kill,
+//					&shell_pwd,
+//					&shell_read,
+//					&shell_true
 			};
 	int	i;
 

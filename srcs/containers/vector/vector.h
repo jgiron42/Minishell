@@ -6,6 +6,7 @@
 #define MINISHELL_V2_DEF_H
 
 #include <stdlib.h>
+#include <stdbool.h>
 
 typedef TYPE type_NAME;
 
