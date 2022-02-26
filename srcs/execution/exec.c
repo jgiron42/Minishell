@@ -63,7 +63,6 @@ t_status	exec_pipeline(union u_command cmd, t_env *env)
 	int			prev_pipe_read;
 	int 		ret;
 	int			to_wait;
-	int			status;
 
 	printf("pipeline\n");
 	to_wait = -1;

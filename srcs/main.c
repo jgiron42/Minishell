@@ -10,10 +10,9 @@ t_status	ft_shell(t_env *env, char *line)
 	t_command		tree;
 	int				ret;
 
-	tokens = tokenise(line);
-	if (!tokens)
+	if (tokenise(line, &tokens) == FATAL)
 		return (FATAL);
-	if (tokens->type == END)
+	if (!tokens)
 		return (OK);
 	ret = parse_tree(tokens, &tree);
 	if (ret != OK)

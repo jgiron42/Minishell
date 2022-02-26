@@ -141,7 +141,7 @@ t_status exec_program(char *name, t_simple s, t_env *env);
 void	ft_exit(t_env *env);
 
 //parsing :
-t_token_list	*tokenise(char *str);
+t_status	tokenise(char *str, t_token_list **dst);
 t_status 	parse_tree(t_token_list *current, t_command *tree);
 void ft_prin(t_token_list	**line);
 void ft_prin_redir(t_redir	**line);

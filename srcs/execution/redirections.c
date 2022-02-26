@@ -43,7 +43,7 @@ t_status perform_redirection(t_env *env, t_redir *list)
 {
 	while (list)
 	{
-		if (list->type == HERE || list->type == DUPIN || list->type == DUPOUT &&
+		if ((list->type == HERE || list->type == DUPIN || list->type == DUPOUT) &&
 		redir(list->oldfd, list->newfd, &list->fd_save, env) == FATAL)
 			return (FATAL);
 		else if (open_redir(env, list) == FATAL)

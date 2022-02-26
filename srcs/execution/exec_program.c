@@ -19,6 +19,21 @@ t_status	is_a_directory(char *name)
 	return (OK);
 }
 
+void	clean_fds(t_env *env)
+{
+	int i = 0;
+
+	while (i < env->opened_files.size)
+	{
+		if (env->opened_files.data[i] == FD_TMP)
+		{
+			close(env->opened_files.data[i]);
+			env->opened_files.data[i] = FD_CLOSE;
+		}
+		i++;
+	}
+}
+
 t_status exec_program(char *name, t_simple s, t_env *env)
 {
 	char **envp;
@@ -34,6 +49,7 @@ t_status exec_program(char *name, t_simple s, t_env *env)
 		return (FATAL);
 	else if (!pid)
 	{
+		clean_fds(env);
 		envp = serialize_env(env->vars);
 		if (!envp)
 			return (FATAL);
