@@ -6,11 +6,11 @@
 #    By: ereali <ereali@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/10/18 05:33:00 by ereali            #+#    #+#              #
-#    Updated: 2022/02/26 11:23:26 by ereali           ###   ########.fr        #
+#    Updated: 2022/02/26 11:27:23 by ereali           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = parsing
+NAME = minichoux
 
 INC_DIR = 	$(shell find includes -type d)
 
@@ -36,7 +36,7 @@ SRC = main.c tokeniser.c parsing.c utils_lst.c parse_grouping.c parse_list.c \
 		command_name.c exec_builtin.c exec_program.c exec.c ft_exit.c\
 		redirections.c utils.c dupenv.c init_env.c merge_env.c parse_env.c\
 		serialize_env.c char_vec.c str_vec.c \
-		false.c kill.c read.c true.c\
+		false.c kill.c true.c\
 
 ##List every .h found inside INC_DIR
 INC = parsing.h minishell.h
@@ -48,7 +48,7 @@ LIBS		=	ft readline
 OBJ = $(addprefix $(OBJ_DIR)/, $(SRC:%.c=%.o))
 
 ##Basics	 flags
-CFLAGS =	#-Wall -Wextra -Werror -g3
+CFLAGS =	-Wall -Wextra -Werror -g3
 
 ##Create the flags to includes every .h needed by this program
 IFLAGS =	$(foreach dir, $(INC_DIR), -I $(dir))

@@ -22,16 +22,17 @@ t_status	exec_simple(union u_command cmd, t_env *env)
 	char		*name;
 
 	s = cmd.simple;
-	t_str_vec v;
-	v = str_vec_init();
-	while (s.argv_tokens)
-	{
-		str_vec_push(&v, s.argv_tokens->arg);
-		s.argv_tokens = s.argv_tokens->next;
-	}
+	expand_simple(&s, env);
+	// t_str_vec v;
+	// v = str_vec_init();
+	// while (s.argv_tokens)
+	// {
+	// 	str_vec_push(&v, s.argv_tokens->arg);
+	// 	s.argv_tokens = s.argv_tokens->next;
+	// }
 	// expand all but redirections and assignments -> argv_tokens
-	str_vec_push(&v, NULL);
-	s.argv = v.data;
+	// str_vec_push(&v, NULL);
+	// s.argv = v.data;
 	if (perform_redirection(env, s.redir_list) == FATAL)
 		return (FATAL);
 //	if (!s.argv[0] && perform_assignments(env, s, false) == FATAL)
