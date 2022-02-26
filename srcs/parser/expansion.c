@@ -1,40 +1,5 @@
 #include "minishell.h"
 
-char	*ft_strreplace(char *s, char *to_add, size_t start_add, size_t to_pass)
-{
-	char	*ret;
-	size_t	i;
-	size_t	j;
-
-	i = 0;
-	j = 0;
-	ret = (char *)malloc(sizeof(*ret) * (ft_strlen(to_add) + ft_strlen(s)
-		- (to_pass - start_add) + 1));
-	if (!(ret))
-		return (NULL);
-	while (i < start_add && s[i])
-		ret[i] = s[i++];
-	while (to_add[j])
-		ret[i + j] = to_add[j++];
-	j = i + j;
-	while (s[to_pass])
-	{
-		ret[j] = s[to_pass];
-		to_pass++;
-		j++;
-	}
-	free(s);
-	ret[j] = '\0';
-	return (ret);
-}
-
-int	isvalid_name_letter(char c)
-{
-	if (c == '_' || ft_isalnum(c))
-		return (1);
-	return (0);
-}
-
 char	*expand_word(char *str, t_env *env)
 {
 	char	*new;
@@ -85,11 +50,33 @@ t_status	expand_redir(t_redir *command, t_env *env)
 	return (KO);
 }
 
+t_status	ft_fillargv(t_simple *command)
+{
+	char	**tab;
+	int		i;
+
+	i = 0;
+	tab = (char **)malloc(sizeof(char *) * (ft_lstsize(command->argv_tokens) + 1));
+	if (!tab)
+		return (FATAL);
+	while (command && command->argv_tokens)
+	{
+		tab[i] = command->argv_tokens->arg;
+		i++;
+		command->argv_tokens = command->argv_tokens->next;
+	}
+	tab[i] = NULL;
+	command->argv = tab;
+	return (OK);
+}
+
 t_status	expand_simple(t_simple *command, t_env *env)
 {
 	t_status ret;
+	t_simple *beggin;
 
 	// pour < a sans arg return KO
+	beggin = command;
 	if (!command || !command->argv)
 		return(KO);
 	while (command->argv_tokens && command->argv_tokens->arg)
@@ -102,7 +89,7 @@ t_status	expand_simple(t_simple *command, t_env *env)
 		}
 		command->argv_tokens = command->argv_tokens->next;
 	}
-	// ft_fillargv_array
+	ft_fillargv(command);
 	if (command->redir_list)
 	{
 		ret = expand_redir(command->redir_list, env);

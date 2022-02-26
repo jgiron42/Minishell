@@ -6,7 +6,7 @@
 /*   By: ereali <ereali@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/07 14:07:44 by ereali            #+#    #+#             */
-/*   Updated: 2022/02/26 08:30:24 by ereali           ###   ########.fr       */
+/*   Updated: 2022/02/26 09:35:43 by ereali           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ char			*ft_strdup(const char *s1);
 char			*ft_strndup(size_t n, const char *s1);
 size_t			ft_strlcpy(char *dst, const char *src, size_t dstsize);
 char			*ft_strcpy(char *dest, const char *src);
+char			*ft_strncpy(char *dest, const char *src, size_t n);
 size_t			ft_strlcat(char *dst, const char *src, size_t dstsize);
 char			*ft_strchr(const char *s, int c);
 char			*ft_strrchr(const char *s, int c);
@@ -49,6 +50,8 @@ char			*ft_strjoin(char const *s1, char const *s2);
 char			*ft_strjoinff(char const *s1, char const *s2);
 char			*ft_strjoinf2(char const *s1, char const *s2);
 char			*ft_strjoinf1(char const *s1, char const *s2);
+char			*ft_strreplace(char *s, char *to_add,
+					size_t start_add, size_t to_pass);
 char			*ft_strtrim(char const *s1, char const *set);
 char			**ft_split(char const *s, char c);
 void			ft_free_split(char **array);
