@@ -21,8 +21,7 @@ t_status	ft_shell(t_env *env, char *line)
 		//TODO: destroy_token_list(tokens)
 		return (ret);
 	}
-	return (OK);
-//	return (exec_command(tree, env));
+	return (exec_command(tree, env));
 }
 /*
  * A="coucou      ca "
@@ -40,8 +39,8 @@ t_status	loop(t_env *env)
 //		if (!line)
 //			ft_exit(env);
 		printf("%s\n", line);
-//		if (ft_shell(env, line) == FATAL)
-//			return (FATAL);
+		if (ft_shell(env, line) == FATAL)
+			return (FATAL);
 	}
 	return (FATAL);
 }

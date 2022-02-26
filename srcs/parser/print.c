@@ -56,7 +56,7 @@ void ft_print_pipe(t_pipeline **line)
 	{
 		if (tmp->command.type == SIMPLE)
 		{
-			ft_prin(&(tmp->command.command.simple.argv));
+			ft_prin(&(tmp->command.command.simple.argv_tokens));
 		}
 		if (tmp->command.type == GROUPING)
 		{
@@ -81,7 +81,7 @@ void ft_print_list(t_list **line)
 		printf("Mon sparateur est le %d\n", tmp->sep);
 		if (tmp->command.type == SIMPLE)
 		{
-			ft_prin(&(tmp->command.command.simple.argv));
+			ft_prin(&(tmp->command.command.simple.argv_tokens));
 		}
 		if (tmp->command.type == PIPELINE)
 		{
@@ -107,7 +107,7 @@ void ft_print_grouping(t_grouping **line)
 	}
 		if (tmp->command.type == SIMPLE)
 		{
-			ft_prin(&(tmp->command.command.simple.argv));
+			ft_prin(&(tmp->command.command.simple.argv_tokens));
 		}
 		if (tmp->command.type == PIPELINE)
 		{

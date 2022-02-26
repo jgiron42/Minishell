@@ -29,7 +29,7 @@ t_str_vec ft_split_ifs(char *str, t_env *env)
 	t_str_vec	ret;
 
 	ret = str_vec_init();
-	ifs = get_env_val(env, "IFS");
+	ifs = get_var_val(env, "IFS");
 	if (!ifs)
 		ifs = " \t\n";
 	if (*ifs == 0)

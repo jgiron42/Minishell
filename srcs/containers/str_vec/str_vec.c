@@ -95,9 +95,9 @@ int			str_vec_resize(t_str_vec *v, int new_size, type_str_vec value)
 	else
 	{
 		if (new_size > v->capacity) {
-			if (new_size < v.capacity * 2 && !str_vec_reserve(v, v->capacity * 2))
+			if (new_size < v->capacity * 2 && !str_vec_reserve(v, v->capacity * 2))
 				return (0);
-			else if (new_size > v.capacity * 2 && !str_vec_reserve(v, new_size))
+			else if (new_size > v->capacity * 2 && !str_vec_reserve(v, new_size))
 				return (0);
 		}
 		while (--new_size >= v->size)

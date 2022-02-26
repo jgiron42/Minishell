@@ -6,6 +6,7 @@
 #define MINISHELL_V2_STR_VEC_H
 
 #include <stdlib.h>
+#include <stdbool.h>
 
 typedef char* type_str_vec;
 

@@ -136,6 +136,7 @@ t_builtin	*is_special_built_in(char *name);
 t_builtin	*is_built_in(char *name);
 t_status	exec_special_builtin(t_simple s, t_env *env);
 t_status	exec_regular_builtin(t_simple s, t_env *env);
+t_status exec_program(t_simple s, t_env *env);
 
 //parsing :
 t_token_list	*tokenise(char *str);

@@ -34,7 +34,7 @@ t_command parse_simple(t_token_list **current)
 	{
 		cpy = ft_lstcpy(*current);
 		if ((*current)->type == WORD)
-			ft_lstadd_back(&(tree.command.simple.argv), cpy);
+			ft_lstadd_back(&(tree.command.simple.argv_tokens), cpy);
 		else
 			ft_lstadd_back_redir(&tree.command.simple.redir_list, new_redir_list(current));
 		(*current) = (*current)->next;

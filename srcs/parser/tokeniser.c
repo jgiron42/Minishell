@@ -3,7 +3,7 @@
 
 // () / {} pour grouping
 
-t_token_type	c_type(t_quote nb, const char *str, size_t *len)
+t_token_type	c_type(t_quote nb, const char *str, size_t len)
 {
 	int				i;
 	const char		*operator[] = {"<<", ">>", "&&", "||",
@@ -73,30 +73,45 @@ size_t	create_t_token_list(const char *str, t_token_list **line)
 	return (len);
 }
 
-int	main(int argc, char **argv)
+t_token_list	*tokenise(char *str)
 {
+
 	t_token_list	*line;
-	t_command		tree;
 	size_t	i;
 
-	(void)argc;
 	i = 0;
 	line = NULL;
-	while (i < ft_strlen(argv[1]))
-		i += create_t_token_list(argv[1] + i, &line);
-	ft_prin(&line);
-	tree = parsing(&line, END);
-	// if (tree.type == SIMPLE)
-	// {
-	// 	if (tree.command.simple.argv)
-	// 	{
-	// 		printf("-----------------argv---------------------\n" );
-	// 		ft_prin(&(tree.command.simple.argv));
-	// 		printf("---------------END------------\n" );
-	// 	}
-	// 	// printf("-------redir------------\n");
-	// 	// ft_prin_redir(&(tree.command.simple.redir_list));
-	// }
-
-	return (0);
+	while (i < ft_strlen(str))
+		i += create_t_token_list(str + i, &line); //TODO: gestion d'erreurs
+	return (line);
 }
+
+
+//
+//int	main(int argc, char **argv)
+//{
+//	t_token_list	*line;
+//	t_command		tree;
+//	size_t	i;
+//
+//	(void)argc;
+//	i = 0;
+//	line = NULL;
+//	while (i < ft_strlen(argv[1]))
+//		i += create_t_token_list(argv[1] + i, &line);
+//	ft_prin(&line);
+//	tree = parsing(&line, END);
+//	// if (tree.type == SIMPLE)
+//	// {
+//	// 	if (tree.command.simple.argv)
+//	// 	{
+//	// 		printf("-----------------argv---------------------\n" );
+//	// 		ft_prin(&(tree.command.simple.argv));
+//	// 		printf("---------------END------------\n" );
+//	// 	}
+//	// 	// printf("-------redir------------\n");
+//	// 	// ft_prin_redir(&(tree.command.simple.redir_list));
+//	// }
+//
+//	return (0);
+//}

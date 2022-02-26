@@ -8,14 +8,14 @@ char	*ft_strreplace(char *s, char *to_add, size_t start_add, size_t to_pass)
 
 	i = 0;
 	j = 0;
-	ret = (char *)malloc(sizeof(*ret) * (ft_strlen(new) + ft_strlen(s)
-		- (to_pass - start_add) + 1);
+	ret = (char *)malloc(sizeof(*ret) * (ft_strlen(to_add) + ft_strlen(s)
+		- (to_pass - start_add) + 1));
 	if (!(ret))
 		return (NULL);
-	while (i < start && s[i])
+	while (i < start_add && s[i])
 		ret[i] = s[i++];
 	while (to_add[j])
-		ret[i + j] = new[j++];
+		ret[i + j] = to_add[j++];
 	j = i + j;
 	while (s[to_pass])
 	{
@@ -52,10 +52,10 @@ char	*expand_word(char *str, t_env *env)
 		{
 			while (str[j] && isvalid_name_letter(str[j]))
 				j++;
-			key = ft_strndup(j - i , (const char *)(str + i + 1);
+			key = ft_strndup(j - i , (const char *)(str + i + 1));
 			if (!key)
 				return (NULL);
-			new = get_env_val(env->vars, char *key);
+			new = get_var_val(env, key);
 			str = ft_strreplace(str, new, i, i + ft_strlen(key) + 1);
 			if (!str)
 				return (NULL);
@@ -92,15 +92,15 @@ t_status	expand_simple(t_simple *command, t_env *env)
 	// pour < a sans arg return KO
 	if (!command || !command->argv)
 		return(KO);
-	while (command->argv && command->argv->arg)
+	while (command->argv_tokens && command->argv_tokens->arg)
 	{
-		if (ft_strchr(command->word, '$'))
+		if (ft_strchr(command->argv_tokens->arg, '$'))
 		{
-			command->argv->arg = expand_word(command->argv->arg, env);
-			if (!command->argv->arg)
+			command->argv_tokens->arg = expand_word(command->argv_tokens->arg, env);
+			if (!command->argv_tokens->arg)
 				return (FATAL);
 		}
-		command->argv = command->argv->next;
+		command->argv_tokens = command->argv_tokens->next;
 	}
 	// ft_fillargv_array
 	if (command->redir_list)

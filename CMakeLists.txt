@@ -45,7 +45,7 @@ add_library(LIBFT
         srcs/libft/ft_tolower.c
         srcs/libft/ft_toupper.c)
 
-file(GLOB SOURCES srcs/*/*.c srcs/containers/*_vec/*.c  includes/*.h)
+file(GLOB SOURCES srcs/*/*.c srcs/containers/*_vec/*.c  includes/*.h srcs/main.c)
 
 add_executable(minishell_v2 ${SOURCES})
 

@@ -12,6 +12,8 @@ t_status	exec_simple(union u_command cmd, t_env *env)
 	t_simple	s;
 
 	s = cmd.simple;
+	printf("%s\n",s.argv_tokens->arg);
+	return (OK);
 	// expand all but redirections and assignments -> argv_tokens
 	if (perform_redirection(env, s.redir_list) == FATAL)
 		return (FATAL);
