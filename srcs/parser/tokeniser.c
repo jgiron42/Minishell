@@ -12,13 +12,11 @@ t_token_type	c_type(t_quote nb, const char *str, size_t *len)
 		PIPE, LPARENTHESIS, RPARENTHESIS, WORD, INVALID};
 
 	i = 0;
-	while (i < 9 && ft_strncmp((const char *)str + (*len), operator[i], ft_strlen(operator[i])))
+	while (i < 9 && ft_strncmp((const char *)str + (len), operator[i], ft_strlen(operator[i])))
 			i++;
-	if (i < 9)
-		(*len) += !!operator[i][1];
-	else if (!nb && ft_isspace(str[*len]))
+	if (i > 8 && !nb && ft_isspace(str[len]))
 		return (INVALID);
-	else
+	else if (i > 8)
 		return (WORD);
 	return (type[i]);
 }
@@ -32,10 +30,9 @@ size_t	create_t_token_list(const char *str, t_token_list **line)
 	bool	escaped = false;
 
 	len = 0;
-	tmp = len;
 	node = NULL;
-	node = ft_lstnew(c_type(NONE, str, &tmp));
-	while (str[len] && (escaped || WORD == c_type(node->nb, str, &len)))
+	node = ft_lstnew(c_type(NONE, str, len));
+	while (str[len] && (escaped || WORD == c_type(node->nb, str, len)))
 	{
 		if (str[len] == '\'' && !escaped)
 		{
@@ -57,7 +54,9 @@ size_t	create_t_token_list(const char *str, t_token_list **line)
 			escaped = false;
 		len++;
 	}
-	if (len == tmp)
+	if (node->type != WORD)
+		len ++;
+	if (node->type == DLESS || node->type == DGREAT || node->type == OR_IF || node->type == AND_IF)
 		len++;
 	if (!str[len] && node->nb)
 	{
@@ -70,57 +69,6 @@ size_t	create_t_token_list(const char *str, t_token_list **line)
 	if (node->type != INVALID)
 		ft_lstadd_back(line, node);
 	return (len);
-}
-
-void ft_prin(t_token_list	**line)
-{
-	t_token_list	*tmp;
-
-	tmp = (*line);
-	if (!tmp)
-	{
-		printf("empty\n");
-		exit(3);
-	}
-	while (tmp)
-	{
-		printf("La string || %s ||\n type de token : %d\n nb de quote :%d\n", (tmp)->arg, tmp->type, tmp->nb);
-		tmp = tmp->next;
-	}
-
-}
-
-void ft_prin_redir(t_redir	**line)
-{
-	t_redir	*tmp;
-
-	tmp = (*line);
-	if (!tmp)
-	{
-		printf("empty redir\n");
-		exit(3);
-	}
-	while (tmp)
-	{
-		printf("Le type || %d ||\n ", (tmp)->type);
-		printf("le word suivant : %s\n", tmp->word);
-		printf("int du fd :%d\n", tmp->newfd);
-		tmp = tmp->next;
-	}
-
-}
-
-t_token_list	*tokenise(char *str)
-{
-
-	t_token_list	*line;
-	size_t	i;
-
-	i = 0;
-	line = NULL;
-	while (i < ft_strlen(str))
-		i += create_t_token_list(str + i, &line); //TODO: gestion d'erreurs
-	return (line);
 }
 
 int	main(int argc, char **argv)
