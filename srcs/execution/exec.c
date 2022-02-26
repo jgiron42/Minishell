@@ -23,22 +23,13 @@ t_status	exec_simple(union u_command cmd, t_env *env)
 
 	s = cmd.simple;
 	expand_simple(&s, env);
-	// t_str_vec v;
-	// v = str_vec_init();
-	// while (s.argv_tokens)
-	// {
-	// 	str_vec_push(&v, s.argv_tokens->arg);
-	// 	s.argv_tokens = s.argv_tokens->next;
-	// }
-	// expand all but redirections and assignments -> argv_tokens
-	// str_vec_push(&v, NULL);
-	// s.argv = v.data;
-	if (perform_redirection(env, s.redir_list) == FATAL)
-		return (FATAL);
+	ret = perform_redirection(env, s.redir_list);
+	if (ret != OK)
+		return (ret);
 //	if (!s.argv[0] && perform_assignments(env, s, false) == FATAL)
 //		return (FATAL);
 	if (!s.argv[0])
-		ret = OK; // TODO" reset redir
+		ret = OK;
 	else if (ft_strchr(s.argv[0], '/'))
 		ret = exec_program(s.argv[0], s, env);
 	else if (is_special_built_in(s.argv[0]))
@@ -51,6 +42,7 @@ t_status	exec_simple(union u_command cmd, t_env *env)
 			ret = exec_program(name, s, env);
 		else
 			ret = command_not_found(s.argv[0]);
+		free(name);
 	}
 	if (reset_redirection(env, s.redir_list) == FATAL)
 		return (FATAL);
@@ -65,7 +57,6 @@ t_status	exec_pipeline(union u_command cmd, t_env *env)
 	int 		ret;
 	int			to_wait;
 
-	printf("pipeline\n");
 	to_wait = -1;
 	p = cmd.pipeline;
 	prev_pipe_read = -1;
@@ -73,25 +64,16 @@ t_status	exec_pipeline(union u_command cmd, t_env *env)
 	{
 		next_pipe[0] = -1;
 		if (p->next && pipe(next_pipe) < -1)
-		{
-			// TODO: print error?
 			return(FATAL);
-		}
 		ret = fork();
 		if (ret == -1)
-		{
-			// TODO: print error?
 			return(FATAL);
-		}
 		else if (!ret)
 		{
-			if (p->next)
-			{
-				dup2(next_pipe[1], 1);
-				close(next_pipe[0]);
-			}
-			if (prev_pipe_read != -1)
-				dup2(prev_pipe_read, 0);
+			if ((p->next && (dup2(next_pipe[1], 1) == -1
+				|| close(next_pipe[0]) == -1)) ||
+			 	(prev_pipe_read != -1 && dup2(prev_pipe_read, 0)))
+			{}	//TODO
 			exec_command(p->command, env);
 			exit(g_err);
 		}

@@ -22,6 +22,7 @@ int			NAME_reserve(t_NAME *v, int new_cap)
 		tmp[i] = v->data[i];
 		++i;
 	}
+	free(v->data);
 	v->data = tmp;
 	v->capacity = new_cap;
 	return (1);
@@ -93,8 +94,10 @@ int			NAME_insert_one(t_NAME *v, int pos, type_NAME value)
 	return (1);
 }
 
+#include <stdio.h>
 int			NAME_resize(t_NAME *v, int new_size, type_NAME value)
 {
+	int	i;
 	if (new_size < 0)
 		return(1);
 	else if (new_size <= v->size)
@@ -104,11 +107,12 @@ int			NAME_resize(t_NAME *v, int new_size, type_NAME value)
 		if (new_size > v->capacity) {
 			if (new_size < v->capacity * 2 && !NAME_reserve(v, v->capacity * 2))
 				return (0);
-			else if (new_size > v->capacity * 2 && !NAME_reserve(v, new_size))
+			else if (new_size >= v->capacity * 2 && !NAME_reserve(v, new_size))
 				return (0);
 		}
-		while (--new_size >= v->size)
-			v->data[new_size] = value;
+		i = new_size;
+		while (--i >= v->size)
+			v->data[i] = value;
 		v->size = new_size;
 	}
 	return (1);

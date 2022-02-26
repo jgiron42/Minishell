@@ -22,12 +22,7 @@ t_status	ft_shell(t_env *env, char *line)
 	}
 	return (exec_command(tree, env));
 }
-/*
- * A="coucou      ca "
- * B="va"
- * $A$B
- * coucou ca va
- */
+
 t_status	loop(t_env *env)
 {
 	char	*line;
