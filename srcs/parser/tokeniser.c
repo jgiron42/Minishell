@@ -22,7 +22,7 @@ t_token_type	c_type(t_quote nb, const char *str, size_t len)
 }
 
 
-size_t	create_t_token_list(const char *str, t_token_list **line)
+size_t	create_t_token_list(char **str, t_token_list **line)
 {
 	size_t	len;
 	t_token_list	*node;
@@ -30,24 +30,26 @@ size_t	create_t_token_list(const char *str, t_token_list **line)
 
 	len = 0;
 	node = NULL;
-	node = ft_lstnew(c_type(NONE, str, len));
-	while (str[len] && (escaped || WORD == c_type(node->nb, str, len)))
+	node = ft_lstnew(c_type(NONE, *str, len));
+	if (!node)
+		return (FATAL);
+	while ((*str)[len] && (escaped || WORD == c_type(node->nb, *str, len)))
 	{
-		if (str[len] == '\'' && !escaped)
+		if ((*str)[len] == '\'' && !escaped)
 		{
 			if (node->nb == ONE)
 				node->nb = NONE;
 			else
 				node->nb = ONE;
 		}
-		else if (str[len] == '"' && !escaped)
+		else if ((*str)[len] == '"' && !escaped)
 		{
 			if (node->nb == DOUBLE)
 				node->nb = NONE;
 			else
 				node->nb = DOUBLE;
 		}
-		else if (str[len] == '\\' && node->nb != ONE && !escaped)
+		else if ((*str)[len] == '\\' && node->nb != ONE && !escaped)
 			escaped = true;
 		else if (escaped)
 			escaped = false;
@@ -57,37 +59,33 @@ size_t	create_t_token_list(const char *str, t_token_list **line)
 		len ++;
 	if (node->type == DLESS || node->type == DGREAT || node->type == OR_IF || node->type == AND_IF)
 		len++;
-	if (!str[len] && node->nb)
+	if (!(*str)[len] && node->nb)
 	{
 		printf("\033[0;31merreur syntax: missing closing quote\n");
 		exit(1);
 	}
 	if (node->type != INVALID)
 	{
-		node->arg = ft_strndup(len, str);
+		node->arg = ft_strndup(len, *str);
 		if (!node->arg)
-			exit(2);
+			return (FATAL);
 		ft_lstadd_back(line, node);
 	}
-	return (len);
+	*str += len;
+	return (OK);
 }
 
-t_token_list	*tokenise(char *str)
+t_status	tokenise(char *str, t_token_list **dst)
 {
-	t_token_list	*line;
 //	t_token_list	*end;
 	size_t	i;
 
 	i = 0;
-	line = NULL;
+	*dst = NULL;
 	while (i < ft_strlen(str))
-		i += create_t_token_list(str + i, &line); //TODO: gestion d'erreurs
-//	end = ft_lstnew(END);
-//	if (!end)
-//		;
-//	ft_lstadd_back(&line, end);
-//	ft_prin(&line);
-	return (line);
+		if (create_t_token_list(&str, dst) == FATAL)
+			return (FATAL);
+	return (OK);
 }
 
 //

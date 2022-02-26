@@ -73,10 +73,10 @@ t_status	ft_fillargv(t_simple *command)
 t_status	expand_simple(t_simple *command, t_env *env)
 {
 	t_status ret;
-	t_simple *beggin;
+//	t_simple *beggin;
 
 	// pour < a sans arg return KO
-	beggin = command;
+//	beggin = command;
 	if (!command || !command->argv)
 		return(KO);
 	while (command->argv_tokens && command->argv_tokens->arg)

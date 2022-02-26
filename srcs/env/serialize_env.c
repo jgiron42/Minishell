@@ -43,10 +43,8 @@ static size_t	get_env_size(t_var_list *env)
 char **serialize_env(t_var_list *env)
 {
 	ssize_t	i;
-	t_var_list	*tmp;
 	char	**ret;
 
-	tmp = env;
 	ret = malloc((1 + get_env_size(env)) * sizeof(char *));
 	i = 0;
 	if (!ret)
