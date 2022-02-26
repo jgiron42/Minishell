@@ -63,11 +63,13 @@ size_t	create_t_token_list(const char *str, t_token_list **line)
 		printf("\033[0;31merreur syntax: missing closing quote\n");
 		exit(1);
 	}
-	node->arg = ft_strndup(len, str);
-	if (!node->arg)
-		exit(2);
 	if (node->type != INVALID)
+	{
+		node->arg = ft_strndup(len, str);
+		if (!node->arg)
+			exit(2);
 		ft_lstadd_back(line, node);
+	}
 	return (len);
 }
 

@@ -30,5 +30,4 @@ char			*ft_itoa(int n);
 char			*ft_strndup(size_t n, const char *s1);
 t_token_list	*ft_lstcpy(t_token_list	 *current);
 
-
 #endif
