@@ -31,7 +31,7 @@ t_command parse_pipe(t_token_list **current, t_command prev_command)
 			printf("\033[0;31merreur syntax: wrong token after pipe\n");
 			exit(5);
 		}
-		tmp->next = ft_new_pipe(parsing(current, AND_IF | OR_IF | PIPE | RPARENTHESIS));
+		tmp->next = ft_new_pipe(parsing(current, AND_IF | OR_IF | PIPE | RPARENTHESIS | END));
 		tmp = tmp->next;
 	}
 	printf("----------------PIPEPRINT----------------\n");

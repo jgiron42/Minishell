@@ -105,26 +105,17 @@ t_status 	parse_tree(t_token_list *current, t_command *tree)
 	*tree = parsing(&current, END);
 	if (tree->type == PARSE_FATAL)
 	{
+		printf("fatal\n");
 		destroy_tree(*tree);
 		return (FATAL);
 	}
-	else if (tree->type == PARSE_ERROR || (current &&current->type != END))
+	else if (tree->type == PARSE_ERROR || current)
 	{
-		printf("parse error token %d", current->type);
+		printf("parse error token %d\n", current->type);
 
 		//TODO : parse_error((*current)->type)
 		return (KO);
 	}
-	if (tree->type == SIMPLE)
-	 {
-	 	if (tree->command.simple.argv)
-	 	{
-	 		printf("-----------------argv---------------------\n" );
-	 		ft_prin(&(tree->command.simple.argv_tokens));
-	 		printf("---------------END------------\n" );
-	 	}
-	 	// printf("-------redir------------\n");
-	 	// ft_prin_redir(&(tree.command.simple.redir_list));
-	 }
+	printf("command type: %d\n", tree->type);
 	return (OK);
 }

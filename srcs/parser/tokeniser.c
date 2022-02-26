@@ -75,14 +75,19 @@ size_t	create_t_token_list(const char *str, t_token_list **line)
 
 t_token_list	*tokenise(char *str)
 {
-
 	t_token_list	*line;
+//	t_token_list	*end;
 	size_t	i;
 
 	i = 0;
 	line = NULL;
 	while (i < ft_strlen(str))
 		i += create_t_token_list(str + i, &line); //TODO: gestion d'erreurs
+//	end = ft_lstnew(END);
+//	if (!end)
+//		;
+//	ft_lstadd_back(&line, end);
+	ft_prin(&line);
 	return (line);
 }
 
