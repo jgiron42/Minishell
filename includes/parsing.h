@@ -25,6 +25,7 @@ void			*ft_calloc(size_t count, size_t size);
 int				ft_strncmp(const char *s1, const char *s2, size_t n);
 t_token_list	*ft_lstnew(t_token_type token);
 void			ft_lstadd_back(t_token_list **alst, t_token_list *new);
+size_t			ft_lstsize(t_token_list *lst);
 void			ft_putnbr_fd(int n, int fd);
 char			*ft_itoa(int n);
 char			*ft_strndup(size_t n, const char *s1);

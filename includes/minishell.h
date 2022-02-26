@@ -147,6 +147,7 @@ void destroy_tree(t_command c);
 void ft_print_pipe(t_pipeline **line);
 void ft_print_list(t_list **line);
 void ft_print_grouping(t_grouping **line);
+int	isvalid_name_letter(char c);
 
 t_command parsing(t_token_list **current, t_token_type expected);
 t_redir	*new_redir_list(t_token_list **current);

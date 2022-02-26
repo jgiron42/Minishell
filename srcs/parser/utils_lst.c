@@ -21,3 +21,25 @@ t_token_list	*ft_lstcpy(t_token_list	 *current)
 	cpy->arg = (current)->arg;
 	return (cpy);
 }
+
+size_t	ft_lstsize(t_token_list *lst)
+{
+	size_t	i;
+
+	i = 0;
+	if (!lst)
+		return (0);
+	while (lst)
+	{
+		lst = lst->next;
+		i++;
+	}
+	return (i);
+}
+
+int	isvalid_name_letter(char c)
+{
+	if (c == '_' || ft_isalnum(c))
+		return (1);
+	return (0);
+}
