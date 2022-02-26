@@ -88,11 +88,11 @@ typedef struct s_node {
   t_token_type   sep;
   t_pipeline    *p;
 }              t_node;
-//
-// typedef struct	s_env {
-// 	t_var_list	*vars;
-// 	t_bool_vec	opened_files;
-// }				t_env;
+
+typedef struct	s_env {
+	t_var_list	*vars;
+	t_bool_vec	opened_files;
+}				t_env;
 
 typedef enum e_status { OK, KO, FATAL} t_status;
 
