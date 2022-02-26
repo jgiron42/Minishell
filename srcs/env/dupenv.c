@@ -4,7 +4,7 @@
 
 #include "minishell.h"
 
-t_var_list *dupenv(t_var_list *src)
+t_var_list *dup_var_list(t_var_list *src)
 {
 	t_var_list	*ret;
 	t_var_list	*tmp;
@@ -16,13 +16,13 @@ t_var_list *dupenv(t_var_list *src)
 		{
 			if (!ret)
 			{
-				if (add_env(&ret, src->key, src->value, true) == FATAL)
+				if (add_var(&ret, src->key, src->value, true) == FATAL)
 					return (NULL);
 				ret = tmp;
 			}
 			else
 			{
-				if (add_env(&tmp->next, src->key, src->value, true) == FATAL) {
+				if (add_var(&tmp->next, src->key, src->value, true) == FATAL) {
 					free_env(ret);
 					return (NULL);
 				}

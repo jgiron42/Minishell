@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-int	add_env(t_var_list **env, char *key, char *value, bool is_exported)
+int	add_var(t_env *env, char *key, char *value, bool is_exported)
 {
 	t_var_list *new_node;
 	t_var_list *tmp;
@@ -18,11 +18,11 @@ int	add_env(t_var_list **env, char *key, char *value, bool is_exported)
 		return (FATAL);
 	}
 	new_node->next = NULL;
-	if (!*env)
-		*env = new_node;
+	if (!env->vars)
+		env->vars = new_node;
 	else
 	{
-		tmp = *env;
+		tmp = env->vars;
 		while (tmp->next)
 			tmp = tmp->next;
 		tmp->next = new_node;
@@ -30,33 +30,33 @@ int	add_env(t_var_list **env, char *key, char *value, bool is_exported)
 	return (OK);
 }
 
-char	*get_env_val(t_var_list *env, char *key)
+char	*get_var_val(t_env *env, char *key)
 {
-	while(env)
+	while(env->vars)
 	{
-		if (!ft_strcmp(key, env->key))
-			return (env->value);
-		env = env->next;
+		if (!ft_strcmp(key, env->vars->key))
+			return (env->vars->value);
+		env->vars = env->vars->next;
 	}
 	return (NULL);
 }
 
-t_var_list		*get_env_ptr(t_var_list *env, char *key)
+t_var_list		*get_var_ptr(t_env *env, char *key)
 {
-	while(env)
+	while(env->vars)
 	{
-		if (!ft_strcmp(key, env->key))
-			return (env);
-		env = env->next;
+		if (!ft_strcmp(key, env->vars->key))
+			return (env->vars);
+		env->vars = env->vars->next;
 	}
 	return (NULL);
 }
 
-t_status		set_env(t_var_list **env, char *key, char *value, bool is_exported)
+t_status		set_var(t_env *env, char *key, char *value, bool is_exported)
 {
 	t_var_list *tmp;
 
-	tmp = *env;
+	tmp = env->vars;
 	while(tmp)
 	{
 		if (!ft_strcmp(key, tmp->key))
@@ -69,15 +69,15 @@ t_status		set_env(t_var_list **env, char *key, char *value, bool is_exported)
 		}
 		tmp = tmp->next;
 	}
-	return (add_env(env, key, value, is_exported));
+	return (add_var(env, key, value, is_exported));
 }
 
-int 	remove_env(t_var_list **	env, char *key)
+int 	remove_var(t_env *env, char *key)
 {
 	t_var_list *tmp;
 	t_var_list *old;
 
-	tmp = *env;
+	tmp = env->vars;
 	old = NULL;
 	while (tmp)
 	{
@@ -86,7 +86,7 @@ int 	remove_env(t_var_list **	env, char *key)
 			free(tmp->key);
 			free(tmp->value);
 			if (!old)
-				*env = tmp->next;
+				env->vars = tmp->next;
 			else
 				old->next = tmp->next;
 			return (OK);
@@ -97,30 +97,31 @@ int 	remove_env(t_var_list **	env, char *key)
 	return (KO);
 }
 
-void free_env(t_var_list *env)
+void free_env(t_env *env)
 {
 	t_var_list	*tmp;
 
-	while (env)
+	while (env->vars)
 	{
-		free(env->key);
-		free(env->value);
-		tmp = env->next;
-		free(env);
-		env = tmp;
+		free(env->vars->key);
+		free(env->vars->value);
+		tmp = env->vars->next;
+		free(env->vars);
+		env->vars = tmp;
 	}
+	free(env->opened_files.data);
 }
 
-t_status	export_env(t_var_list *env, char *key)
+t_status	export_var(t_env *env, char *key)
 {
-	while(env)
+	while(env->vars)
 	{
-		if (!ft_strcmp(key, env->key))
+		if (!ft_strcmp(key, env->vars->key))
 		{
-			env->is_exported = true;
+			env->vars->is_exported = true;
 			return (OK);
 		}
-		env = env->next;
+		env->vars = env->vars->next;
 	}
 	return (KO);
 }

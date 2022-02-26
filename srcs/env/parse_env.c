@@ -18,7 +18,7 @@ t_status	parse_env(char **envp, t_var_list **env)
 		++equal;
 		if (equal)
 		{
-			if (add_env(env, *envp, equal, true) == FATAL)
+			if (add_var(env, *envp, equal, true) == FATAL)
 				return (FATAL);
 		}
 		envp++;

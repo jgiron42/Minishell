@@ -29,27 +29,32 @@ size_t	create_t_token_list(char *str, t_token_list **line)
 	size_t	len;
 	t_token_list	*node;
 	size_t	tmp;
+	bool	escaped = false;
 
 	len = 0;
 	tmp = len;
 	node = NULL;
 	node = ft_lstnew(c_type(NONE, str, &tmp));
-	while (str[len] && WORD == c_type(node->nb, str, &len))
+	while (str[len] && (escaped || WORD == c_type(node->nb, str, &len)))
 	{
-		if (str[len] == '\'')
+		if (str[len] == '\'' && !escaped)
 		{
 			if (node->nb == ONE)
 				node->nb = NONE;
 			else
 				node->nb = ONE;
 		}
-		else if (str[len] == '"')
+		else if (str[len] == '"' && !escaped)
 		{
 			if (node->nb == DOUBLE)
 				node->nb = NONE;
 			else
 				node->nb = DOUBLE;
 		}
+		else if (str[len] == '\\' && node->nb != ONE && !escaped)
+			escaped = true;
+		else if (escaped)
+			escaped = false;
 		len++;
 	}
 	if (len == tmp)
@@ -104,6 +109,8 @@ void ft_prin_redir(t_redir	**line)
 	}
 
 }
+
+t_token_list	*tokenise(char *str);
 
 int	main(int argc, char **argv)
 {

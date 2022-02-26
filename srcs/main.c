@@ -4,22 +4,52 @@
 
 #include "minishell.h"
 
+t_status	ft_shell(t_env *env, char *line)
+{
+	t_token_list	*tokens;
+	t_command		tree;
+	int				ret;
+
+	tokens = tokenise(line);
+	if (!tokens)
+		return (FATAL);
+	if (tokens->type == END)
+		return (OK);
+	ret = parse_tree(tokens, &tree);
+	if (ret != OK)
+		return (ret);
+	return (exec_command(tree, env));
+}
+/*
+ * A="coucou      ca "
+ * B="va"
+ * $A$B
+ * coucou ca va
+ */
+t_status	loop(t_env *env)
+{
+	char	*line;
+
+	while (1)
+	{
+		line = readline(get_var_val(env, "PS1"));
+		if (!line)
+			ft_exit(env);
+		if (ft_shell(env, line) == FATAL)
+			return (FATAL);
+	}
+	return (FATAL);
+}
 
 int main(int argc, char **argv, char **envp)
 {
-	t_var_list	*env;
+	t_env		env;
 
-	if (parse_env(envp, &env) == FATAL || init_env(&env) == FATAL)
-	{
-		free_env(env);
-		return (1);
-	}
-	// TEST:
-	char **zbeub = serialize_env(env);
-	for (int i = 0; zbeub[i]; ++i)
-		printf("%s\n", zbeub[i]);
-	free_env(env);
-	ft_free_split(zbeub);
+	if (parse_env(envp, &env.vars) != FATAL && init_env(&env.vars) != FATAL)
+		loop(&env);
+	perror(NAME);
+	free_env(&env);
+	return (1);
 }
 
 /* ( ls | cat && pwd || ls ) | { pwd | echo } && ls

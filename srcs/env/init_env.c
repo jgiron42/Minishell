@@ -14,7 +14,7 @@ static t_status init_pwd(t_var_list **env)
 	true_pwd = my_get_working_directory("shell-init");
 	if (!true_pwd && errno == ENOMEM)
 		return (FATAL);
-	current = get_env_val(*env, "PWD");
+	current = get_var_val(*env, "PWD");
 	real_current = ft_realpath(current, NULL); // unauthorized function
 //	printf("===========> %s\n", current);
 //	printf("===========> %s\n", real_current);
@@ -22,9 +22,9 @@ static t_status init_pwd(t_var_list **env)
 	if (!true_pwd || (!real_current && (errno == EIO || errno == ENOMEM)))
 		ret = FATAL;
 	else if (current && ft_strlen(current) < PATH_MAX && !path_has_dot(current) && !ft_strcmp(real_current, true_pwd))
-		ret = OK;//ret = set_env(env, "PWD", current, true);
+		ret = OK;//ret = set_var(env, "PWD", current, true);
 	else
-		ret = set_env(env, "PWD", true_pwd, true);
+		ret = set_var(env, "PWD", true_pwd, true);
 	free(true_pwd);
 	free(real_current);
 	return (ret);
@@ -34,13 +34,13 @@ static t_status init_shlvl(t_var_list **env)
 {
 	char	*current;
 
-	current = get_env_val(*env, "SHLVL");
+	current = get_var_val(*env, "SHLVL");
 	if (!current)
-		return (set_env(env, "SHLVL", "0", true));
+		return (set_var(env, "SHLVL", "0", true));
 	current = ft_itoa(ft_atoi(current) + 1);
 	if (!current)
 		return (FATAL);
-	if (set_env(env, "SHLVL", current, true) == FATAL)
+	if (set_var(env, "SHLVL", current, true) == FATAL)
 	{
 		free(current);
 		return (FATAL);
@@ -52,8 +52,8 @@ static t_status init_shlvl(t_var_list **env)
 t_status init_env(t_var_list **env)
 {
 	//IFS
-	if (set_env(env, "PS1", "$ ", false) == FATAL ||
-		set_env(env, "PS2", "> ", false) == FATAL ||
+	if (set_var(env, "PS1", "$ ", false) == FATAL ||
+			set_var(env, "PS2", "> ", false) == FATAL ||
 		init_pwd(env) == FATAL ||
 		init_shlvl(env) == FATAL)
 		return (FATAL);
