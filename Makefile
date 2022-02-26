@@ -6,7 +6,7 @@
 #    By: ereali <ereali@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/10/18 05:33:00 by ereali            #+#    #+#              #
-#    Updated: 2022/02/26 11:27:23 by ereali           ###   ########.fr        #
+#    Updated: 2022/02/26 15:43:24 by ereali           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME = minichoux
 
 INC_DIR = 	$(shell find includes -type d)
 
-# LIB_DIR		=	srcs/libft
+LIB_DIR		=	srcs/libft
 
 ##List every folder where he will find source file
 SRC_DIR = 	$(shell find srcs -type d)
@@ -64,6 +64,7 @@ all: $(NAME)
 
 $(NAME): $(OBJ)
 				@echo "Compiling $(NAME) ...\c"
+				Make -C $(LIB_DIR)
 				$(CC) $(OBJ) $(CFLAGS) $(IFLAGS) -L srcs/libft $(LDLIBS) -o $(NAME)
 				@echo " DONE"
 
