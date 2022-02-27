@@ -6,7 +6,7 @@
 #    By: ereali <ereali@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/09 18:07:18 by ereali            #+#    #+#              #
-#    Updated: 2022/02/26 09:35:58 by ereali           ###   ########.fr        #
+#    Updated: 2022/02/26 13:52:23 by ereali           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,7 +34,7 @@ OBJS = $(SRC:.c=.o)
 
 all: $(NAME)
 
-$(NAME):
+$(NAME): $(OBJS)
 	gcc $(FLAG) -c $(SRC)
 	ar -rc $(NAME) $(OBJS)
 	ranlib $(NAME)

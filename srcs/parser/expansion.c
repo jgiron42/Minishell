@@ -26,21 +26,21 @@ bool	need_to_expand(char *str, size_t dollard)
 	}
 	while (i < dollard)
 	{
-		if (str[i] == '\'' && !tab[1] && !tab[2])
+		if (str[i] == '\'' && (!tab[1] || !tab[2]))
 		{
 			if (tab[0] == 0)
 				tab[0] = 1;
 			else
 				tab[0] = 0;
 		}
-		else if (str[i] == '\"' && !tab[0] && !tab[2])
+		else if (str[i] == '\"' && (!tab[0] || !tab[2]))
 		{
 			if (tab[1] == 0)
 				tab[1] = 1;
 			else
 				tab[1] = 0;
 		}
-		else if (str[i] == '\\' && !tab[0] && !tab[2])
+		else if (str[i] == '\\' && (!tab[0] || !tab[2]))
 		{
 			if (tab[2] == 0)
 				tab[2] = 1;
@@ -60,31 +60,36 @@ char	*expand_word(char *str, t_env *env)
 	char	*key;
 	size_t	i;
 	size_t	j;
-//	&& need_to_expand(str, i)
+//
 	i = 0;
 	while (str[i])
 	{
+		// printf("le char %c est le numero %zu de la chaine %s\n", str[i], i , str);
 		while (str[i] && str[i] != '$')
 			i++;
+		// printf("le char %c est le numero %zu de la chaine %s\n", str[i], i , str);
 		j = i + 1;
-		if (str[i] && !ft_isdigit(str[j]) )
+		if (str[i] && !ft_isdigit(str[j]) && need_to_expand(str, i))
 		{
 			while (str[j] && isvalid_name_letter(str[j]) == true)
 				j++;
-			key = ft_strndup(j - i , (const char *)(str + i + 1));
+			key = ft_strndup(j - i - 1, (const char *)(str + i + 1));
 			if (!key)
 				return (NULL);
+			// printf("La clefs est %s\n", key);
 			new = get_var_val(env, key);
 			if (!new)
 				return (NULL);
-			str = ft_strreplace(str, new, i, i + ft_strlen(key) + 1);
+			// printf("La valeur est %s\n", new);
+			str = ft_strreplace(str, new, i, i + ft_strlen(key));
 			if (!str)
 				return (NULL);
 		}
 		else if (str[i])
 			i++;
 	}
-	return (new);
+	printf("La string de agv_token est %s\n", str);
+	return (str);
 }
 
 t_status	expand_redir(t_redir *command, t_env *env)
@@ -118,8 +123,10 @@ t_status	ft_fillargv(t_simple *command)
 	while (command && command->argv_tokens)
 	{
 		tab[i] = command->argv_tokens->arg;
+		// printf("J'en suis au %deme argv\n|| C'est le token %s ||\n|| C'est %s||\n", i, command->argv_tokens->arg, tab[i]);
 		i++;
 		command->argv_tokens = command->argv_tokens->next;
+
 	}
 	tab[i] = NULL;
 	command->argv = tab;
@@ -139,15 +146,16 @@ t_status	expand_simple(t_simple *command, t_env *env)
 	{
 		if (ft_strchr(command->argv_tokens->arg, '$'))
 		{
+			// printf("Before expansion :%s\n",command->argv_tokens->arg);
 			command->argv_tokens->arg = expand_word(command->argv_tokens->arg, env);
 			if (!command->argv_tokens->arg)
 				return (FATAL);
+			// printf("After expansion : %s\n",command->argv_tokens->arg);
 		}
 		command->argv_tokens = command->argv_tokens->next;
 	}
 	command->argv_tokens = beggin;
 	ft_fillargv(command);
-	command->argv_tokens = beggin;
 	if (command->redir_list)
 	{
 		ret = expand_redir(command->redir_list, env);

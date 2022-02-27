@@ -39,7 +39,7 @@ size_t	ft_lstsize(t_token_list *lst)
 
 int	isvalid_name_letter(char c)
 {
-	if (c == '_' || ft_isalnum(c))
+	if (c == '_' || (ft_isalnum(c) && c != '\'' && c != '\\' && c != '\"'))
 		return (1);
 	return (0);
 }

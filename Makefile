@@ -6,7 +6,7 @@
 #    By: ereali <ereali@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/10/18 05:33:00 by ereali            #+#    #+#              #
-#    Updated: 2022/02/27 03:56:06 by ereali           ###   ########.fr        #
+#    Updated: 2022/02/27 06:45:58 by ereali           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -64,7 +64,7 @@ all: $(NAME)
 
 $(NAME): $(OBJ)
 				@echo "Compiling $(NAME) ...\c"
-				Make -C $(LIB_DIR)
+				make -C $(LIB_DIR)
 				$(CC) $(OBJ) $(CFLAGS) $(IFLAGS) -L srcs/libft $(LDLIBS) -o $(NAME)
 				@echo " DONE"
 
