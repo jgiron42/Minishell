@@ -36,7 +36,7 @@ SRC = main.c tokeniser.c parsing.c utils_lst.c parse_grouping.c parse_list.c \
 		command_name.c exec_builtin.c exec_program.c exec.c ft_exit.c\
 		redirections.c utils.c dupenv.c init_env.c merge_env.c parse_env.c\
 		serialize_env.c char_vec.c str_vec.c \
-		false.c true.c\
+		false.c true.c signal.c\
 
 ##List every .h found inside INC_DIR
 INC = parsing.h minishell.h
