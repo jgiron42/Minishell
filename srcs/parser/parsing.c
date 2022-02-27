@@ -87,6 +87,11 @@ t_command parsing(t_token_list **current, t_token_type expected)
 			tree = parse_simple(current);
 		else if ((*current)->type == LPARENTHESIS)
 			tree = parse_grouping(current);
+		// else if (tree.type == INVALID)
+		// 	{
+		// 		printf("unexcpected token near %d\n", (*current)->type);
+		// 		break;
+		// 	}
 		else if ((*current)->type == PIPE)
 			tree = parse_pipe(current, tree);
 		else if ((*current)->type == OR_IF || (*current)->type == AND_IF)

@@ -11,13 +11,19 @@ char	*ft_strreplace(char *s, char *to_add, size_t start_add, size_t to_pass)
 	if (!(ret))
 		return (NULL);
 	ret = ft_strncpy(ret, s, start_add);
-	while (to_add[j])
+	while (to_add && to_add[j])
 	{
 		ret[start_add + j] = to_add[j];
 		j++;
 	}
 	j = start_add + j;
-	ft_strcpy(ret + j, s + to_pass);
+	// ft_strcpy(ret + j, s + to_pass);
+	while (s[to_pass])
+	{
+		ret[j] = s[to_pass];
+		to_pass++;
+		j++;
+	}
 	free(s);
 	ret[j] = '\0';
 	return (ret);

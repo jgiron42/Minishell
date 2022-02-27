@@ -15,6 +15,7 @@ t_pipeline	*ft_new_pipe(t_command command)
 t_command	parse_pipe(t_token_list **current, t_command prev_command)
 {
 	t_command	tree;
+	t_command	tmp_c;
 	t_pipeline	*first;
 	t_pipeline	*tmp;
 
@@ -30,7 +31,10 @@ t_command	parse_pipe(t_token_list **current, t_command prev_command)
 			printf("\033[0;31merreur syntax: wrong token after pipe\n");
 			exit(5);
 		}
-		tmp->next = ft_new_pipe(parsing(current, 64 | 128 | PIPE | 512 | END));
+		tmp_c = parsing(current, 64 | 128 | PIPE | 512 | END);
+		// if (tmp_c.type == 0)
+		// 	return ()
+		tmp->next = ft_new_pipe(tmp_c);
 		tmp = tmp->next;
 	}
 	return (tree);
