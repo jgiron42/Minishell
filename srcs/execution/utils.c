@@ -146,3 +146,12 @@ t_status	get_g_err(t_env *env, pid_t pid)
 	}
 	return (OK);
 }
+
+bool	is_dir(char *path)
+{
+	struct stat buf;
+
+	if (stat(path, &buf) == 0 && S_ISDIR(buf.st_mode))
+		return (true);
+	return (false);
+}

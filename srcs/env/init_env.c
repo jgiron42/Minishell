@@ -16,9 +16,6 @@ static t_status init_pwd(t_env *env)
 		return (FATAL);
 	current = get_var_val(env, "PWD");
 	real_current = ft_realpath(current, NULL); // TODO: unauthorized function
-//	printf("===========> %s\n", current);
-//	printf("===========> %s\n", real_current);
-//	printf("===========> %s\n", true_pwd;
 	if (!true_pwd || (!real_current && (errno == EIO || errno == ENOMEM)))
 		ret = FATAL;
 	else if (current && ft_strlen(current) < PATH_MAX && !path_has_dot(current) && !ft_strcmp(real_current, true_pwd))

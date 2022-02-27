@@ -10,6 +10,8 @@
 #include <stdbool.h>
 #include <errno.h>
 #include <stdio.h>
+#include <sys/types.h>
+#include <dirent.h>
 #include <sys/stat.h>
 #include <sys/wait.h>
 #include <signal.h>
@@ -131,6 +133,9 @@ void		my_getopt(char ***argv, char *option, char dest[256]);
 t_status	set_signal(int sig, sighandler_t action, t_env *env);
 void		reset_signals(t_env *env);
 void	sigint_handler(int sig);
+void path_pop(char *path);
+t_status path_push(char *path, char *component);
+bool	is_dir(char *path);
 // input
 char		*my_readline(t_env *env, char *prompt);
 t_status	readnline(char **line, t_env *env);
