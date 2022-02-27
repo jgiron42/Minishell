@@ -17,6 +17,14 @@ t_status	get_g_err(pid_t pid)
 	return (OK);
 }
 
+void	sigint_handler(int sig)
+{
+	(void)sig;
+	printf("\n");
+	rl_on_new_line();
+	rl_redisplay();
+}
+
 t_status	set_signal(int sig, sighandler_t action, t_env *env)
 {
 	sighandler_t	ret;

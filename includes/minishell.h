@@ -107,7 +107,7 @@ typedef enum e_status { OK, KO, FATAL} t_status;
 
 typedef char	t_builtin(char **, t_var_list *, t_var_list **);
 
-extern char		g_err;
+extern unsigned char	g_err;
 
 
 // env manip:
