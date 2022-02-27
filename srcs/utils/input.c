@@ -11,6 +11,23 @@ char		*my_readline(t_env *env, char *prompt)
 	return (readline(get_var_val(env, prompt)));
 }
 
+int		count_trailing_backslashes(char *str)
+{
+	size_t	i;
+	int		ret;
+
+	i = ft_strlen(str);
+	ret = 0;
+	while(i > 0)
+	{
+		if (str[i - 1] != '\\')
+			break;
+		++ret;
+		--i;
+	}
+	return (ret);
+}
+
 t_status	readnline(char **line, t_env *env)
 {
 	char *tmp;
@@ -20,7 +37,7 @@ t_status	readnline(char **line, t_env *env)
 		ft_exit(env);
 	if (!**line)
 		return (KO);
-	while ((*line)[ft_strlen(*line) - 1] == '\\')
+	while (count_trailing_backslashes(*line) % 2)
 	{
 		(*line)[ft_strlen(*line) - 1] = '\0';
 		tmp = my_readline(env, "PS2");
