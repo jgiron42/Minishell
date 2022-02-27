@@ -92,7 +92,7 @@ t_status	exec_pipeline(union u_command cmd, t_env *env)
 		p = p->next;
 	}
 	if (to_wait >= 0)
-		get_g_err(ret);
+		get_g_err(env, ret);
 	while (--to_wait >= 0)
 		if (wait(NULL) == -1 && errno == EINTR)
 			return (FATAL);
@@ -143,7 +143,7 @@ t_status	exec_grouping(union u_command cmd, t_env *env)
 			exec_command(g->command, &new_env);
 			exit(g_err);
 		}
-		get_g_err(pid);
+		get_g_err(env, pid);
 	}
 	else
 		ret = exec_command(g->command, &new_env);

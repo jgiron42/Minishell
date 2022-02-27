@@ -6,9 +6,32 @@
 
 char		*my_readline(t_env *env, char *prompt)
 {
-	if (!env->is_interactive)
-		return (readline(NULL));
-	return (readline(get_var_val(env, prompt)));
+	char	*line;
+	int		ret;
+
+	if (env->is_interactive)
+		return (readline(get_var_val(env, prompt)));
+	ret = get_next_line(0, &line);
+	if (ret <= 0)
+		return (NULL);
+	return (line);
+}
+
+int		count_trailing_backslashes(char *str)
+{
+	size_t	i;
+	int		ret;
+
+	i = ft_strlen(str);
+	ret = 0;
+	while(i > 0)
+	{
+		if (str[i - 1] != '\\')
+			break;
+		++ret;
+		--i;
+	}
+	return (ret);
 }
 
 t_status	readnline(char **line, t_env *env)
@@ -20,7 +43,7 @@ t_status	readnline(char **line, t_env *env)
 		ft_exit(env);
 	if (!**line)
 		return (KO);
-	while ((*line)[ft_strlen(*line) - 1] == '\\')
+	while (count_trailing_backslashes(*line) % 2)
 	{
 		(*line)[ft_strlen(*line) - 1] = '\0';
 		tmp = my_readline(env, "PS2");

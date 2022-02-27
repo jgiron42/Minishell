@@ -16,15 +16,17 @@
 # include <fcntl.h>
 # include <stdlib.h>
 # include <unistd.h>
-
-int		ft_check_str(char **str, char **line);
-char	*ft_use_read(char *str, char *str1, int fd, int *i);
-int		ft_line(char **line, char **str, int i);
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 100
+# endif
+int		gnl_ft_check_str(char **str, char **line);
+char	*gnl_ft_use_read(char *str, char *str1, int fd, int *i);
+int		gnl_ft_line(char **line, char **str, int i);
 int		get_next_line(int fd, char **line);
-char	*ft_swap(int start, int end, char *str);
-int		ft_strlen(char *str);
-char	*ft_bzero(char *str, int n);
-int		ft_strchr(const char *s, int c);
-char	*ft_strjoin(char *s1, char *s2);
+char	*gnl_ft_swap(int start, int end, char *str);
+int		gnl_ft_strlen(char *str);
+char	*gnl_ft_bzero(char *str, int n);
+int		gnl_ft_strchr(const char *s, int c);
+char	*gnl_ft_strjoin(char *s1, char *s2);
 
 #endif

@@ -59,6 +59,6 @@ t_status exec_program(char *name, t_simple s, t_env *env)
 		perror(NAME);
 		exit (1);
 	}
-	get_g_err(pid);
+	get_g_err(env, pid);
 	return (OK);
 }

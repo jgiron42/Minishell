@@ -20,6 +20,11 @@
 #include "../srcs/containers/containers.h"
 #include "parsing.h"
 #include <readline/readline.h>
+#include "../srcs/gnl/get_next_line.h"
+
+# ifndef NSIG
+#  define NSIG 64
+# endif
 
 typedef struct s_var_list
 {
@@ -85,14 +90,6 @@ typedef struct s_list
 	t_token_type		sep;
 }               t_list;
 
-typedef struct s_node {
-  struct s_node *next;
-  struct s_node *sublist;
-  bool			is_in_subshell;
-  t_token_type   sep;
-  t_pipeline    *p;
-}              t_node;
-
 enum	e_fd_status {FD_CLOSE, FD_OPEN, FD_TMP};
 
 typedef void (*sighandler_t)(int);
@@ -139,7 +136,7 @@ char		*my_readline(t_env *env, char *prompt);
 t_status	readnline(char **line, t_env *env);
 // exec
 t_status	path_find(char *name, t_env *env, char **dst);
-t_status	get_g_err(pid_t pid);
+t_status	get_g_err(t_env *env, pid_t pid);
 t_status	exec_command(t_command cmd, t_env *env);
 t_status	perform_redirection(t_env *env, t_redir *list);
 t_status	reset_redirection(t_env *env, t_redir *list);
