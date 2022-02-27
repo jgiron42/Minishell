@@ -116,6 +116,7 @@ void free_env(t_env *env)
 		env->vars = tmp;
 	}
 	free(env->opened_files.data);
+	clear_history();
 }
 
 t_status	export_var(t_env *env, char *key)

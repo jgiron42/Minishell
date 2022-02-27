@@ -36,24 +36,24 @@ size_t	create_t_token_list(char **str, t_token_list **line)
 		return (FATAL);
 	while ((*str)[len] && (escaped || WORD == c_type(node->nb, *str, len)))
 	{
-		if ((*str)[len] == '\'' && !escaped)
+		if (escaped)
+			escaped = false;
+		else if ((*str)[len] == '\'')
 		{
 			if (node->nb == ONE)
 				node->nb = NONE;
-			else
+			else if (node->nb == NONE)
 				node->nb = ONE;
 		}
-		else if ((*str)[len] == '"' && !escaped)
+		else if ((*str)[len] == '"')
 		{
 			if (node->nb == DOUBLE)
 				node->nb = NONE;
-			else
+			else if (node->nb == NONE)
 				node->nb = DOUBLE;
 		}
-		else if ((*str)[len] == '\\' && node->nb != ONE && !escaped)
+		else if ((*str)[len] == '\\' && node->nb != ONE)
 			escaped = true;
-		else if (escaped)
-			escaped = false;
 		len++;
 	}
 	if (node->type != WORD)

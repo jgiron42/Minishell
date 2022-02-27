@@ -35,5 +35,7 @@ t_status	path_find(char *name, t_env *env, char **dst)
 		return (FATAL);
 	ret = path_find2(directories, name, dst);
 	ft_free_split(directories);
+	if (ret == KO)
+		*dst = NULL;
 	return (ret);
 }

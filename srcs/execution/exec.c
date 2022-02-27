@@ -3,7 +3,7 @@
 //
 #include "minishell.h"
 
-char 		g_err;
+unsigned char 		g_err;
 
 typedef		t_status (*t_command_handler)(union u_command, t_env *env);
 
@@ -157,5 +157,8 @@ t_status	exec_command(t_command cmd, t_env *env)
 			&exec_grouping
 	};
 
-	return(a[cmd.type](cmd.command, env));
+//	return(a[cmd.type](cmd.command, env));
+	int ret = a[cmd.type](cmd.command, env);
+	printf("$? = %d\n", (int)g_err);
+	return (ret);
 }
