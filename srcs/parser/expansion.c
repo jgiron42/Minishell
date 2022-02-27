@@ -10,7 +10,7 @@
 // }
 
 // pour plus modulable tableau propre
-bool	need_to_expand(char *str, size_t dollard)
+int	need_to_expand(char *str, size_t dollard)
 {
 	size_t	i;
 	int		j;
@@ -26,29 +26,27 @@ bool	need_to_expand(char *str, size_t dollard)
 	}
 	while (i < dollard)
 	{
-		if (tab[2] == 1)
+		if (tab[2] == 4)
 			tab[2] = 0;
-		if (str[i] == '\'' && !tab[1] && !tab[2])
+		else if (str[i] == '\"' && !tab[1] && !tab[2])
 		{
 			if (tab[0] == 0)
 				tab[0] = 1;
 			else
 				tab[0] = 0;
 		}
-		else if (str[i] == '\"' && !tab[0] && !tab[2])
+		else if (str[i] == '\'' && !tab[0] && !tab[2])
 		{
 			if (tab[1] == 0)
-				tab[1] = 1;
+				tab[1] = 2;
 			else
 				tab[1] = 0;
 		}
-		else if (str[i] == '\\' && !tab[0])
-			tab[2] = 1;
+		else if (str[i] == '\\' && !tab[1])
+			tab[2] = 4;
 		i++;
 	}
-	if (tab[0] || tab[2])
-		return (false);
-	return (true);
+	return (tab[0] + tab[1] + tab[2]);
 }
 
 char	*expand_word(char *str, t_env *env)
@@ -66,7 +64,7 @@ char	*expand_word(char *str, t_env *env)
 			i++;
 		// printf("le char %c est le numero %zu de la chaine %s\n", str[i], i , str);
 		j = i + 1;
-		if (str[i] && !ft_isdigit(str[j]) && need_to_expand(str, i))
+		if (str[i] && !ft_isdigit(str[j]) && need_to_expand(str, i) < 2)
 		{
 			while (str[j] && isvalid_name_letter(str[j]) == true)
 				j++;
@@ -87,7 +85,7 @@ char	*expand_word(char *str, t_env *env)
 		else if (str[i])
 			i++;
 	}
-	// printf("La string de agv_token est %s\n", str);
+
 	return (str);
 }
 
@@ -151,6 +149,9 @@ t_status	expand_simple(t_simple *command, t_env *env)
 				return (FATAL);
 			// printf("After expansion : %s\n",command->argv_tokens->arg);
 		}
+		// printf("La string de agv_token est %s\n",command->argv_tokens->arg);
+		command->argv_tokens->arg = remove_quotes(command->argv_tokens->arg);
+		// printf("La string de agv_token est %s\n", command->argv_tokens->arg);
 		command->argv_tokens = command->argv_tokens->next;
 	}
 	command->argv_tokens = beggin;

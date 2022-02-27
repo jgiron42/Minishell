@@ -32,5 +32,7 @@ char			*ft_strndup(size_t n, const char *s1);
 t_token_list	*ft_lstcpy(t_token_list	 *current);
 size_t			ft_countoccur(char *str, const char *to_count);
 char			*ft_inhibit(char *str, const char *inibit);
+int				need_to_expand(char *str, size_t dollard);
+char			*remove_quotes(char* str);
 
 #endif
