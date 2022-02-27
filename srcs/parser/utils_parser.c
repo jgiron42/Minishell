@@ -62,6 +62,35 @@ size_t	ft_countoccur(char *str, const char *to_count)
 	return (count);
 }
 
+char	*remove_quotes(char* str)
+{
+	char	*cpy;
+	size_t		i;
+	size_t		j;
+
+	i = 0;
+	j = 0;
+	cpy = ft_strdup(str);
+	while(cpy[i + j])
+	{
+		// printf("j'en suis a %c de %s need to expand retourne %d\n", cpy[i + j], cpy, need_to_expand(cpy, i + j));
+		if ((ft_strchr("\\\"" , cpy[i + j]) && need_to_expand(cpy, i + j) < 2) ||
+			(cpy[i + j] == '\'' && (need_to_expand(cpy, i + j) == 2 || need_to_expand(cpy, i + j) == 0)))
+		{
+			j++;
+			str[i] = cpy[i + j];
+		}
+		else
+		{
+			str[i] = cpy[i + j];
+			i++;
+		}
+	}
+	str[i] = '\0';
+	free(cpy);
+	return (str);
+}
+
 char	*ft_inhibit(char *str, const char *inibit)
 {
 	char *new;

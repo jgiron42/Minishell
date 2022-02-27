@@ -6,7 +6,7 @@
 #    By: ereali <ereali@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/10/18 05:33:00 by ereali            #+#    #+#              #
-#    Updated: 2022/02/27 12:38:12 by ereali           ###   ########.fr        #
+#    Updated: 2022/02/27 16:12:20 by ereali           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,7 +36,7 @@ SRC = main.c tokeniser.c parsing.c utils_parser.c parse_grouping.c parse_list.c 
 		command_name.c exec_builtin.c exec_program.c exec.c ft_exit.c\
 		redirections.c utils.c dupenv.c init_env.c merge_env.c parse_env.c\
 		serialize_env.c char_vec.c str_vec.c \
-		false.c true.c signals.c\
+		false.c true.c signals.c input.c\
 
 ##List every .h found inside INC_DIR
 INC = parsing.h minishell.h
@@ -71,7 +71,7 @@ $(NAME): $(OBJ)
 $(OBJ_DIR)/%.o : %.c
 				@mkdir -p $(OBJ_DIR)
 				@echo "Compiling $< ...\c"
-				@$(CC) $(CFLAGS) $(IFLAGS) -o $@ -c $<
+				$(CC) $(CFLAGS) $(IFLAGS) -o $@ -c $<
 				@echo " DONE"
 
 clean:
