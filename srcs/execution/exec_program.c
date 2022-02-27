@@ -53,8 +53,9 @@ t_status exec_program(char *name, t_simple s, t_env *env)
 		envp = serialize_env(env->vars);
 		if (!envp)
 			return (FATAL);
+		execve(name, s.argv, envp);
 		free_env(env);
-		execve(s.argv[0], s.argv, envp);
+		perror(NAME);
 		exit (1);
 	}
 	get_g_err(pid);

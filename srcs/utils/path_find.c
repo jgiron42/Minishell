@@ -5,7 +5,7 @@
 
 t_status	path_find2(char **array, char *name, char **dst)
 {
-	name = ft_strjoinf2("/", name);
+	name = ft_strjoin("/", name);
 	if (!name)
 		return (FATAL);
 	while (*array)
