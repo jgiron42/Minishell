@@ -30,5 +30,7 @@ void			ft_putnbr_fd(int n, int fd);
 char			*ft_itoa(int n);
 char			*ft_strndup(size_t n, const char *s1);
 t_token_list	*ft_lstcpy(t_token_list	 *current);
+size_t			ft_countoccur(char *str, const char *to_count);
+char			*ft_inhibit(char *str, const char *inibit);
 
 #endif

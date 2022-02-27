@@ -159,6 +159,6 @@ t_status	exec_command(t_command cmd, t_env *env)
 
 //	return(a[cmd.type](cmd.command, env));
 	int ret = a[cmd.type](cmd.command, env);
-	printf("$? = %d\n", (int)g_err);
+	// printf("$? = %d\n", (int)g_err);
 	return (ret);
 }
