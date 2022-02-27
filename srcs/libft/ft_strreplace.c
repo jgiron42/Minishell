@@ -17,13 +17,7 @@ char	*ft_strreplace(char *s, char *to_add, size_t start_add, size_t to_pass)
 		j++;
 	}
 	j = start_add + j;
-	ret = ft_strcpy(ret + j, s + to_pass);
-	// while (s[to_pass])
-	// {
-	// 	ret[j] = s[to_pass];
-	// 	to_pass++;
-	// 	j++;
-	// }
+	ft_strcpy(ret + j, s + to_pass);
 	free(s);
 	ret[j] = '\0';
 	return (ret);
