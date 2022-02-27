@@ -76,6 +76,8 @@ char	*expand_word(char *str, t_env *env)
 			// printf("La clefs est %s\n", key);
 			new = get_var_val(env, key);
 			// printf("La valeur est %s\n", new);
+			new = ft_inhibit(new, "\\\"\'*");
+			// printf("La valeur est %s\n", new);
 			str = ft_strreplace(str, new, i, i + ft_strlen(key) + 1);
 			if (!str)
 				return (NULL);
