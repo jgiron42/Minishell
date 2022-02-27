@@ -17,8 +17,12 @@ t_status exec_regular_builtin(t_simple s, t_env *env)
 
 t_status exec_special_builtin(t_simple s, t_env *env)
 {
-	(void)s;
-	(void)env;
+	unsigned char ret;
+
 //	perform_assignments(env, s, false);
-	return (OK);
+	ret = is_special_built_in(s.argv[0])(s.argv, env);
+	if (ret == OK || env->is_interactive)
+		return (ret);
+	else
+		return (FATAL);
 }
