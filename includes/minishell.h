@@ -56,7 +56,7 @@ union	u_command {
 	t_token_type		error_type;
 };
 
-enum	e_command_type {SIMPLE = 1, PIPELINE, LIST, GROUPING, PARSE_ERROR, PARSE_FATAL};
+enum	e_command_type {SIMPLE, PIPELINE, LIST, GROUPING, PARSE_ERROR, PARSE_FATAL};
 
 typedef struct s_command {
 	enum e_command_type type;
@@ -132,6 +132,7 @@ char		*my_get_working_directory(const char *for_whom);
 void		my_getopt(char ***argv, char *option, char dest[256]);
 t_status	set_signal(int sig, sighandler_t action, t_env *env);
 void		reset_signals(t_env *env);
+void	sigint_handler(int sig);
 // exec
 t_status	path_find(char *name, t_env *env, char **dst);
 t_status	get_g_err(pid_t pid);
