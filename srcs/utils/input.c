@@ -6,9 +6,15 @@
 
 char		*my_readline(t_env *env, char *prompt)
 {
-	if (!env->is_interactive)
-		return (readline(NULL));
-	return (readline(get_var_val(env, prompt)));
+	char	*line;
+	int		ret;
+
+	if (env->is_interactive)
+		return (readline(get_var_val(env, prompt)));
+	ret = get_next_line(0, &line);
+	if (ret <= 0)
+		return (NULL);
+	return (line);
 }
 
 int		count_trailing_backslashes(char *str)
