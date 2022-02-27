@@ -1,19 +1,20 @@
-#include "parsing.h"
 #include "minishell.h"
 
-// () / {} pour grouping
+//creer gestion de word
+// fillline
 
 t_token_type	c_type(t_quote nb, const char *str, size_t len)
 {
-	int				i;
-	const char		*operator[] = {"<<", ">>", "&&", "||",
+	int					i;
+	const char			*operator[] = {"<<", ">>", "&&", "||",
 		">", "<", "|", "(", ")"};
 	const t_token_type	type[] = {DLESS, DGREAT, AND_IF, OR_IF, GREAT, LESS,
 		PIPE, LPARENTHESIS, RPARENTHESIS, WORD, INVALID};
 
 	i = 0;
-	while (i < 9 && ft_strncmp((const char *)str + (len), operator[i], ft_strlen(operator[i])))
-			i++;
+	while (i < 9 && ft_strncmp((const char *)str + (len), operator[i],
+			ft_strlen(operator[i])))
+		i++;
 	if (i > 8 && !nb && ft_isspace(str[len]))
 		return (INVALID);
 	else if (i > 8)
@@ -21,15 +22,15 @@ t_token_type	c_type(t_quote nb, const char *str, size_t len)
 	return (type[i]);
 }
 
-
 size_t	create_t_token_list(char **str, t_token_list **line)
 {
-	size_t	len;
+	size_t			len;
 	t_token_list	*node;
-	bool	escaped = false;
+	bool			escaped;
 
 	len = 0;
 	node = NULL;
+	escaped = false;
 	node = ft_lstnew(c_type(NONE, *str, len));
 	if (!node)
 		return (FATAL);
@@ -77,7 +78,6 @@ size_t	create_t_token_list(char **str, t_token_list **line)
 
 t_status	tokenise(char *str, t_token_list **dst)
 {
-//	t_token_list	*end;
 	size_t	i;
 
 	i = 0;
@@ -88,8 +88,6 @@ t_status	tokenise(char *str, t_token_list **dst)
 	return (OK);
 }
 
-//
-//
 //int	main(int argc, char **argv)
 //{
 //	t_token_list	*line;

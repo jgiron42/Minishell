@@ -1,8 +1,8 @@
 #include "minishell.h"
 
-t_grouping *ft_new_grouping(t_command command)
+t_grouping	*ft_new_grouping(t_command command)
 {
-	t_grouping *new;
+	t_grouping	*new;
 
 	new = (t_grouping *)malloc(sizeof(t_grouping));
 	if (!new)
@@ -13,15 +13,14 @@ t_grouping *ft_new_grouping(t_command command)
 	return (new);
 }
 
-t_command parse_grouping(t_token_list **current)
+t_command	parse_grouping(t_token_list **current)
 {
-	t_command tree;
+	t_command	tree;
 
-	// tree = ft_newcmd(PIPELINE);
 	tree = (t_command){};
 	tree.type = GROUPING;
 	(*current) = (*current)->next;
-	if (!(*current) || ((*current)->type > DGREAT && (*current)->type < LPARENTHESIS))
+	if (!(*current) || ((*current)->type > DGREAT && (*current)->type < 256))
 	{
 		printf("\033[0;31merreur syntax: wrong token after parenthesis\n");
 		exit(5);
@@ -34,15 +33,15 @@ t_command parse_grouping(t_token_list **current)
 	}
 	else
 		(*current) = (*current)->next;
-	while ((*current) && (*current)->type <= DGREAT && (*current)->type >= GREAT)
+	while (*current && (*current)->type <= DGREAT && (*current)->type >= GREAT)
 	{
-		ft_lstadd_back_redir(&(tree.command.grouping->redir_list), new_redir_list(current));
+		ft_lstadd_back_redir(&(tree.command.grouping->redir_list),
+			new_redir_list(current));
 		(*current) = (*current)->next;
 	}
-	// if (*current)
-	// 	printf("last arg %s\n", (*current)->arg);
+	return(tree);
+}
+
 //	printf("----------------GROUPINGPRINT----------------\n");
 //	ft_print_grouping(&(tree.command.grouping));
 //	printf("----------------END----------------\n");
-	return(tree);
-}

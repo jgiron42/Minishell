@@ -6,7 +6,7 @@
 #    By: ereali <ereali@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/10/18 05:33:00 by ereali            #+#    #+#              #
-#    Updated: 2022/02/26 11:27:23 by ereali           ###   ########.fr        #
+#    Updated: 2022/02/27 03:56:06 by ereali           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME = minichoux
 
 INC_DIR = 	$(shell find includes -type d)
 
-# LIB_DIR		=	srcs/libft
+LIB_DIR		=	srcs/libft
 
 ##List every folder where he will find source file
 SRC_DIR = 	$(shell find srcs -type d)
@@ -36,7 +36,7 @@ SRC = main.c tokeniser.c parsing.c utils_lst.c parse_grouping.c parse_list.c \
 		command_name.c exec_builtin.c exec_program.c exec.c ft_exit.c\
 		redirections.c utils.c dupenv.c init_env.c merge_env.c parse_env.c\
 		serialize_env.c char_vec.c str_vec.c \
-		false.c kill.c true.c\
+		false.c true.c\
 
 ##List every .h found inside INC_DIR
 INC = parsing.h minishell.h
@@ -64,6 +64,7 @@ all: $(NAME)
 
 $(NAME): $(OBJ)
 				@echo "Compiling $(NAME) ...\c"
+				Make -C $(LIB_DIR)
 				$(CC) $(OBJ) $(CFLAGS) $(IFLAGS) -L srcs/libft $(LDLIBS) -o $(NAME)
 				@echo " DONE"
 

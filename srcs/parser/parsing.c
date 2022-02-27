@@ -94,7 +94,7 @@ t_command parsing(t_token_list **current, t_token_type expected)
 		else if ((*current)->type == RPARENTHESIS)
 		{
 			printf("\033[0;31mWrong syntax token\n");
-			break;
+			break ;
 		}
 	}
 	return (tree);

@@ -69,7 +69,7 @@ char	*expand_word(char *str, t_env *env)
 		j = i + 1;
 		if (str[i] && !ft_isdigit(str[j]) )
 		{
-			while (str[j] && isvalid_name_letter(str[j]))
+			while (str[j] && isvalid_name_letter(str[j]) == true)
 				j++;
 			key = ft_strndup(j - i , (const char *)(str + i + 1));
 			if (!key)
