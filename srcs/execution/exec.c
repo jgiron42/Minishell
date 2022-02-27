@@ -24,13 +24,15 @@ t_status	exec_simple(union u_command cmd, t_env *env)
 	s = cmd.simple;
 	expand_simple(&s, env);
 	ret = perform_redirection(env, s.redir_list);
+	if (ret == KO && !env->is_interactive && is_special_built_in(s.argv[0]))
+		ret = FATAL;
 	if (ret != OK)
 		return (ret);
 //	if (!s.argv[0] && perform_assignments(env, s, false) == FATAL)
 //		return (FATAL);
 
 	// exit (111);
-	if (!s.argv[0])
+	if (!s.argv || !s.argv[0])
 		ret = OK;
 	else if (ft_strchr(s.argv[0], '/'))
 		ret = exec_program(s.argv[0], s, env);
@@ -73,6 +75,7 @@ t_status	exec_pipeline(union u_command cmd, t_env *env)
 		else if (!ret)
 		{
 			reset_signals(env);
+			env->is_interactive = false;
 			if ((p->next && (dup2(next_pipe[1], 1) == -1
 				|| close(next_pipe[0]) == -1)) ||
 			 	(prev_pipe_read != -1 && dup2(prev_pipe_read, 0)))
@@ -136,6 +139,7 @@ t_status	exec_grouping(union u_command cmd, t_env *env)
 		if (!pid)
 		{
 			reset_signals(env);
+			env->is_interactive = false;
 			exec_command(g->command, &new_env);
 			exit(g_err);
 		}

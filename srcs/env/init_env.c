@@ -53,6 +53,7 @@ t_status init_env(t_env *env)
 {
 	set_signal(SIGINT, sigint_handler, env);
 	set_signal(SIGQUIT, SIG_IGN, env);
+	env->is_interactive = isatty(0);
 	if (!char_vec_resize(&env->opened_files, 3, FD_OPEN) ||
 		set_var(env, "PS1", "$ ", false) == FATAL ||
 		set_var(env, "PS2", "> ", false) == FATAL ||

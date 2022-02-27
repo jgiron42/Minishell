@@ -101,11 +101,12 @@ typedef struct	s_env {
 	t_var_list		*vars;
 	t_char_vec		opened_files;
 	sighandler_t	default_signals[64];
+	bool			is_interactive;
 }				t_env;
 
 typedef enum e_status { OK, KO, FATAL} t_status;
 
-typedef char	t_builtin(char **, t_var_list *, t_var_list **);
+typedef unsigned char	t_builtin(char **, t_env *);
 
 extern unsigned char	g_err;
 
@@ -133,6 +134,9 @@ void		my_getopt(char ***argv, char *option, char dest[256]);
 t_status	set_signal(int sig, sighandler_t action, t_env *env);
 void		reset_signals(t_env *env);
 void	sigint_handler(int sig);
+// input
+char		*my_readline(t_env *env, char *prompt);
+t_status	readnline(char **line, t_env *env);
 // exec
 t_status	path_find(char *name, t_env *env, char **dst);
 t_status	get_g_err(pid_t pid);
