@@ -26,27 +26,24 @@ bool	need_to_expand(char *str, size_t dollard)
 	}
 	while (i < dollard)
 	{
-		if (str[i] == '\'' && (!tab[1] || !tab[2]))
+		if (tab[2] == 1)
+			tab[2] = 0;
+		if (str[i] == '\'' && !tab[1] && !tab[2])
 		{
 			if (tab[0] == 0)
 				tab[0] = 1;
 			else
 				tab[0] = 0;
 		}
-		else if (str[i] == '\"' && (!tab[0] || !tab[2]))
+		else if (str[i] == '\"' && !tab[0] && !tab[2])
 		{
 			if (tab[1] == 0)
 				tab[1] = 1;
 			else
 				tab[1] = 0;
 		}
-		else if (str[i] == '\\' && (!tab[0] || !tab[2]))
-		{
-			if (tab[2] == 0)
-				tab[2] = 1;
-			else
-				tab[2] = 0;
-		}
+		else if (str[i] == '\\' && !tab[0])
+			tab[2] = 1;
 		i++;
 	}
 	if (tab[0] || tab[2])
@@ -78,17 +75,17 @@ char	*expand_word(char *str, t_env *env)
 				return (NULL);
 			// printf("La clefs est %s\n", key);
 			new = get_var_val(env, key);
-			if (!new)
-				return (NULL);
 			// printf("La valeur est %s\n", new);
-			str = ft_strreplace(str, new, i, i + ft_strlen(key));
+			str = ft_strreplace(str, new, i, i + ft_strlen(key) + 1);
 			if (!str)
 				return (NULL);
+			// printf("Lorsque i vaut %zu La string est %s\n",i, str);
+
 		}
 		else if (str[i])
 			i++;
 	}
-	printf("La string de agv_token est %s\n", str);
+	// printf("La string de agv_token est %s\n", str);
 	return (str);
 }
 
