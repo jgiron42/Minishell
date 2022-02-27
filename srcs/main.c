@@ -32,14 +32,14 @@ t_status	loop(t_env *env)
 		line = readline(get_var_val(env, "PS1"));
 		if (!line)
 			ft_exit(env);
-		add_history(line);
+		if (!*line)
+			add_history(line);
 		if (ft_shell(env, line) == FATAL)
 		{
 			free(line);
 			clear_history();
 			return (FATAL);
 		}
-		clear_history();
 		free(line);
 	}
 }
