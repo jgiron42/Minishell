@@ -40,6 +40,7 @@ t_status	loop(t_env *env)
 			clear_history();
 			return (FATAL);
 		}
+		clear_history();
 		free(line);
 	}
 }
