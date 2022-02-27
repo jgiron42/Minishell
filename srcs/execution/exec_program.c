@@ -49,6 +49,7 @@ t_status exec_program(char *name, t_simple s, t_env *env)
 		return (FATAL);
 	else if (!pid)
 	{
+		reset_signals(env);
 		clean_fds(env);
 		envp = serialize_env(env->vars);
 		if (!envp)

@@ -12,6 +12,7 @@
 #include <stdio.h>
 #include <sys/stat.h>
 #include <sys/wait.h>
+#include <signal.h>
 #include "../srcs/libft/libft.h"
 #include <stdio.h>
 #include <readline/readline.h>
@@ -94,9 +95,12 @@ typedef struct s_node {
 
 enum	e_fd_status {FD_CLOSE, FD_OPEN, FD_TMP};
 
+typedef void (*sighandler_t)(int);
+
 typedef struct	s_env {
-	t_var_list	*vars;
-	t_char_vec	opened_files;
+	t_var_list		*vars;
+	t_char_vec		opened_files;
+	sighandler_t	default_signals[64];
 }				t_env;
 
 typedef enum e_status { OK, KO, FATAL} t_status;
@@ -125,7 +129,9 @@ bool		path_has_dot(char *path);
 char 		*ft_realpath(const char *path, char *resolved_path);
 // utils
 char		*my_get_working_directory(const char *for_whom);
-void	my_getopt(char ***argv, char *option, char dest[256]);
+void		my_getopt(char ***argv, char *option, char dest[256]);
+t_status	set_signal(int sig, sighandler_t action, t_env *env);
+void		reset_signals(t_env *env);
 // exec
 t_status	path_find(char *name, t_env *env, char **dst);
 t_status	get_g_err(pid_t pid);

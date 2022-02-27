@@ -70,6 +70,7 @@ t_status	exec_pipeline(union u_command cmd, t_env *env)
 			return(FATAL);
 		else if (!ret)
 		{
+			reset_signals(env);
 			if ((p->next && (dup2(next_pipe[1], 1) == -1
 				|| close(next_pipe[0]) == -1)) ||
 			 	(prev_pipe_read != -1 && dup2(prev_pipe_read, 0)))
@@ -85,7 +86,8 @@ t_status	exec_pipeline(union u_command cmd, t_env *env)
 		to_wait++;
 		p = p->next;
 	}
-	get_g_err(ret);
+	if (to_wait >= 0)
+		get_g_err(ret);
 	while (--to_wait >= 0)
 		if (wait(NULL) == -1 && errno == EINTR)
 			return (FATAL);
@@ -129,13 +131,16 @@ t_status	exec_grouping(union u_command cmd, t_env *env)
 		pid = fork();
 		if (pid == -1)
 			return (FATAL);
-	}
-	if (!g->is_in_subshell || !pid)
-		ret = exec_command(g->command, &new_env);
-	if (g->is_in_subshell && !pid)
-		exit(g_err);
-	if (g->is_in_subshell && pid)
+		if (!pid)
+		{
+			reset_signals(env);
+			exec_command(g->command, &new_env);
+			exit(g_err);
+		}
 		get_g_err(pid);
+	}
+	else
+		ret = exec_command(g->command, &new_env);
 	if (reset_redirection(env, g->redir_list) == FATAL)
 		return (FATAL);
 	return (ret);
