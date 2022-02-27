@@ -6,17 +6,17 @@ t_status	redir(int oldfd, int newfd, int *save, t_env *env)
 	{
 		*save = dup (newfd);
 		if (*save == -1)
+			return (KO);
+		if (env->opened_files.size <= *save && !char_vec_resize(&env->opened_files, *save + 1, FD_CLOSE))
 			return (FATAL);
-		if (env->opened_files.size <= *save)
-			char_vec_resize(&env->opened_files, *save, FD_CLOSE);
 		env->opened_files.data[*save] = FD_TMP;
 	}
 	if (dup2(oldfd, newfd) == -1)
-		return (FATAL);
+		return (KO);
 	if (oldfd < env->opened_files.size)
 		env->opened_files.data[oldfd] = FD_CLOSE;
-	if (newfd >= env->opened_files.size)
-		char_vec_resize(&env->opened_files, newfd, FD_CLOSE);
+	if (newfd >= env->opened_files.size && !char_vec_resize(&env->opened_files, newfd + 1, FD_CLOSE))
+		return (FATAL);
 	env->opened_files.data[newfd] = FD_OPEN;
 	close(oldfd);
 	return (OK);
@@ -35,19 +35,22 @@ t_status	open_redir(t_env *env, t_redir *r)
 	else // (r->type == RW)
 		old_fd = open(r->word, O_RDWR | O_CREAT | O_TRUNC, 00644);
 	if (old_fd == -1)
-		return (FATAL);
+		return (KO);
 	return (redir(old_fd, r->newfd, &r->fd_save, env));
 }
 
 t_status perform_redirection(t_env *env, t_redir *list)
 {
+	int	ret;
+
 	while (list)
 	{
-		if ((list->type == HERE || list->type == DUPIN || list->type == DUPOUT) &&
-		redir(list->oldfd, list->newfd, &list->fd_save, env) == FATAL)
-			return (FATAL);
-		else if (open_redir(env, list) == FATAL)
-			return (FATAL);
+		if ((list->type == HERE || list->type == DUPIN || list->type == DUPOUT))
+			ret = redir(list->oldfd, list->newfd, &list->fd_save, env);
+		else
+			ret = open_redir(env, list);
+		if (ret != OK)
+			return (ret);
 		list = list->next;
 	}
 	return (OK);
@@ -55,18 +58,17 @@ t_status perform_redirection(t_env *env, t_redir *list)
 
 t_status reset_redirection(t_env *env, t_redir *list) // TODO: iteratize
 {
+	int	ret;
+
 	if (!list)
 		return (OK);
-	if (reset_redirection(env, list->next) == FATAL)
-		return (FATAL);
+	ret = reset_redirection(env, list->next);
+	if (ret == FATAL)
+		return (ret);
 	if (list->type == DUPIN || list->type == DUPOUT)
-	{
-		if (redir(list->newfd, list->oldfd, NULL, env) == FATAL)
-			return (FATAL);
-	}
+		ret |= redir(list->newfd, list->oldfd, NULL, env) == FATAL;
 	else if (list->fd_save != -1) {
-		if (dup2(list->fd_save, list->newfd) == FATAL)
-			return (FATAL);
+		ret |= dup2(list->fd_save, list->newfd);
 		close(list->fd_save);
 		env->opened_files.data[list->fd_save] = FD_CLOSE;
 	}
@@ -75,5 +77,5 @@ t_status reset_redirection(t_env *env, t_redir *list) // TODO: iteratize
 		close(list->newfd);
 		env->opened_files.data[list->newfd] = FD_CLOSE;
 	}
-	return (OK);
+	return (ret);
 }

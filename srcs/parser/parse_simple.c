@@ -21,12 +21,11 @@ void	ft_lstadd_back(t_token_list **alst, t_token_list *new)
 	}
 }
 
-t_command parse_simple(t_token_list **current)
+t_command	parse_simple(t_token_list **current)
 {
-	t_command	tree;
-	t_token_list *cpy;
+	t_command		tree;
+	t_token_list	*cpy;
 
-	// tree = ft_newcmd(SIMPLE);
 	tree = (t_command){};
 	tree.type = SIMPLE;
 	tree.command.simple.argv = NULL;
@@ -36,7 +35,8 @@ t_command parse_simple(t_token_list **current)
 		if ((*current)->type == WORD)
 			ft_lstadd_back(&(tree.command.simple.argv_tokens), cpy);
 		else
-			ft_lstadd_back_redir(&tree.command.simple.redir_list, new_redir_list(current));
+			ft_lstadd_back_redir(&tree.command.simple.redir_list,
+				new_redir_list(current));
 		(*current) = (*current)->next;
 	}
 	return (tree);

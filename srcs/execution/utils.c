@@ -13,6 +13,6 @@ t_status	get_g_err(pid_t pid)
 	if (WIFEXITED(status))
  		g_err = WEXITSTATUS(status);
 	else
-		g_err = WTERMSIG(status);
+		g_err = 128 + WTERMSIG(status);
 	return (OK);
 }

@@ -51,7 +51,8 @@ static t_status init_shlvl(t_env *env)
 
 t_status init_env(t_env *env)
 {
-	if (set_var(env, "PS1", "$ ", false) == FATAL ||
+	if (!char_vec_resize(&env->opened_files, 3, FD_OPEN) ||
+		set_var(env, "PS1", "$ ", false) == FATAL ||
 		set_var(env, "PS2", "> ", false) == FATAL ||
 		set_var(env, "IFS", " \t\n", false) == FATAL ||
 		init_pwd(env) == FATAL ||

@@ -27,7 +27,7 @@ void	clean_fds(t_env *env)
 	{
 		if (env->opened_files.data[i] == FD_TMP)
 		{
-			close(env->opened_files.data[i]);
+			close(i);
 			env->opened_files.data[i] = FD_CLOSE;
 		}
 		i++;
@@ -53,7 +53,9 @@ t_status exec_program(char *name, t_simple s, t_env *env)
 		envp = serialize_env(env->vars);
 		if (!envp)
 			return (FATAL);
-		execve(s.argv[0], s.argv, envp);
+		execve(name, s.argv, envp);
+		free_env(env);
+		perror(NAME);
 		exit (1);
 	}
 	get_g_err(pid);

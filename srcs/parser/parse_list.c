@@ -1,8 +1,8 @@
 #include "minishell.h"
 
-t_list *ft_new_list(t_command command, t_token_list *current)
+t_list	*ft_new_list(t_command command, t_token_list *current)
 {
-	t_list *new;
+	t_list	*new;
 
 	new = (t_list *)malloc(sizeof(t_list));
 	if (!new)
@@ -16,32 +16,29 @@ t_list *ft_new_list(t_command command, t_token_list *current)
 	return (new);
 }
 
-
-
-t_command parse_list(t_token_list **current, t_command prev_command)
+t_command	parse_list(t_token_list **current, t_command prev_command)
 {
-	t_command tree;
-	t_list	*first;
-	t_list	*tmp;
+	t_command	tree;
+	t_list		*first;
+	t_list		*tmp;
 
 	tree.type = LIST;
 	tree.command.list = ft_new_list(prev_command, *current);
 	first = tree.command.list;
 	tmp = first;
-	while ((*current) && ((*current)->type == AND_IF || (*current)->type == OR_IF ))
+	while (*current && ((*current)->type == AND_IF || (*current)->type == 128))
 	{
 		(*current) = (*current)->next;
-		if (!(*current) || ((*current)->type > DGREAT && (*current)->type != LPARENTHESIS))
+		if (!(*current) || ((*current)->type > 16 && (*current)->type != 256))
 		{
 			printf("\033[0;31merreur syntax: wrong token after list\n");
 			exit(5);
 		}
-		tmp->next = ft_new_list(parsing(current, AND_IF | OR_IF| RPARENTHESIS ), *current);
+		tmp->next = ft_new_list(parsing(current, AND_IF | 128 | 512), *current);
 		tmp = tmp->next;
 	}
-	// printf("----------------LISTPRINT----------------\n");
-	// ft_print_list(&first);
-	// printf("----------------END----------------\n");
-
 	return (tree);
 }
+// printf("----------------LISTPRINT----------------\n");
+// ft_print_list(&first);
+// printf("----------------END----------------\n");
