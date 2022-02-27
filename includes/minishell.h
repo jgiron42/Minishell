@@ -55,7 +55,7 @@ union	u_command {
 	t_token_type		error_type;
 };
 
-enum	e_command_type {SIMPLE, PIPELINE, LIST, GROUPING, PARSE_ERROR, PARSE_FATAL};
+enum	e_command_type {SIMPLE = 1, PIPELINE, LIST, GROUPING, PARSE_ERROR, PARSE_FATAL};
 
 typedef struct s_command {
 	enum e_command_type type;

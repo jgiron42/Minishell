@@ -28,6 +28,8 @@ t_status	exec_simple(union u_command cmd, t_env *env)
 		return (ret);
 //	if (!s.argv[0] && perform_assignments(env, s, false) == FATAL)
 //		return (FATAL);
+
+	// exit (111);
 	if (!s.argv[0])
 		ret = OK;
 	else if (ft_strchr(s.argv[0], '/'))
