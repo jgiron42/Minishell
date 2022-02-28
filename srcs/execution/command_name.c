@@ -40,6 +40,7 @@ t_builtin	*is_special_built_in(char *name)
 
 t_builtin	*is_built_in(char *name) {
 	const char *list[] = {
+		"env",
 		"echo",
 //		"alias",
 //		"bg",
@@ -63,6 +64,7 @@ t_builtin	*is_built_in(char *name) {
 	};
 	 t_builtin *f[] =
 			{
+					&sh_env,
 					&sh_echo,
 //					&shell_cd,
 //					&shell_false,
