@@ -108,7 +108,7 @@ typedef unsigned char	t_builtin(char **, t_env *);
 extern unsigned char	g_err;
 
 // env manip:
-int 		remove_var(t_env *env, char *key);
+t_status	remove_var(t_env *env, char *key);
 int			add_var(t_env *env, char *key, char *value, bool is_exported); // use in specific case, prefer set_var()
 t_status	set_var(t_env *env, char *key, char *value, bool is_exported);
 t_status	export_env(t_var_list *env, char *key);
@@ -138,6 +138,7 @@ bool	is_dir(char *path);
 unsigned char	sh_echo(char **argv, t_env *env);
 unsigned char	sh_env(char **argv, t_env *env);
 unsigned char	sh_export(char **argv, t_env *env);
+unsigned char	sh_unset(char **argv, t_env *env);
 // input
 char		*my_readline(t_env *env, char *prompt);
 t_status	readnline(char **line, t_env *env);
