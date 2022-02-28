@@ -49,40 +49,33 @@ void	free_redir(t_redir *list)
 	free(list);
 }
 
-t_redir	*new_redir_list(t_token_list **current)
+t_status	new_redir_list(t_token_list **current, t_redir **dst)
 {
-	t_redir *new;
 	t_token_list *cpy;
 
-	new = (t_redir *)malloc(sizeof(t_redir));
-	if (!new)
-		return (NULL);
-	new->next = NULL;
-	new->newfd = 0;
-	new->word = NULL;
-	new->type = 0;
+	*dst = (t_redir *)malloc(sizeof(t_redir));
+	if (!*dst)
+		return (FATAL);
+	**dst = (t_redir){};
 	if((*current)->type == LESS)
-		new->type = INPUT;
+		(*dst)->type = INPUT;
 	else if ((*current)->type == GREAT)
-		new->type = OUTPUT;
+		(*dst)->type = OUTPUT;
 	else if ((*current)->type == DGREAT)
-		new->type = APPEND;
+		(*dst)->type = APPEND;
 	else
-		new->type = HERE;
+		(*dst)->type = HERE;
 	if((*current)->arg[0] == '>')
-		new->newfd = 1;
+		(*dst)->newfd = 1;
 	if ((*current)->next && (*current)->next->type == WORD)
 	{
 		(*current) = ((*current)->next);
 		cpy = ft_lstcpy(*current);
-		new->word = (cpy)->arg;
+		(*dst)->word = (cpy)->arg;
 	}
 	else
-	{
-		printf("\033[0;31mERROR: invalid token after redirection\n");
-		exit(4);
-	}
-	return (new);
+		return (KO);
+	return (OK);
 }
 
 t_command parsing(t_token_list **current, t_token_type expected)

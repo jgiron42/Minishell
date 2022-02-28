@@ -18,6 +18,7 @@ t_command	parse_grouping(t_token_list **current)
 	t_command	tree;
 	t_command	next;
 	t_redir		*tmp;
+	int			ret;
 
 	tree = (t_command){.type = GROUPING};
 	(*current) = (*current)->next;
@@ -35,9 +36,9 @@ t_command	parse_grouping(t_token_list **current)
 	(*current) = (*current)->next;
 	while (*current && (*current)->type <= DGREAT && (*current)->type >= GREAT)
 	{
-		tmp = new_redir_list(current);
-		if (!tmp)
-			return (parse_error((t_command[2]){tree}, (t_command){.type = PARSE_FATAL}));
+		ret = new_redir_list(current, &tmp);
+		if (ret != OK || !tmp)
+			return (parse_error((t_command[2]){tree}, (t_command){.type = ret - 1 + PARSE_ERROR}));
 		ft_lstadd_back_redir(&(tree.command.grouping->redir_list), tmp);
 		(*current) = (*current)->next;
 	}

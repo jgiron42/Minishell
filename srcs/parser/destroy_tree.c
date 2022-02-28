@@ -8,7 +8,8 @@ void destroy_simple(union u_command c)
 	free(c.simple.argv);
 	free_token_list(c.simple.argv_tokens);
 	free_redir(c.simple.redir_list);
-
+	if (c.simple.argv)
+		ft_free_split(c.simple.argv);
 }
 void destroy_pipeline(union u_command c)
 {

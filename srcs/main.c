@@ -11,18 +11,23 @@ t_status	ft_shell(t_env *env, char *line)
 	int				ret;
 
 	if (tokenise(line, &tokens) == FATAL)
-		return (FATAL); // TODO: KO if interactive
+	{
+		free_token_list(tokens);
+		if (env->is_interactive)
+			return (KO);
+		else
+			return (FATAL);
+	}
 	if (!tokens)
 		return (OK);
 	ret = parse_tree(tokens, &tree, env);
-	if (ret != OK)
-	{
-		//TODO: destroy_token_list(tokens)
-		if (ret == KO && env->is_interactive)
-			return (KO);
-		return (FATAL);
-	}
-	return (exec_command(tree, env));
+	if (ret == OK)
+		ret = exec_command(tree, env);
+	else if (!env->is_interactive)
+		ret = FATAL;
+	destroy_tree(tree);
+	free_token_list(tokens);
+	return (ret);
 }
 t_status	loop(t_env *env)
 {
