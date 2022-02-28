@@ -68,6 +68,8 @@ char	*expand_word(char *str, t_env *env)
 		{
 			while (str[j] && isvalid_name_letter(str[j]) == true)
 				j++;
+			if (str[j] == '?' && j == i + 1)
+				j++;
 			key = ft_strndup(j - i - 1, (const char *)(str + i + 1));
 			if (!key)
 				return (NULL);
