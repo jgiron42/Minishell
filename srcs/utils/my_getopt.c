@@ -19,7 +19,7 @@ void	my_getopt(char ***argv, char *option, char *dest)
 				return;
 		i = 0;
 		while ((**argv)[++i])
-			*ft_strchr(option, (**argv)[i]) = 1;
+			dest[(int)*ft_strchr(option, (**argv)[i])] = 1;
 		(*argv)++;
 	}
 }
