@@ -141,7 +141,7 @@ t_status	exec_grouping(union u_command cmd, t_env *env)
 			reset_signals(env);
 			env->is_interactive = false;
 			exec_command(g->command, &new_env);
-			exit(g_err);
+			ft_exit(env);
 		}
 		get_g_err(env, pid);
 	}
@@ -161,8 +161,5 @@ t_status	exec_command(t_command cmd, t_env *env)
 			&exec_grouping
 	};
 
-//	return(a[cmd.type](cmd.command, env));
-	int ret = a[cmd.type](cmd.command, env);
-	// printf("$? = %d\n", (int)g_err);
-	return (ret);
+	return (a[cmd.type](cmd.command, env));
 }

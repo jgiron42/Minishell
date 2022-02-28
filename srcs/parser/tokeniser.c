@@ -3,6 +3,15 @@
 //creer gestion de word
 // fillline
 
+void	free_token_list(t_token_list *ptr)
+{
+	if (!ptr)
+		return;
+	free_token_list(ptr->next);
+	free(ptr->arg);
+	free(ptr);
+}
+
 t_token_type	c_type(t_quote nb, const char *str, size_t len)
 {
 	int					i;
@@ -79,12 +88,23 @@ size_t	create_t_token_list(char **str, t_token_list **line)
 t_status	tokenise(char *str, t_token_list **dst)
 {
 	size_t	i;
+	t_token_list *tmp;
 
 	i = 0;
 	*dst = NULL;
 	while (i < ft_strlen(str))
 		if (create_t_token_list(&str, dst) == FATAL)
+		{
+			free_token_list(*dst);
 			return (FATAL);
+		}
+	tmp = ft_lstnew(END);
+	if (!tmp)
+	{
+		free_token_list(*dst);
+		return (FATAL);
+	}
+	ft_lstadd_back(dst,tmp);
 	return (OK);
 }
 

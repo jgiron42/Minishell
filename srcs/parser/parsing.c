@@ -14,6 +14,13 @@
 // 	return (new);
 // }
 
+t_command	parse_error(t_command to_destroy[2], t_command ret)
+{
+	destroy_tree(to_destroy[0]);
+	destroy_tree(to_destroy[1]);
+	return (ret);
+}
+
 void		ft_lstadd_back_redir(t_redir **alst, t_redir *new)
 {
 	t_redir	*tmp;
@@ -31,6 +38,15 @@ void		ft_lstadd_back_redir(t_redir **alst, t_redir *new)
 		tmp->next = new;
 		new->next = NULL;
 	}
+}
+
+void	free_redir(t_redir *list)
+{
+	if (!list)
+		return;
+	free_redir(list->next);
+	free(list->word);
+	free(list);
 }
 
 t_redir	*new_redir_list(t_token_list **current)
@@ -72,54 +88,69 @@ t_redir	*new_redir_list(t_token_list **current)
 t_command parsing(t_token_list **current, t_token_type expected)
 {
 	t_command tree;
+	bool		operator;
 
-	tree = (t_command){};
+	tree = (t_command){.type = PARSE_ERROR};
+	operator = false;
 	if (!(*current))
 		return (tree);
-	if ((*current)->type != LPARENTHESIS && (*current)->type < WORD && (*current)->type > DGREAT)
+	while (!(expected & (*current)->type))
 	{
-		printf("\033[0;31mWrong syntax token\n");
-		exit(1);
-	}
-	while ((*current) && !(expected & (*current)->type))
-	{
-		if ((*current)->type >= WORD && (*current)->type <= DGREAT)
+		if (!operator && ((*current)->type >= WORD && (*current)->type <= DGREAT))
 			tree = parse_simple(current);
-		else if ((*current)->type == LPARENTHESIS)
+		else if (!operator && (*current)->type == LPARENTHESIS)
 			tree = parse_grouping(current);
-		// else if (tree.type == INVALID)
-		// 	{
-		// 		printf("unexcpected token near %d\n", (*current)->type);
-		// 		break;
-		// 	}
-		else if ((*current)->type == PIPE)
+		else if (operator && (*current)->type == PIPE)
 			tree = parse_pipe(current, tree);
-		else if ((*current)->type == OR_IF || (*current)->type == AND_IF)
+		else if (operator && ((*current)->type == OR_IF || (*current)->type == AND_IF))
 			tree = parse_list(current, tree);
-		else if ((*current)->type == RPARENTHESIS)
+		else
 		{
-			printf("\033[0;31mWrong syntax token\n");
-			break ;
+			destroy_tree(tree);
+			return ((t_command){.type = PARSE_ERROR});
 		}
+		if (tree.type == PARSE_ERROR || tree.type == PARSE_FATAL)
+			return (tree);
+		operator = true;
 	}
 	return (tree);
 }
 
-t_status 	parse_tree(t_token_list *current, t_command *tree)
+const char 	*get_token_str(t_token_type token)
+{
+	int	i;
+	const char *token_list[] = {
+			"",
+			">",
+			"<",
+			"<<",
+			">>",
+			"|",
+			"&&",
+			"||",
+			"(",
+			")",
+			";",
+			"end of line",
+	};
+
+	i = 0;
+	while (token != 1)
+	{
+		token >>= 1;
+		i++;
+	}
+	return (token_list[i]);
+}
+
+t_status 	parse_tree(t_token_list *current, t_command *tree, t_env *env)
 {
 	*tree = parsing(&current, END);
 	if (tree->type == PARSE_FATAL)
-	{
-		// destroy_tree(*tree);
 		return (FATAL);
-	}
-	else if (tree->type == PARSE_ERROR || current)
-	{
-		printf("parse error token %d\n", current->type);
-
-		//TODO : parse_error((*current)->type)
-		return (KO);
-	}
+	else if (tree->type == PARSE_ERROR)
+		return (my_perror(env, (char *[2]){"Syntax error near unexpected token: ",
+   (char *)get_token_str(current->type)}, false, KO));
 #ifdef DEBUGPARSING
 	if (tree->type == SIMPLE)
 	 {

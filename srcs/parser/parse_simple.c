@@ -32,6 +32,12 @@ t_command	parse_simple(t_token_list **current)
 	while ((*current) && (*current)->type >= WORD && (*current)->type <= DGREAT)
 	{
 		cpy = ft_lstcpy(*current);
+		if (!cpy)
+		{
+			free_redir(tree.command.simple.redir_list);
+			free_token_list(tree.command.simple.argv_tokens);
+			return ((t_command){.type = PARSE_FATAL});
+		}
 		if ((*current)->type == WORD)
 			ft_lstadd_back(&(tree.command.simple.argv_tokens), cpy);
 		else

@@ -41,12 +41,12 @@ t_status path_match_recurse(char *path, char **array, t_str_vec *dst)
 	entry = readdir(current);
 	while (entry)
 	{
-		if (glob_include(*array, entry->d_name))
+		if (ft_strcmp(entry->d_name, ".") && ft_strcmp(entry->d_name, "..") && glob_include(*array, entry->d_name))
 		{
 			path_push(path, *array);
 			if (is_dir(path))
 				path_match_recurse(path, array + 1, dst);
-			else
+			else if (!array[1])
 			{
 				tmp = ft_strdup(path);
 				if (!tmp || !str_vec_push(dst, tmp))
@@ -56,6 +56,7 @@ t_status path_match_recurse(char *path, char **array, t_str_vec *dst)
 		}
 		entry = readdir(current);
 	}
+	return (OK);
 }
 
 char *path_match(char *str)
@@ -68,8 +69,9 @@ char *path_match(char *str)
 	path = ft_split(str, '/');
 	// TODO: protect
 	if (*str == '/')
-		ft_strcpy(tmp, "/");
+		ft_strcpy(tmp, "");
 	else
 		ft_strcpy(tmp, ".");
-
+	path_match_recurse(tmp, path, &dst);
+	return (NULL);
 }

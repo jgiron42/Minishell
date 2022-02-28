@@ -14,11 +14,11 @@ t_status	ft_shell(t_env *env, char *line)
 		return (FATAL); // TODO: KO if interactive
 	if (!tokens)
 		return (OK);
-	ret = parse_tree(tokens, &tree);
+	ret = parse_tree(tokens, &tree, env);
 	if (ret != OK)
 	{
 		//TODO: destroy_token_list(tokens)
-		if (env->is_interactive)
+		if (ret == KO && env->is_interactive)
 			return (KO);
 		return (FATAL);
 	}
@@ -46,6 +46,7 @@ t_status	loop(t_env *env)
 int main(int argc, char **argv, char **envp)
 {
 	t_env		env;
+
 
 	(void)argc;
 	(void)argv;

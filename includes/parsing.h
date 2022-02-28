@@ -35,4 +35,5 @@ char			*ft_inhibit(char *str, const char *inibit);
 int				need_to_expand(char *str, size_t dollard);
 char			*remove_quotes(char* str);
 
+
 #endif
