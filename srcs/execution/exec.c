@@ -28,10 +28,6 @@ t_status	exec_simple(union u_command cmd, t_env *env)
 		ret = FATAL;
 	if (ret != OK)
 		return (ret);
-//	if (!s.argv[0] && perform_assignments(env, s, false) == FATAL)
-//		return (FATAL);
-
-	// exit (111);
 	if (!s.argv || !s.argv[0])
 		ret = OK;
 	else if (ft_strchr(s.argv[0], '/'))
@@ -40,14 +36,16 @@ t_status	exec_simple(union u_command cmd, t_env *env)
 		ret = exec_special_builtin(s, env);
 	else if (is_built_in(s.argv[0]))
 		ret = exec_regular_builtin(s, env);
-	else {
+	else
+	{
 		ret = path_find(s.argv[0], env,&name);
 		if (ret == OK)
 			ret = exec_program(name, s, env);
-		else
+		else if (ret == KO)
 			ret = command_not_found(s.argv[0]);
 		free(name);
 	}
+	ft_free_split(s.argv);
 	if (reset_redirection(env, s.redir_list) == FATAL)
 		return (FATAL);
 	return (ret);

@@ -160,7 +160,8 @@ t_status	ft_fillargv(t_simple *command)
 	{
 		tab[i] = command->argv_tokens->arg;
 		// printf("J'en suis au %deme argv\n|| C'est le token %s ||\n|| C'est %s||\n", i, command->argv_tokens->arg, tab[i]);
-		tab[i] = remove_quotes(tab[i]);
+//		tab[i] = remove_quotes(tab[i]);
+		tab[i] = ft_strdup(remove_quotes(tab[i]));
 		i++;
 		command->argv_tokens = command->argv_tokens->next;
 
@@ -176,9 +177,9 @@ t_status	expand_simple(t_simple *command, t_env *env)
 	t_token_list *begin;
 
 	// pour < a sans arg return KO
-	begin = command->argv_tokens;
 	if (!command || !command->argv_tokens)
 		return(KO);
+	begin = command->argv_tokens;
 	while (command->argv_tokens && command->argv_tokens->arg)
 	{
 		if (ft_strchr(command->argv_tokens->arg, '$'))

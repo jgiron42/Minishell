@@ -28,11 +28,6 @@ t_command	parse_pipe(t_token_list **current, t_command prev_command)
 	while ((*current) && (*current)->type == PIPE)
 	{
 		(*current) = (*current)->next;
-//		if (!(*current) || ((*current)->type > 16 && (*current)->type != 256))
-//		{
-//			printf("\033[0;31merreur syntax: wrong token after pipe\n");
-//			exit(5);
-//		}
 		tmp_c = parsing(current, 64 | 128 | PIPE | 512 | END);
 		if (tmp_c.type == PARSE_ERROR || tmp_c.type == PARSE_FATAL)
 			return (parse_error((t_command[2]){tree}, tmp_c));

@@ -18,7 +18,7 @@ t_token_list	*ft_lstcpy(t_token_list	 *current)
 	t_token_list	 *cpy;
 
 	cpy = ft_lstnew(current->type);
-	cpy->arg = (current)->arg;
+	cpy->arg = ft_strdup((current)->arg);
 	return (cpy);
 }
 
