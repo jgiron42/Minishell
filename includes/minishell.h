@@ -156,9 +156,9 @@ void	ft_exit(t_env *env);
 //parsing :
 t_status	tokenise(char *str, t_token_list **dst);
 t_status 	parse_tree(t_token_list *current, t_command *tree);
+void destroy_tree(t_command c);
 void ft_prin(t_token_list	**line);
 void ft_prin_redir(t_redir	**line);
-void destroy_tree(t_command c);
 void ft_print_pipe(t_pipeline **line);
 void ft_print_list(t_list **line);
 void ft_print_grouping(t_grouping **line);
@@ -171,6 +171,7 @@ t_command parse_list(t_token_list **current, t_command prev_command);
 t_command parse_simple(t_token_list **current);
 t_command	parsing(t_token_list **current, t_token_type expected);
 void		ft_lstadd_back_redir(t_redir **alst, t_redir *new);
+t_status		ft_lstinsertword(t_token_list **alst, char *str);
 
 //expansion
 t_status	expand_simple(t_simple *command, t_env *env);

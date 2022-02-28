@@ -71,10 +71,17 @@ char	*expand_word(char *str, t_env *env)
 			key = ft_strndup(j - i - 1, (const char *)(str + i + 1));
 			if (!key)
 				return (NULL);
+			if (!ft_strcmp(key, "?"))
+				new = ft_itoa(g_err);
 			// printf("La clefs est %s\n", key);
-			new = get_var_val(env, key);
-			// printf("La valeur est %s\n", new);
-			new = ft_inhibit(new, "\\\"\'*");
+			else
+			{
+				new = get_var_val(env, key);
+				// printf("La valeur est %s\n", new);
+				new = ft_inhibit(new, "\\\"\'*");
+				if (!new)
+					return (NULL);
+			}
 			// printf("La valeur est %s\n", new);
 			str = ft_strreplace(str, new, i, i + ft_strlen(key) + 1);
 			if (!str)
@@ -89,8 +96,11 @@ char	*expand_word(char *str, t_env *env)
 	return (str);
 }
 
-t_status	expand_redir(t_redir *command, t_env *env)
+t_status	expand_redir(t_redir **first, t_env *env)
 {
+	t_redir *command;
+
+	command = (*first);
 	if (!command)
 		return(KO);
 	while (command && command->word)
@@ -101,11 +111,40 @@ t_status	expand_redir(t_redir *command, t_env *env)
 			if (!command->word)
 				return (FATAL);
 		}
+		command->word = remove_quotes(command->word);
 		command = command->next;
 	}
 	if (!command)
 		return (OK);
 	return (KO);
+}
+
+// appeler si need to expand arg[i]
+t_status	ft_field_split(t_token_list **lst)
+{
+	char *arg;
+	int	i;
+
+	i = ft_strlen((*lst)->arg);
+	if (i > 0)
+		i -= 1;
+	while (i != 0)
+	{
+		while (i != 0 && !(ft_isspace((*lst)->arg[i]) &&
+			need_to_expand((*lst)->arg, i) == 0))
+			i--;
+		if (i != 0)
+		{
+			arg = strdup((*lst)->arg + i + 1);
+			if (!arg)
+				return (FATAL);
+			if (ft_strcmp(arg, ""))
+				if (ft_lstinsertword(lst, arg) == FATAL)
+					return (FATAL);
+			(*lst)->arg[i] = '\0';
+		}
+	}
+	return (OK);
 }
 
 t_status	ft_fillargv(t_simple *command)
@@ -121,6 +160,7 @@ t_status	ft_fillargv(t_simple *command)
 	{
 		tab[i] = command->argv_tokens->arg;
 		// printf("J'en suis au %deme argv\n|| C'est le token %s ||\n|| C'est %s||\n", i, command->argv_tokens->arg, tab[i]);
+		tab[i] = remove_quotes(tab[i]);
 		i++;
 		command->argv_tokens = command->argv_tokens->next;
 
@@ -133,10 +173,10 @@ t_status	ft_fillargv(t_simple *command)
 t_status	expand_simple(t_simple *command, t_env *env)
 {
 	t_status ret;
-	t_token_list *beggin;
+	t_token_list *begin;
 
 	// pour < a sans arg return KO
-	beggin = command->argv_tokens;
+	begin = command->argv_tokens;
 	if (!command || !command->argv_tokens)
 		return(KO);
 	while (command->argv_tokens && command->argv_tokens->arg)
@@ -146,21 +186,25 @@ t_status	expand_simple(t_simple *command, t_env *env)
 			// printf("Before expansion :%s\n",command->argv_tokens->arg);
 			command->argv_tokens->arg = expand_word(command->argv_tokens->arg, env);
 			if (!command->argv_tokens->arg)
+				return (FATAL);;
+				// printf("After expansion : %s\n",command->argv_tokens->arg);
+			if (ft_field_split(&command->argv_tokens) != OK)
 				return (FATAL);
-			// printf("After expansion : %s\n",command->argv_tokens->arg);
+
 		}
 		// printf("La string de agv_token est %s\n",command->argv_tokens->arg);
-		command->argv_tokens->arg = remove_quotes(command->argv_tokens->arg);
+		// command->argv_tokens->arg = remove_quotes(command->argv_tokens->arg);
 		// printf("La string de agv_token est %s\n", command->argv_tokens->arg);
 		command->argv_tokens = command->argv_tokens->next;
 	}
-	command->argv_tokens = beggin;
+	command->argv_tokens = begin;
 	ft_fillargv(command);
 	if (command->redir_list)
 	{
-		ret = expand_redir(command->redir_list, env);
+		ret = expand_redir(&command->redir_list, env);
 		if (ret != OK)
 			return (ret);
+		command->argv_tokens = begin;
 	}
 	return (OK);
 }

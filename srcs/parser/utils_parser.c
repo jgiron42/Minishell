@@ -37,6 +37,19 @@ size_t	ft_lstsize(t_token_list *lst)
 	return (i);
 }
 
+t_status	ft_lstinsertword(t_token_list **alst, char *str)
+{
+	t_token_list *new;
+
+	new = ft_lstnew(WORD);
+	if (!new)
+		return(FATAL);
+	new->arg = str;
+	new->next = (*alst)->next;
+	(*alst)->next = new;
+	return (OK);
+}
+
 int	isvalid_name_letter(char c)
 {
 	if (c == '_' || (ft_isalnum(c) && c != '\'' && c != '\\' && c != '\"'))
@@ -101,7 +114,7 @@ char	*ft_inhibit(char *str, const char *inibit)
 	j = 0;
 	// printf("j'en suis a %s     %s\n", str, inibit);
 	if (!str)
-		return (NULL);
+		return (ft_strdup(""));
 	if (!inibit)
 		return (str);
 	new = ft_calloc(sizeof(char) , ft_strlen(str) +
