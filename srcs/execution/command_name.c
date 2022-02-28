@@ -12,7 +12,7 @@ t_builtin	*is_special_built_in(char *name)
 //			".",
 //			"eval",
 //			"exec",
-//			"exit",
+			"exit",
 			"export",
 //			"readonly",
 //			"return",
@@ -25,7 +25,7 @@ t_builtin	*is_special_built_in(char *name)
 	};
 	 t_builtin *f[] =
 			{
-//			&shell_exit,
+			&sh_exit,
 			&sh_export,
 			&sh_unset
 			};
