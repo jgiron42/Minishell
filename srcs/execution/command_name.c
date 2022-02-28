@@ -12,7 +12,7 @@ t_builtin	*is_special_built_in(char *name)
 //			".",
 //			"eval",
 //			"exec",
-//			"exit",
+			"exit",
 			"export",
 //			"readonly",
 //			"return",
@@ -20,14 +20,14 @@ t_builtin	*is_special_built_in(char *name)
 //			"shift",
 //			"times",
 //			"trap",
-//			"unset",
+			"unset",
 			NULL
 	};
 	 t_builtin *f[] =
 			{
-//			&shell_exit,
+			&sh_exit,
 			&sh_export,
-//			&shell_unset
+			&sh_unset
 			};
 	int	i;
 
