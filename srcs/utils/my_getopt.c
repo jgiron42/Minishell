@@ -13,6 +13,8 @@ void	my_getopt(char ***argv, char *option, char *dest)
 	ft_bzero(dest, 256);
 	while (**argv && ***argv == '-')
 	{
+		if (!(**argv)[1])
+			return;
 		i = 0;
 		while ((**argv)[++i])
 			if (!ft_strchr(option, (**argv)[i]))
