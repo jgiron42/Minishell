@@ -10,7 +10,7 @@ void	my_getopt(char ***argv, char *option, char *dest)
 {
 	int	i;
 
-	dest = (char [256]){};
+	ft_bzero(dest, 256);
 	while (**argv && ***argv == '-')
 	{
 		i = 0;
