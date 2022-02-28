@@ -137,6 +137,7 @@ bool	is_dir(char *path);
 //builtin
 unsigned char	sh_echo(char **argv, t_env *env);
 unsigned char	sh_env(char **argv, t_env *env);
+unsigned char	sh_export(char **argv, t_env *env);
 // input
 char		*my_readline(t_env *env, char *prompt);
 t_status	readnline(char **line, t_env *env);
