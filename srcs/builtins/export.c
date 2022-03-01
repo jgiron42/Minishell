@@ -6,10 +6,10 @@ unsigned char	sh_export(char **argv, t_env *env)
 	int	i;
 
 	ret = 0;
-	i = 0;
 	argv++;
 	while (argv && *argv)
 	{
+		i = 0;
 		while ((*argv)[i] && !ft_isdigit((*argv)[0]) && isvalid_name_letter((*argv)[i]))
 			i++;
 		if (i > 0 && (*argv)[i] == '=')
@@ -22,9 +22,8 @@ unsigned char	sh_export(char **argv, t_env *env)
 		else
 		{
 			ret = 1;
-			printf("%d : export : %s : bad variable name\n", ret, *argv);
+			ft_putstr_fd("export :bad variable name\n", 2);
 		}
-		i = 0;
 		argv++;
 	}
 	return (ret);

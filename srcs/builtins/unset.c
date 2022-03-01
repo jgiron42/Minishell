@@ -15,7 +15,7 @@ unsigned char	sh_unset(char **argv, t_env *env)
 		if ((*argv)[i] != '\0')
 		{
 			ret = 1;
-			printf("%d : unset : %s : bad variable name\n", ret, *argv);
+			ft_putstr_fd("unset : bad variable name\n", 2);
 		}
 		else if (i > 0)
 		{
