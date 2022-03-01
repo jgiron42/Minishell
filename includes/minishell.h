@@ -51,8 +51,6 @@ typedef struct	s_simple {
 	t_redir		*redir_list; //Lara
 	t_token_list *argv_tokens;		//Lara
 	char		**argv;
-	t_var_list	*renv;
-	t_var_list	**wenv;
 }				t_simple;
 
 union	u_command {
@@ -109,9 +107,8 @@ typedef unsigned char	t_builtin(char **, t_env *);
 
 extern unsigned char	g_err;
 
-
 // env manip:
-int 		remove_var(t_env *env, char *key);
+t_status	remove_var(t_env *env, char *key);
 int			add_var(t_env *env, char *key, char *value, bool is_exported); // use in specific case, prefer set_var()
 t_status	set_var(t_env *env, char *key, char *value, bool is_exported);
 t_status	export_env(t_var_list *env, char *key);
@@ -137,7 +134,14 @@ void		reset_signals(t_env *env);
 void	sigint_handler(int sig);
 void path_pop(char *path);
 t_status path_push(char *path, char *component);
+t_status	my_perror(t_env *env, char *error[2], bool use_errno, t_status ret);
 bool	is_dir(char *path);
+//builtin
+unsigned char	sh_echo(char **argv, t_env *env);
+unsigned char	sh_env(char **argv, t_env *env);
+unsigned char	sh_export(char **argv, t_env *env);
+unsigned char	sh_unset(char **argv, t_env *env);
+unsigned char	sh_exit(char **argv, t_env *env);
 // input
 char		*my_readline(t_env *env, char *prompt);
 t_status	readnline(char **line, t_env *env);
@@ -157,24 +161,33 @@ void	ft_exit(t_env *env);
 
 //parsing :
 t_status	tokenise(char *str, t_token_list **dst);
-t_status 	parse_tree(t_token_list *current, t_command *tree);
-void ft_prin(t_token_list	**line);
-void ft_prin_redir(t_redir	**line);
-void destroy_tree(t_command c);
-void ft_print_pipe(t_pipeline **line);
-void ft_print_list(t_list **line);
-void ft_print_grouping(t_grouping **line);
-int	isvalid_name_letter(char c);
-t_command parsing(t_token_list **current, t_token_type expected);
-t_redir	*new_redir_list(t_token_list **current);
-t_command parse_grouping(t_token_list **current);
-t_command parse_pipe(t_token_list **current, t_command prev_command);
-t_command parse_list(t_token_list **current, t_command prev_command);
-t_command parse_simple(t_token_list **current);
+void		free_token_list(t_token_list *ptr);
+t_status 	parse_tree(t_token_list *current, t_command *tree, t_env *env);
+void		ft_prin(t_token_list	**line);
+void		ft_prin_redir(t_redir	**line);
+void		destroy_tree(t_command c);
+void		free_redir(t_redir *list);
+void		ft_print_pipe(t_pipeline **line);
+void		ft_print_list(t_list **line);
+void		ft_print_grouping(t_grouping **line);
+int			isvalid_name_letter(char c);
+t_command	parsing(t_token_list **current, t_token_type expected);
+t_status	new_redir_list(t_token_list **current, t_redir **dst);
+t_command	parse_grouping(t_token_list **current);
+t_command	parse_pipe(t_token_list **current, t_command prev_command);
+t_command	parse_list(t_token_list **current, t_command prev_command);
+t_command	parse_simple(t_token_list **current);
 t_command	parsing(t_token_list **current, t_token_type expected);
 void		ft_lstadd_back_redir(t_redir **alst, t_redir *new);
+void		destroy_grouping(union u_command c);
+void		destroy_list(union u_command c);
+void		destroy_pipeline(union u_command c);
+void		destroy_simple(union u_command c);
+t_command	parse_error(t_command to_destroy[2], t_command ret);
+t_status	ft_lstinsertword(t_token_list **alst, char *str);
 
 //expansion
 t_status	expand_simple(t_simple *command, t_env *env);
+char		*path_match(char *str);
 
 #endif

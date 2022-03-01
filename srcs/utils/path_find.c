@@ -5,20 +5,30 @@
 
 t_status	path_find2(char **array, char *name, char **dst)
 {
+	t_status	ret;
+
 	name = ft_strjoin("/", name);
+	ret = KO;
 	if (!name)
-		return (FATAL);
+		ret = FATAL;
 	while (*array)
 	{
 		*dst = ft_strjoin(*array, name);
 		if (!*dst)
-			return (FATAL);
+		{
+			ret = FATAL;
+			break;
+		}
 		if (!access(*dst, F_OK))
-			return (OK);
+		{
+			ret = OK;
+			break;
+		}
 		free(*dst);
 		++array;
 	}
-	return (KO);
+	free(name);
+	return (ret);
 }
 
 t_status	path_find(char *name, t_env *env, char **dst)

@@ -3,18 +3,18 @@
 //
 #include "minishell.h"
 
-void	my_getopt(char ***argv, char *option, char dest[256])
+// echo -n
+// my_getopt(&argv, "n", dst)
+
+void	my_getopt(char ***argv, char *option, char *dest)
 {
 	int	i;
 
-	i = 0;
-	while (i < 256)
-	{
-		dest[i] = 0;
-		++i;
-	}
+	ft_bzero(dest, 256);
 	while (**argv && ***argv == '-')
 	{
+		if (!(**argv)[1])
+			return;
 		i = 0;
 		while ((**argv)[++i])
 			if (!ft_strchr(option, (**argv)[i]))

@@ -78,7 +78,7 @@ t_status		set_var(t_env *env, char *key, char *value, bool is_exported)
 	return (add_var(env, key, value, is_exported));
 }
 
-int 	remove_var(t_env *env, char *key)
+t_status	remove_var(t_env *env, char *key)
 {
 	t_var_list *tmp;
 	t_var_list *old;

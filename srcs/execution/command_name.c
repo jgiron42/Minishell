@@ -12,22 +12,22 @@ t_builtin	*is_special_built_in(char *name)
 //			".",
 //			"eval",
 //			"exec",
-//			"exit",
-//			"export",
+			"exit",
+			"export",
 //			"readonly",
 //			"return",
 //			"set",
 //			"shift",
 //			"times",
 //			"trap",
-//			"unset",
+			"unset",
 			NULL
 	};
 	 t_builtin *f[] =
 			{
-//			&shell_exit,
-//			&shell_export,
-//			&shell_unset
+			&sh_exit,
+			&sh_export,
+			&sh_unset
 			};
 	int	i;
 
@@ -40,6 +40,8 @@ t_builtin	*is_special_built_in(char *name)
 
 t_builtin	*is_built_in(char *name) {
 	const char *list[] = {
+		"env",
+		"echo",
 //		"alias",
 //		"bg",
 //		"cd",
@@ -62,6 +64,8 @@ t_builtin	*is_built_in(char *name) {
 	};
 	 t_builtin *f[] =
 			{
+					&sh_env,
+					&sh_echo,
 //					&shell_cd,
 //					&shell_false,
 //					&shell_kill,

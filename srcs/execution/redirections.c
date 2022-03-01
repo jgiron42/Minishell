@@ -6,13 +6,13 @@ t_status	redir(int oldfd, int newfd, int *save, t_env *env)
 	{
 		*save = dup (newfd);
 		if (*save == -1)
-			return (KO);
+			return (FATAL);
 		if (env->opened_files.size <= *save && !char_vec_resize(&env->opened_files, *save + 1, FD_CLOSE))
 			return (FATAL);
 		env->opened_files.data[*save] = FD_TMP;
 	}
 	if (dup2(oldfd, newfd) == -1)
-		return (KO);
+		return (FATAL);
 	if (oldfd < env->opened_files.size)
 		env->opened_files.data[oldfd] = FD_CLOSE;
 	if (newfd >= env->opened_files.size && !char_vec_resize(&env->opened_files, newfd + 1, FD_CLOSE))
@@ -35,7 +35,7 @@ t_status	open_redir(t_env *env, t_redir *r)
 	else // (r->type == RW)
 		old_fd = open(r->word, O_RDWR | O_CREAT | O_TRUNC, 00644);
 	if (old_fd == -1)
-		return (KO);
+		return (my_perror(env, (char *[2]){"cannot open ", r->word}, true, KO));
 	return (redir(old_fd, r->newfd, &r->fd_save, env));
 }
 
@@ -43,6 +43,7 @@ t_status perform_redirection(t_env *env, t_redir *list)
 {
 	int	ret;
 
+	ret = OK;
 	while (list)
 	{
 		if ((list->type == HERE || list->type == DUPIN || list->type == DUPOUT))
@@ -50,10 +51,10 @@ t_status perform_redirection(t_env *env, t_redir *list)
 		else
 			ret = open_redir(env, list);
 		if (ret != OK)
-			return (ret);
+			break;
 		list = list->next;
 	}
-	return (OK);
+	return (ret);
 }
 
 t_status reset_redirection(t_env *env, t_redir *list) // TODO: iteratize
