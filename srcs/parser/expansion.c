@@ -49,6 +49,55 @@ int	need_to_expand(char *str, size_t dollard)
 	return (tab[0] + tab[1] + tab[2]);
 }
 
+char	*expand_word_all(char *str, t_env *env)
+{
+	char	*new;
+	char	*key;
+	size_t	i;
+	size_t	j;
+//
+	i = 0;
+	while (str[i])
+	{
+		// printf("le char %c est le numero %zu de la chaine %s\n", str[i], i , str);
+		while (str[i] && str[i] != '$')
+			i++;
+		// printf("le char %c est le numero %zu de la chaine %s\n", str[i], i , str);
+		j = i + 1;
+		if (str[i] && !ft_isdigit(str[j]))
+		{
+			while (str[j] && isvalid_name_letter(str[j]) == true)
+				j++;
+			if (str[j] == '?' && j == i + 1)
+				j++;
+			key = ft_strndup(j - i - 1, (const char *)(str + i + 1));
+			if (!key)
+				return (NULL);
+			if (!ft_strcmp(key, "?"))
+				new = ft_itoa(g_err);
+			// printf("La clefs est %s\n", key);
+			else
+			{
+				new = get_var_val(env, key);
+				// printf("La valeur est %s\n", new);
+				new = ft_inhibit(new, "\\\"\'*");
+				if (!new)
+					return (NULL);
+			}
+			// printf("La valeur est %s\n", new);
+			str = ft_strreplace(str, new, i, i + ft_strlen(key) + 1);
+			if (!str)
+				return (NULL);
+			// printf("Lorsque i vaut %zu La string est %s\n",i, str);
+
+		}
+		else if (str[i])
+			i++;
+	}
+	return (str);
+}
+
+
 char	*expand_word(char *str, t_env *env)
 {
 	char	*new;
@@ -94,7 +143,6 @@ char	*expand_word(char *str, t_env *env)
 		else if (str[i])
 			i++;
 	}
-
 	return (str);
 }
 
@@ -137,7 +185,7 @@ t_status	ft_field_split(t_token_list **lst)
 			i--;
 		if (i != 0)
 		{
-			arg = strdup((*lst)->arg + i + 1);
+			arg = ft_strdup((*lst)->arg + i + 1);
 			if (!arg)
 				return (FATAL);
 			if (ft_strcmp(arg, ""))
@@ -184,8 +232,8 @@ t_status	expand_simple(t_simple *command, t_env *env)
 	begin = command->argv_tokens;
 	while (command->argv_tokens && command->argv_tokens->arg)
 	{
-		if (ft_strchr(command->argv_tokens->arg, '$'))
-		{
+		// if (ft_strchr(command->argv_tokens->arg, '$'))
+		// {
 			// printf("Before expansion :%s\n",command->argv_tokens->arg);
 			command->argv_tokens->arg = expand_word(command->argv_tokens->arg, env);
 			if (!command->argv_tokens->arg)
@@ -194,9 +242,8 @@ t_status	expand_simple(t_simple *command, t_env *env)
 			if (ft_field_split(&command->argv_tokens) != OK)
 				return (FATAL);
 
-		}
+		// }
 		// printf("La string de agv_token est %s\n",command->argv_tokens->arg);
-		// command->argv_tokens->arg = remove_quotes(command->argv_tokens->arg);
 		// printf("La string de agv_token est %s\n", command->argv_tokens->arg);
 		command->argv_tokens = command->argv_tokens->next;
 	}

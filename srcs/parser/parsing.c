@@ -49,7 +49,7 @@ void	free_redir(t_redir *list)
 	free(list);
 }
 
-t_status	new_redir_list(t_token_list **current, t_redir **dst)
+t_status	new_redir_list(t_token_list **current, t_redir **dst, t_env *env)
 {
 	t_token_list *cpy;
 
@@ -71,14 +71,23 @@ t_status	new_redir_list(t_token_list **current, t_redir **dst)
 	{
 		(*current) = ((*current)->next);
 		cpy = ft_lstcpy(*current);
+		if (!cpy)
+		{
+			free(*dst);
+			return(FATAL);
+		}
 		(*dst)->word = (cpy)->arg;
 	}
 	else
 		return (KO);
+	if ((*dst)->type == HERE)
+		ft_heredoc(env, *dst);
 	return (OK);
 }
 
-t_command parsing(t_token_list **current, t_token_type expected)
+// j'aurais pu del ?
+
+t_command parsing(t_token_list **current, t_token_type expected, t_env *env)
 {
 	t_command tree;
 	bool		operator;
@@ -113,7 +122,7 @@ const char 	*get_token_str(t_token_type token)
 {
 	int	i;
 	const char *token_list[] = {
-			"",
+			"word",
 			">",
 			"<",
 			"<<",
@@ -138,7 +147,7 @@ const char 	*get_token_str(t_token_type token)
 
 t_status 	parse_tree(t_token_list *current, t_command *tree, t_env *env)
 {
-	*tree = parsing(&current, END);
+	*tree = parsing(&current, END, env);
 	if (tree->type == PARSE_FATAL)
 		return (FATAL);
 	else if (tree->type == PARSE_ERROR)

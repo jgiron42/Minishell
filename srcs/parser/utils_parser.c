@@ -57,6 +57,35 @@ int	isvalid_name_letter(char c)
 	return (0);
 }
 
+// si pas quote
+// 1read 2cmp 3 expand 4write
+// si quote expand char EOF ?
+// si rl null est ce que j'ai une fin de fichier
+t_status ft_heredoc(t_env *env, t_redir *redir)
+{
+	char	*rl;
+	int		fd;
+	bool	quote;
+
+	quote = false;
+	if (ft_strchr(redir->word, "\'") || ft_strchr(redir->word, "\""))
+		quote = true;
+	fd = open( "." , O_TMPFILE | O_RDWR);
+	if (fd < 0)
+		return (KO);
+	rl = my_readline(env, "PS2");
+	redir->old_fd = fd;
+	while (ft_strcmp(redir->word, rl))
+	{
+		if (quote == false)
+			expand_word_all(rl, env);
+		if (rl)
+			write(fd, rl, strlen(rl));
+		rl = my_readline(env, "PS2");
+	}
+	return (OK);
+}
+
 //libft
 size_t	ft_countoccur(char *str, const char *to_count)
 {
