@@ -99,13 +99,13 @@ t_command parsing(t_token_list **current, t_token_type expected, t_env *env)
 	while (!(expected & (*current)->type))
 	{
 		if (!operator && ((*current)->type >= WORD && (*current)->type <= DGREAT))
-			tree = parse_simple(current);
+			tree = parse_simple(current, env);
 		else if (!operator && (*current)->type == LPARENTHESIS)
-			tree = parse_grouping(current);
+			tree = parse_grouping(current, env);
 		else if (operator && (*current)->type == PIPE)
-			tree = parse_pipe(current, tree);
+			tree = parse_pipe(current, tree, env);
 		else if (operator && ((*current)->type == OR_IF || (*current)->type == AND_IF))
-			tree = parse_list(current, tree);
+			tree = parse_list(current, tree, env);
 		else
 		{
 			destroy_tree(tree);

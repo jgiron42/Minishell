@@ -16,7 +16,7 @@ t_list	*ft_new_list(t_command command, t_token_list *current)
 	return (new);
 }
 
-t_command	parse_list(t_token_list **current, t_command prev_command)
+t_command	parse_list(t_token_list **current, t_command prev_command, t_env *env)
 {
 	t_command	tree;
 	t_command	tmp_com;
@@ -30,7 +30,7 @@ t_command	parse_list(t_token_list **current, t_command prev_command)
 	while (*current && ((*current)->type == AND_IF || (*current)->type == 128))
 	{
 		(*current) = (*current)->next;
-		tmp_com	= parsing(current, AND_IF | 128 | 512 | END);
+		tmp_com	= parsing(current, AND_IF | 128 | 512 | END, env);
 		if (tmp_com.type == PARSE_FATAL || tmp_com.type == PARSE_ERROR)
 			return (parse_error((t_command[2]){tree}, tmp_com));
 		tmp->next = ft_new_list(tmp_com, *current);

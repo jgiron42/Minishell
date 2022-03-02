@@ -12,7 +12,7 @@ t_pipeline	*ft_new_pipe(t_command command)
 	return (new);
 }
 
-t_command	parse_pipe(t_token_list **current, t_command prev_command)
+t_command	parse_pipe(t_token_list **current, t_command prev_command, t_env *env)
 {
 	t_command	tree;
 	t_command	tmp_c;
@@ -28,7 +28,7 @@ t_command	parse_pipe(t_token_list **current, t_command prev_command)
 	while ((*current) && (*current)->type == PIPE)
 	{
 		(*current) = (*current)->next;
-		tmp_c = parsing(current, 64 | 128 | PIPE | 512 | END);
+		tmp_c = parsing(current, 64 | 128 | PIPE | 512 | END, env);
 		if (tmp_c.type == PARSE_ERROR || tmp_c.type == PARSE_FATAL)
 			return (parse_error((t_command[2]){tree}, tmp_c));
 		tmp->next = ft_new_pipe(tmp_c);

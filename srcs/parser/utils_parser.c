@@ -68,19 +68,20 @@ t_status ft_heredoc(t_env *env, t_redir *redir)
 	bool	quote;
 
 	quote = false;
-	if (ft_strchr(redir->word, "\'") || ft_strchr(redir->word, "\""))
+	if (ft_strchr(redir->word, '\'') || ft_strchr(redir->word, '\"'))
 		quote = true;
-	fd = open( "." , O_TMPFILE | O_RDWR);
+	//fd = open( "." , O_TMPFILE | O_RDWR);
+	fd = open( "/tmp/tmp_minishell" , O_CREAT | O_TRUNC | O_RDWR, 0644);
 	if (fd < 0)
 		return (KO);
 	rl = my_readline(env, "PS2");
-	redir->old_fd = fd;
+	redir->oldfd = fd;
 	while (ft_strcmp(redir->word, rl))
 	{
 		if (quote == false)
 			expand_word_all(rl, env);
 		if (rl)
-			write(fd, rl, strlen(rl));
+			write(fd, rl, ft_strlen(rl));
 		rl = my_readline(env, "PS2");
 	}
 	return (OK);

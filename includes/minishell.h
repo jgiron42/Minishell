@@ -113,8 +113,8 @@ int			add_var(t_env *env, char *key, char *value, bool is_exported); // use in s
 t_status	set_var(t_env *env, char *key, char *value, bool is_exported);
 t_status	export_env(t_var_list *env, char *key);
 char		*get_var_val(t_env *env, char *key);
-t_var_list		*get_var_ptr(t_env *env, char *key);
-void			free_env(t_env *env);
+t_var_list	*get_var_ptr(t_env *env, char *key);
+void		free_env(t_env *env);
 t_var_list *dup_var_list(t_var_list *src);
 // env conversion:
 char		**serialize_env(t_var_list *env);
@@ -129,11 +129,11 @@ char		*my_get_working_directory(const char *for_whom);
 void		my_getopt(char ***argv, char *option, char dest[256]);
 t_status	set_signal(int sig, sighandler_t action, t_env *env);
 void		reset_signals(t_env *env);
-void	sigint_handler(int sig);
-void path_pop(char *path);
-t_status path_push(char *path, char *component);
+void		sigint_handler(int sig);
+void		path_pop(char *path);
+t_status	path_push(char *path, char *component);
 t_status	my_perror(t_env *env, char *error[2], bool use_errno, t_status ret);
-bool	is_dir(char *path);
+bool		is_dir(char *path);
 //builtin
 unsigned char	sh_echo(char **argv, t_env *env);
 unsigned char	sh_env(char **argv, t_env *env);
@@ -154,8 +154,8 @@ t_builtin	*is_special_built_in(char *name);
 t_builtin	*is_built_in(char *name);
 t_status	exec_special_builtin(t_simple s, t_env *env);
 t_status	exec_regular_builtin(t_simple s, t_env *env);
-t_status exec_program(char *name, t_simple s, t_env *env);
-void	ft_exit(t_env *env);
+t_status	exec_program(char *name, t_simple s, t_env *env);
+void		ft_exit(t_env *env);
 
 //parsing :
 t_status	tokenise(char *str, t_token_list **dst);
@@ -169,13 +169,12 @@ void		ft_print_pipe(t_pipeline **line);
 void		ft_print_list(t_list **line);
 void		ft_print_grouping(t_grouping **line);
 int			isvalid_name_letter(char c);
-t_command	parsing(t_token_list **current, t_token_type expected);
-t_status	new_redir_list(t_token_list **current, t_redir **dst);
-t_command	parse_grouping(t_token_list **current);
-t_command	parse_pipe(t_token_list **current, t_command prev_command);
-t_command	parse_list(t_token_list **current, t_command prev_command);
-t_command	parse_simple(t_token_list **current);
-t_command	parsing(t_token_list **current, t_token_type expected);
+t_status	new_redir_list(t_token_list **current, t_redir **dst, t_env *env);
+t_command	parse_grouping(t_token_list **current, t_env *env);
+t_command	parse_pipe(t_token_list **current, t_command prev_command, t_env *env);
+t_command	parse_list(t_token_list **current, t_command prev_command, t_env *env);
+t_command	parse_simple(t_token_list **current, t_env *env);
+t_command	parsing(t_token_list **current, t_token_type expected, t_env *env);
 void		ft_lstadd_back_redir(t_redir **alst, t_redir *new);
 void		destroy_grouping(union u_command c);
 void		destroy_list(union u_command c);
@@ -183,8 +182,11 @@ void		destroy_pipeline(union u_command c);
 void		destroy_simple(union u_command c);
 t_command	parse_error(t_command to_destroy[2], t_command ret);
 t_status	ft_lstinsertword(t_token_list **alst, char *str);
+t_status	ft_heredoc(t_env *env, t_redir *redir);
+
 
 //expansion
+char		*expand_word_all(char *str, t_env *env);
 t_status	expand_simple(t_simple *command, t_env *env);
 char		*path_match(char *str);
 

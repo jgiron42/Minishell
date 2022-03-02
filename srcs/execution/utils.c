@@ -1,7 +1,7 @@
 //
 // Created by joachim on 22/02/2022.
 //
-
+     #include <string.h>
 #include "minishell.h"
 
 const char	*signal_messages[NSIG] = {
