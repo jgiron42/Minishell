@@ -34,8 +34,11 @@ t_status path_push(char *path, char *component)
 		return (KO);
 	}
 	path += ft_strlen(path);
-	*path = '/';
-	++path;
+	if (path[-1] != '/')
+	{
+		*path = '/';
+		++path;
+	}
 	while (*component)
 	{
 		*path = *component;

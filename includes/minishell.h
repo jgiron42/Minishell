@@ -124,6 +124,8 @@ t_status	init_env(t_env *env);
 // path_utils:
 bool		path_has_dot(char *path);
 char 		*ft_realpath(const char *path, char *resolved_path);
+char *path_match(char *str);
+
 // utils
 char		*my_get_working_directory(const char *for_whom);
 void		my_getopt(char ***argv, char *option, char dest[256]);

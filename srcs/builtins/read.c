@@ -1,5 +1,5 @@
 #include "minishell.h"
-
+/*
 static bool	escape(char *str)
 {
 	bool	is_escaped;
@@ -96,4 +96,4 @@ char	read_shell(char **argv, t_env *env)
 			break;
 	}
 	return (assign(argv, env, buf));
-}
+}*/
