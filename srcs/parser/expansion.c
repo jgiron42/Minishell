@@ -6,7 +6,7 @@
 /*   By: ereali <ereali@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 01:12:29 by ereali            #+#    #+#             */
-/*   Updated: 2022/03/03 01:12:30 by ereali           ###   ########.fr       */
+/*   Updated: 2022/03/03 05:23:15 by ereali           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,7 @@ int	need_to_expand(char *str, size_t dollard)
 	int 	tab[3];
 
 	i = 0;
-	// tab = ft_tabzero(tab);
-	j=0;
+	j = 0;
 	while (j < 3)
 	{
 		tab[j] = 0;
@@ -198,8 +197,7 @@ t_status	ft_fillargv(t_simple *command)
 	while (command && command->argv_tokens)
 	{
 		tab[i] = command->argv_tokens->arg;
-		tab[i] = remove_quotes(tab[i]);
-		// tab[i] = ft_strdup(remove_quotes(tab[i]));
+		tab[i] = ft_strdup(remove_quotes(tab[i]));
 		i++;
 		command->argv_tokens = command->argv_tokens->next;
 

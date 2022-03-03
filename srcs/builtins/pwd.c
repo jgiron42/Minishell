@@ -1,29 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exit.c                                             :+:      :+:    :+:   */
+/*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ereali <ereali@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/03 02:40:29 by ereali            #+#    #+#             */
-/*   Updated: 2022/03/03 02:40:30 by ereali           ###   ########.fr       */
+/*   Created: 2022/03/03 02:40:48 by ereali            #+#    #+#             */
+/*   Updated: 2022/03/03 03:26:31 by ereali           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-unsigned char	sh_exit(char **argv, t_env *env)
+unsigned char	sh_pwd(char **argv, t_env *env)
 {
-	int	i;
+	char	*buf;
 
-	i = 0;
-	argv++;
-	if (!(*argv))
-		ft_exit(env);
-	while (ft_isdigit((*argv)[i]))
-		i++;
-	if ((*argv)[i] == '\0')
-		g_err = ft_atoi(*argv);
-	ft_exit(env);
-	return(0);
+	(void)argv;
+	(void)env;
+	buf = getcwd(NULL, 0);
+	if (buf && ft_strlen(buf) < PATH_MAX)
+	{
+		ft_putstr_fd(buf, 1);
+		ft_putstr_fd("\n", 1);
+		free(buf);
+		return (OK);
+	}
+	else
+		return (KO);
 }
