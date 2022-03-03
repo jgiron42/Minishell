@@ -1,8 +1,5 @@
 #include "minishell.h"
 
-//creer gestion de word
-// fillline
-
 void	free_token_list(t_token_list *ptr)
 {
 	if (!ptr)
@@ -71,8 +68,8 @@ size_t	create_t_token_list(char **str, t_token_list **line)
 		len++;
 	if (!(*str)[len] && node->nb)
 	{
-		printf("\033[0;31merreur syntax: missing closing quote\n");
-		exit(1);
+		ft_putstr_fd("\033[0;31merreur syntax: missing closing quote\n", 2);
+		return (KO);
 	}
 	if (node->type != INVALID)
 	{
@@ -87,8 +84,8 @@ size_t	create_t_token_list(char **str, t_token_list **line)
 
 t_status	tokenise(char *str, t_token_list **dst)
 {
-	size_t	i;
-	t_token_list *tmp;
+	size_t			i;
+	t_token_list	*tmp;
 
 	i = 0;
 	*dst = NULL;
@@ -104,34 +101,6 @@ t_status	tokenise(char *str, t_token_list **dst)
 		free_token_list(*dst);
 		return (FATAL);
 	}
-	ft_lstadd_back(dst,tmp);
+	ft_lstadd_back(dst, tmp);
 	return (OK);
 }
-
-//int	main(int argc, char **argv)
-//{
-//	t_token_list	*line;
-//	t_command		tree;
-//	size_t	i;
-//
-//	(void)argc;
-//	i = 0;
-//	line = NULL;
-//	while (i < ft_strlen(argv[1]))
-//		i += create_t_token_list(argv[1] + i, &line);
-//	ft_prin(&line);
-//	tree = parsing(&line, END);
-//	// if (tree.type == SIMPLE)
-//	// {
-//	// 	if (tree.command.simple.argv)
-//	// 	{
-//	// 		printf("-----------------argv---------------------\n" );
-//	// 		ft_prin(&(tree.command.simple.argv));
-//	// 		printf("---------------END------------\n" );
-//	// 	}
-//	// 	// printf("-------redir------------\n");
-//	// 	// ft_prin_redir(&(tree.command.simple.redir_list));
-//	// }
-//
-//	return (0);
-//}

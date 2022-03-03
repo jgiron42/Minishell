@@ -7,7 +7,7 @@ char	*ft_strreplace(char *s, char *to_add, size_t start_add, size_t to_pass)
 
 	j = 0;
 	ret = (char *)malloc(sizeof(*ret) * (ft_strlen(to_add) + ft_strlen(s)
-		- (to_pass - start_add) + 1));
+				- (to_pass - start_add) + 1));
 	if (!(ret))
 		return (NULL);
 	ret = ft_strncpy(ret, s, start_add);
@@ -17,7 +17,6 @@ char	*ft_strreplace(char *s, char *to_add, size_t start_add, size_t to_pass)
 		j++;
 	}
 	j = start_add + j;
-	// ft_strcpy(ret + j, s + to_pass);
 	while (s[to_pass])
 	{
 		ret[j] = s[to_pass];

@@ -44,7 +44,3 @@ t_command	parse_grouping(t_token_list **current, t_env *env)
 	}
 	return(tree);
 }
-
-//	printf("----------------GROUPINGPRINT----------------\n");
-//	ft_print_grouping(&(tree.command.grouping));
-//	printf("----------------END----------------\n");

@@ -6,7 +6,7 @@
 /*   By: ereali <ereali@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/09 20:06:29 by ereali            #+#    #+#             */
-/*   Updated: 2021/05/30 18:21:10 by ereali           ###   ########.fr       */
+/*   Updated: 2022/03/03 01:09:50 by ereali           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 
 char	*ft_strjoinf1(char const *s1, char const *s2)
 {
-	char *ret;
+	char	*ret;
 
 	ret = ft_strjoin(s1, s2);
 	free((char *)s1);
@@ -64,7 +64,7 @@ char	*ft_strjoinf1(char const *s1, char const *s2)
 
 char	*ft_strjoinf2(char const *s1, char const *s2)
 {
-	char *ret;
+	char	*ret;
 
 	ret = ft_strjoin(s1, s2);
 	free((char *)s2);
@@ -73,7 +73,7 @@ char	*ft_strjoinf2(char const *s1, char const *s2)
 
 char	*ft_strjoinff(char const *s1, char const *s2)
 {
-	char *ret;
+	char	*ret;
 
 	ret = ft_strjoin(s1, s2);
 	free((char *)s1);

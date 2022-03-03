@@ -1,54 +1,16 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils_parser.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ereali <ereali@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/03/03 00:51:43 by ereali            #+#    #+#             */
+/*   Updated: 2022/03/03 00:51:51 by ereali           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
-
-t_token_list	*ft_lstnew(t_token_type	 token)
-{
-	t_token_list *new;
-
-	if (!(new = (t_token_list *)malloc(sizeof(t_token_list))))
-		return (NULL);
-	new->arg = NULL;
-	new->type = token;
-	new->nb = NONE;
-	new->next = NULL;
-	return (new);
-}
-
-t_token_list	*ft_lstcpy(t_token_list	 *current)
-{
-	t_token_list	 *cpy;
-
-	cpy = ft_lstnew(current->type);
-	cpy->arg = ft_strdup((current)->arg);
-	return (cpy);
-}
-
-size_t	ft_lstsize(t_token_list *lst)
-{
-	size_t	i;
-
-	i = 0;
-	if (!lst)
-		return (0);
-	while (lst)
-	{
-		lst = lst->next;
-		i++;
-	}
-	return (i);
-}
-
-t_status	ft_lstinsertword(t_token_list **alst, char *str)
-{
-	t_token_list *new;
-
-	new = ft_lstnew(WORD);
-	if (!new)
-		return(FATAL);
-	new->arg = str;
-	new->next = (*alst)->next;
-	(*alst)->next = new;
-	return (OK);
-}
 
 int	isvalid_name_letter(char c)
 {
@@ -57,10 +19,6 @@ int	isvalid_name_letter(char c)
 	return (0);
 }
 
-// si pas quote
-// 1read 2cmp 3 expand 4write
-// si quote expand char EOF ?
-// si rl null est ce que j'ai une fin de fichier
 t_status ft_heredoc(t_env *env, t_redir *redir)
 {
 	char	*rl;
@@ -69,40 +27,31 @@ t_status ft_heredoc(t_env *env, t_redir *redir)
 
 	quote = false;
 	if (ft_strchr(redir->word, '\'') || ft_strchr(redir->word, '\"'))
+	{
 		quote = true;
-	//fd = open( "." , O_TMPFILE | O_RDWR);
-	fd = open( "/tmp/tmp_minishell" , O_CREAT | O_TRUNC | O_RDWR, 0644);
+		redir->word = remove_quotes(redir->word);
+	}
+	fd = open("/tmp/tmp_minishell" , O_CREAT | O_TRUNC | O_RDWR, 0644);
 	if (fd < 0)
 		return (KO);
 	rl = my_readline(env, "PS2");
-	redir->oldfd = fd;
 	while (ft_strcmp(redir->word, rl))
 	{
 		if (quote == false)
-			expand_word_all(rl, env);
+			rl = expand_word_all(rl, env);
 		if (rl)
 			write(fd, rl, ft_strlen(rl));
+		write(fd, "\n", 1);
 		rl = my_readline(env, "PS2");
 	}
+	if(close(fd) != 0)
+		return(KO);
+	fd = open("/tmp/tmp_minishell" , O_RDONLY);
+	if (fd < 0)
+		return (KO);
+	// redir ->word = path
+	redir->oldfd = fd;
 	return (OK);
-}
-
-//libft
-size_t	ft_countoccur(char *str, const char *to_count)
-{
-	size_t	i;
-	size_t count;
-
-	i = 0;
-	count = 0;
-	while (str && str[i])
-	{
-		if (ft_strchr(to_count, str[i]))
-			count++;
-		i++;
-	}
-	// printf("Il y a %zu slash a faire\n", count);
-	return (count);
 }
 
 char	*remove_quotes(char* str)
@@ -116,7 +65,6 @@ char	*remove_quotes(char* str)
 	cpy = ft_strdup(str);
 	while(cpy[i + j])
 	{
-		// printf("j'en suis a %c de %s need to expand retourne %d\n", cpy[i + j], cpy, need_to_expand(cpy, i + j));
 		if ((ft_strchr("\\\"" , cpy[i + j]) && need_to_expand(cpy, i + j) < 2) ||
 			(cpy[i + j] == '\'' && (need_to_expand(cpy, i + j) == 2 || need_to_expand(cpy, i + j) == 0)))
 		{
@@ -142,7 +90,6 @@ char	*ft_inhibit(char *str, const char *inibit)
 
 	i = 0;
 	j = 0;
-	// printf("j'en suis a %s     %s\n", str, inibit);
 	if (!str)
 		return (ft_strdup(""));
 	if (!inibit)
@@ -153,11 +100,9 @@ char	*ft_inhibit(char *str, const char *inibit)
 		return (NULL);
 	while(str[i])
 	{
-		// printf("j'en suis a %c\n", str[i]);
 		if (ft_strchr(inibit, str[i]))
 		{
-			new[i + j] = '\\';
-			j++;
+			new[i + j++] = '\\';
 			new[i + j] = str[i];
 			i++;
 		}

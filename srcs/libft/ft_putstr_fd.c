@@ -6,7 +6,7 @@
 /*   By: ereali <ereali@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/07 18:06:57 by ereali            #+#    #+#             */
-/*   Updated: 2022/02/28 18:22:21 by ereali           ###   ########.fr       */
+/*   Updated: 2022/03/03 01:03:47 by ereali           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	ft_putstr_fd(char *s, int fd)
 {
-	if (!(s))
+	if (!s)
 		return ;
-	write(fd , s, ft_strlen(s));
+	write(fd, s, ft_strlen(s));
 }

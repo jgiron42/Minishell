@@ -1,15 +1,17 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   expansion.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ereali <ereali@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/03/03 01:12:29 by ereali            #+#    #+#             */
+/*   Updated: 2022/03/03 01:12:30 by ereali           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-// int	*ft_tabzero(int tab[3])
-// {
-// 	int 	tab[3];
-//
-// 	i = 0;
-//
-// 	return (tab);
-// }
-
-// pour plus modulable tableau propre
 int	need_to_expand(char *str, size_t dollard)
 {
 	size_t	i;
@@ -55,14 +57,12 @@ char	*expand_word_all(char *str, t_env *env)
 	char	*key;
 	size_t	i;
 	size_t	j;
-//
+
 	i = 0;
 	while (str[i])
 	{
-		// printf("le char %c est le numero %zu de la chaine %s\n", str[i], i , str);
 		while (str[i] && str[i] != '$')
 			i++;
-		// printf("le char %c est le numero %zu de la chaine %s\n", str[i], i , str);
 		j = i + 1;
 		if (str[i] && !ft_isdigit(str[j]))
 		{
@@ -75,21 +75,16 @@ char	*expand_word_all(char *str, t_env *env)
 				return (NULL);
 			if (!ft_strcmp(key, "?"))
 				new = ft_itoa(g_err);
-			// printf("La clefs est %s\n", key);
 			else
 			{
 				new = get_var_val(env, key);
-				// printf("La valeur est %s\n", new);
 				new = ft_inhibit(new, "\\\"\'*");
 				if (!new)
 					return (NULL);
 			}
-			// printf("La valeur est %s\n", new);
 			str = ft_strreplace(str, new, i, i + ft_strlen(key) + 1);
 			if (!str)
 				return (NULL);
-			// printf("Lorsque i vaut %zu La string est %s\n",i, str);
-
 		}
 		else if (str[i])
 			i++;
@@ -104,14 +99,12 @@ char	*expand_word(char *str, t_env *env)
 	char	*key;
 	size_t	i;
 	size_t	j;
-//
+
 	i = 0;
 	while (str[i])
 	{
-		// printf("le char %c est le numero %zu de la chaine %s\n", str[i], i , str);
 		while (str[i] && str[i] != '$')
 			i++;
-		// printf("le char %c est le numero %zu de la chaine %s\n", str[i], i , str);
 		j = i + 1;
 		if (str[i] && !ft_isdigit(str[j]) && need_to_expand(str, i) < 2)
 		{
@@ -124,20 +117,16 @@ char	*expand_word(char *str, t_env *env)
 				return (NULL);
 			if (!ft_strcmp(key, "?"))
 				new = ft_itoa(g_err);
-			// printf("La clefs est %s\n", key);
 			else
 			{
 				new = get_var_val(env, key);
-				// printf("La valeur est %s\n", new);
 				new = ft_inhibit(new, "\\\"\'*");
 				if (!new)
 					return (NULL);
 			}
-			// printf("La valeur est %s\n", new);
 			str = ft_strreplace(str, new, i, i + ft_strlen(key) + 1);
 			if (!str)
 				return (NULL);
-			// printf("Lorsque i vaut %zu La string est %s\n",i, str);
 
 		}
 		else if (str[i])
@@ -209,9 +198,8 @@ t_status	ft_fillargv(t_simple *command)
 	while (command && command->argv_tokens)
 	{
 		tab[i] = command->argv_tokens->arg;
-		// printf("J'en suis au %deme argv\n|| C'est le token %s ||\n|| C'est %s||\n", i, command->argv_tokens->arg, tab[i]);
-//		tab[i] = remove_quotes(tab[i]);
-		tab[i] = ft_strdup(remove_quotes(tab[i]));
+		tab[i] = remove_quotes(tab[i]);
+		// tab[i] = ft_strdup(remove_quotes(tab[i]));
 		i++;
 		command->argv_tokens = command->argv_tokens->next;
 
@@ -221,30 +209,22 @@ t_status	ft_fillargv(t_simple *command)
 	return (OK);
 }
 
+// pour < a sans arg return KO
 t_status	expand_simple(t_simple *command, t_env *env)
 {
 	t_status ret;
 	t_token_list *begin;
 
-	// pour < a sans arg return KO
 	if (!command || !command->argv_tokens)
 		return(KO);
 	begin = command->argv_tokens;
 	while (command->argv_tokens && command->argv_tokens->arg)
 	{
-		// if (ft_strchr(command->argv_tokens->arg, '$'))
-		// {
-			// printf("Before expansion :%s\n",command->argv_tokens->arg);
-			command->argv_tokens->arg = expand_word(command->argv_tokens->arg, env);
-			if (!command->argv_tokens->arg)
-				return (FATAL);;
-				// printf("After expansion : %s\n",command->argv_tokens->arg);
-			if (ft_field_split(&command->argv_tokens) != OK)
-				return (FATAL);
-
-		// }
-		// printf("La string de agv_token est %s\n",command->argv_tokens->arg);
-		// printf("La string de agv_token est %s\n", command->argv_tokens->arg);
+		command->argv_tokens->arg = expand_word(command->argv_tokens->arg, env);
+		if (!command->argv_tokens->arg)
+			return (FATAL);;
+		if (ft_field_split(&command->argv_tokens) != OK)
+			return (FATAL);
 		command->argv_tokens = command->argv_tokens->next;
 	}
 	command->argv_tokens = begin;

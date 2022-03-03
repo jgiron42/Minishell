@@ -2,17 +2,6 @@
 
 //	penser prorteger si nul etc ..
 //	fonction here doc
-//
-// t_command *ft_newcmd(type)
-// {
-// 	t_command *new;
-//
-// 	new = (t_command *)malloc(sizeof(t_command));
-// 	if (!new)
-// 		return (NULL);
-// 	new->type = cmd_type;
-// 	return (new);
-// }
 
 t_command	parse_error(t_command to_destroy[2], t_command ret)
 {
@@ -85,8 +74,6 @@ t_status	new_redir_list(t_token_list **current, t_redir **dst, t_env *env)
 	return (OK);
 }
 
-// j'aurais pu del ?
-
 t_command parsing(t_token_list **current, t_token_type expected, t_env *env)
 {
 	t_command tree;
@@ -153,18 +140,5 @@ t_status 	parse_tree(t_token_list *current, t_command *tree, t_env *env)
 	else if (tree->type == PARSE_ERROR)
 		return (my_perror(env, (char *[2]){"Syntax error near unexpected token: ",
    (char *)get_token_str(current->type)}, false, KO));
-#ifdef DEBUGPARSING
-	if (tree->type == SIMPLE)
-	 {
-	 	if (tree->command.simple.argv)
-	 	{
-	 		printf("-----------------argv---------------------\n" );
-	 		ft_prin(&(tree->command.simple.argv_tokens));
-	 		printf("---------------END------------\n" );
-	 	}
-	 	// printf("-------redir------------\n");
-	 	// ft_prin_redir(&(tree.command.simple.redir_list));
-	 }
-#endif
 	return (OK);
 }

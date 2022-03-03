@@ -6,7 +6,7 @@
 #    By: ereali <ereali@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/09 18:07:18 by ereali            #+#    #+#              #
-#    Updated: 2022/02/26 13:52:23 by ereali           ###   ########.fr        #
+#    Updated: 2022/03/03 00:28:21 by ereali           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ SRC = ft_memset.c ft_bzero.c ft_memcpy.c ft_memccpy.c ft_memchr.c \
     ft_strdup.c ft_strndup.c ft_calloc.c ft_substr.c ft_strjoin.c ft_strtrim.c \
 	ft_split.c ft_strmapi.c ft_putchar_fd.c ft_putstr_fd.c ft_isspace.c\
 	ft_putendl_fd.c ft_putnbr_fd.c ft_itoa.c ft_strcpy.c ft_strcmp.c \
-	ft_strreplace.c ft_strncpy.c
+	ft_strreplace.c ft_strncpy.c ft_countoccur.c
 
 BONUS = ft_lstnew_bonus.c ft_lstadd_front_bonus.c ft_lstadd_back_bonus.c \
 		ft_lstsize_bonus.c ft_lstlast_bonus.c

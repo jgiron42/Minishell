@@ -1,10 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   print.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ereali <ereali@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/03/03 01:17:25 by ereali            #+#    #+#             */
+/*   Updated: 2022/03/03 01:17:26 by ereali           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-void ft_print_pipe(t_pipeline **line);
-void ft_print_grouping(t_grouping **line);
-void ft_print_list(t_list **line);
+void	ft_print_pipe(t_pipeline **line);
+void	ft_print_grouping(t_grouping **line);
+void	ft_print_list(t_list **line);
 
-void ft_prin(t_token_list	**line)
+void	ft_prin(t_token_list	**line)
 {
 	t_token_list	*tmp;
 
@@ -19,10 +31,9 @@ void ft_prin(t_token_list	**line)
 		printf("La string || %s ||\n type de token : %d\n nb de quote :%d\n", (tmp)->arg, tmp->type, tmp->nb);
 		tmp = tmp->next;
 	}
-
 }
 
-void ft_prin_redir(t_redir	**line)
+void	ft_prin_redir(t_redir	**line)
 {
 	t_redir	*tmp;
 
@@ -39,10 +50,9 @@ void ft_prin_redir(t_redir	**line)
 		printf("int du fd :%d\n", tmp->newfd);
 		tmp = tmp->next;
 	}
-
 }
 
-void ft_print_pipe(t_pipeline **line)
+void	ft_print_pipe(t_pipeline **line)
 {
 	t_pipeline	*tmp;
 
@@ -66,7 +76,7 @@ void ft_print_pipe(t_pipeline **line)
 	}
 }
 
-void ft_print_list(t_list **line)
+void	ft_print_list(t_list **line)
 {
 	t_list	*tmp;
 
@@ -95,7 +105,7 @@ void ft_print_list(t_list **line)
 	}
 }
 
-void ft_print_grouping(t_grouping **line)
+void	ft_print_grouping(t_grouping **line)
 {
 	t_grouping	*tmp;
 

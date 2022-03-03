@@ -1,25 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strcpy.c                                        :+:      :+:    :+:   */
+/*   ft_countoccur.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ereali <ereali@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/03 01:01:22 by ereali            #+#    #+#             */
-/*   Updated: 2022/03/03 01:02:25 by ereali           ###   ########.fr       */
+/*   Created: 2022/03/03 00:59:57 by ereali            #+#    #+#             */
+/*   Updated: 2022/03/03 01:00:14 by ereali           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strcpy(char *dest, const char *src)
+size_t	ft_countoccur(char *str, const char *to_count)
 {
-	while (*src)
+	size_t	i;
+	size_t	count;
+
+	i = 0;
+	count = 0;
+	while (str && str[i])
 	{
-		*dest = *src;
-		++dest;
-		++src;
+		if (ft_strchr(to_count, str[i]))
+			count++;
+		i++;
 	}
-	*dest = 0;
-	return (dest);
+	return (count);
 }

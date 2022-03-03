@@ -38,6 +38,3 @@ t_command	parse_pipe(t_token_list **current, t_command prev_command, t_env *env)
 	}
 	return (tree);
 }
-//	printf("----------------PIPEPRINT----------------\n");
-//	ft_print_pipe(&first);
-//	printf("----------------END----------------\n");

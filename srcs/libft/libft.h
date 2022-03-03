@@ -6,7 +6,7 @@
 /*   By: ereali <ereali@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/07 14:07:44 by ereali            #+#    #+#             */
-/*   Updated: 2022/02/26 09:35:43 by ereali           ###   ########.fr       */
+/*   Updated: 2022/03/03 00:28:38 by ereali           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ int				ft_isprint(int c);
 int				ft_toupper(int c);
 int				ft_tolower(int c);
 int				ft_isdigit(int c);
+size_t			ft_countoccur(char *str, const char *to_count);
 char			*ft_substr(char const *s, unsigned start, size_t len);
 char			*ft_strjoin(char const *s1, char const *s2);
 char			*ft_strjoinff(char const *s1, char const *s2);

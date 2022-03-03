@@ -40,6 +40,3 @@ t_command	parse_list(t_token_list **current, t_command prev_command, t_env *env)
 	}
 	return (tree);
 }
-// printf("----------------LISTPRINT----------------\n");
-// ft_print_list(&first);
-// printf("----------------END----------------\n");
