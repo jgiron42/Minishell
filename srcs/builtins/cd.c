@@ -15,6 +15,7 @@
 unsigned char	sh_cd(char **argv, t_env *env)
 {
 	char	*pathname;
+	int		ret;
 
 	argv++;
 	if (!(*argv))
@@ -28,14 +29,16 @@ unsigned char	sh_cd(char **argv, t_env *env)
 	}
 	else
 		pathname = ft_strdup(*argv);
-	if (pathname)
-	{
-		if (chdir(pathname) < 0)
-			return(my_perror(env, (char *[2]){"cd: can't cd to ", pathname}, true, KO));
-	}
-	else
+	if (!pathname)
 		return (FATAL);
+	if (chdir(pathname) < 0)
+	{
+		ret = my_perror(env, (char *[2]) {"cd: can't cd to ", pathname}, true, KO);
+		free(pathname);
+		return (ret);
+	}
 	if (set_var(env, "PWD", pathname, 1))
 		return (FATAL);
+	free(pathname);
 	return (OK);
 }

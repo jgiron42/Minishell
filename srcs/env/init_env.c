@@ -6,24 +6,16 @@
 
 static t_status init_pwd(t_env *env)
 {
-	char	*current;
-	char	*real_current;
 	char	*true_pwd;
 	t_status	ret;
 
 	true_pwd = my_get_working_directory("shell-init");
 	if (!true_pwd && errno == ENOMEM)
 		return (FATAL);
-	current = get_var_val(env, "PWD");
-	real_current = ft_realpath(current, NULL); // TODO: unauthorized function
-	if (!true_pwd || (!real_current && (errno == EIO || errno == ENOMEM)))
-		ret = FATAL;
-	else if (current && ft_strlen(current) < PATH_MAX && !path_has_dot(current) && !ft_strcmp(real_current, true_pwd))
-		ret = OK;//ret = set_var(env, "PWD", current, true);
-	else
-		ret = set_var(env, "PWD", true_pwd, true);
+	if (!true_pwd)
+		ret = KO;
+	ret = set_var(env, "PWD", true_pwd, true);
 	free(true_pwd);
-	free(real_current);
 	return (ret);
 }
 

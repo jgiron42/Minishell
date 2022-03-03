@@ -42,6 +42,28 @@ int			NAME_push(t_NAME *v, type_NAME value)
 	return (1);
 }
 
+int			NAME_concat(t_NAME *v, t_NAME other)
+{
+	int	i;
+
+	if (v->size + other.size > v->capacity)
+	{
+		if (v->capacity == 0 && NAME_reserve(v, 1) == 0)
+			return (0);
+		else if (NAME_reserve(v, (v->size + other.size) * 2) == 0)
+			return (0);
+	}
+	i = 0;
+	while (i < other.size)
+	{
+		v->data[v->size + i] = other.data[i];
+		i++;
+	}
+	v->size += other.size;
+	return (1);
+}
+
+
 type_NAME		NAME_pop(t_NAME *v)
 {
 	if (v->size)

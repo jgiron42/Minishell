@@ -4,29 +4,59 @@
 
 #include "minishell.h"
 
+bool glob_include(char * glob, char * str);
+
+static char	manage_glob(char **glob, char **str, bool escaped)
+{
+	if (**glob == '*'&& !escaped)
+	{
+		while (**glob == '*')
+			++*glob;
+		if (!**glob)
+			return true;
+		while (**str && **str != '/') {
+			if ((**glob == **str || **glob == '?') && glob_include(*glob, *str))
+				return true;
+			++*str;
+		}
+		return false;
+	}
+	else if (**glob && ((**glob == '?' && **str != '/'&& !escaped) || **glob == **str))
+	{
+		++*str;
+		++*glob;
+	}
+	else
+		return false;
+	return (-1);
+}
 bool glob_include(char * glob, char * str)
 {
+	t_quote state;
+	bool	escaped;
+	int 	ret;
+
+	state = NONE;
+	escaped = false;
 	do {
-		if (*glob == '*')
+		if (escaped)
+			escaped = false;
+		else if (*glob == '\'')
+			state = (state != ONE) * ONE;
+		else if (*glob == '"')
+			state = (state != DOUBLE) * DOUBLE;
+		else if (*glob == '\\')
 		{
-			while (*glob == '*')
-				++glob;
-			if (!*glob)
-				return true;
-			while (*str) {
-				if ((*glob == *str || *glob == '?') && glob_include(glob, str))
-					return true;
-				++str;
-			}
-			return false;
-		}
-		else if (*glob && (*glob == '?' || *glob == *str))
-		{
-			++str;
+			escaped = true;
 			++glob;
 		}
-		else
-			return (false);
+		if (state == NONE || escaped)
+		{
+			ret = manage_glob(&glob, &str, escaped);
+			if (ret != -1)
+				return (ret);
+		}
+//		str++;
 	} while (*glob && (*str || *glob == '*'));
 	return (*str == *glob);
 }
@@ -46,15 +76,15 @@ t_status path_match_recurse(char *path, char **array, t_str_vec *dst)
 	entry = readdir(current);
 	while (entry)
 	{
-		if (ft_strcmp(entry->d_name, ".") && ft_strcmp(entry->d_name, "..") && glob_include(*array, entry->d_name))
+		if (!ft_strcmp (entry->d_name, *array) ||
+		(ft_strcmp(entry->d_name, ".") && ft_strcmp(entry->d_name, "..")
+		&& glob_include(*array, entry->d_name)))
 		{
 			path_push(path, entry->d_name);
-			if (is_dir(path) && array[1]) {
+			if (is_dir(path) && array[1])
 				path_match_recurse(path, array + 1, dst);
-			}
 			else if (!array[1])
 			{
-				printf("# %s\n", path);
 				tmp = ft_strdup(path);
 				if (!tmp || !str_vec_push(dst, tmp))
 				{
@@ -70,19 +100,39 @@ t_status path_match_recurse(char *path, char **array, t_str_vec *dst)
 	return (OK);
 }
 
-char *path_match(char *str)
+t_status	path_match(char *str, t_str_vec *dst)
 {
 	char	**array;
 	char	path[PATH_MAX];
-	t_str_vec	dst;
+	int		tmpsize;
+	int		ret;
 
-	dst = str_vec_init();
 	array = ft_split(str, '/');
-	// TODO: protect
+	if (!array)
+		return (FATAL);
 	if (*str == '/')
 		ft_strcpy(path, "/");
 	else
-		ft_strcpy(path, ".");
-	path_match_recurse(path,array, &dst);
-	return ("");
+		ft_strcpy(path, "");
+	tmpsize = dst->size;
+	ret = OK;
+	if (*array)
+		ret = path_match_recurse(path, array, dst) == FATAL;
+	if (dst->size == tmpsize && ret != FATAL)
+	{
+		str = ft_strdup(str);
+		if (!str)
+			return (FATAL);
+		str_vec_push(dst, str);
+	}
+	ft_free_split(array);
+	return (ret);
 }
+
+//unsigned char test(char **argv, t_env *env)
+//{
+//	if (argv[1])
+//		path_match(argv[1]);
+//	(void)env;
+//	return (0);
+//}

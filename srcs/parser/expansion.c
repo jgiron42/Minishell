@@ -195,27 +195,46 @@ t_status	ft_field_split(t_token_list **lst)
 	return (OK);
 }
 
+t_status	expand_path(t_token_list *lst, t_str_vec *dst)
+{
+	*dst = str_vec_init();
+	while (lst)
+	{
+		if (lst->arg[0] && path_match(lst->arg, dst) == FATAL)
+		{
+			while (--dst->size >= 0)
+				free(dst->data[dst->size]);
+			return (FATAL);
+		}
+		lst = lst->next;
+	}
+	str_vec_push(dst, NULL);
+	return (OK);
+}
+
 t_status	ft_fillargv(t_simple *command)
 {
-	char	**tab;
-	int		i;
+	int			i;
+	int			j;
+	t_str_vec	dst;
 
 	i = 0;
+	j = 0;
 	if (!command->argv_tokens)
 		return (OK);
-	tab = (char **)malloc(sizeof(char *) * (ft_lstsize(command->argv_tokens) + 1));
-	if (!tab)
+	if (expand_path(command->argv_tokens, &dst) == FATAL)
 		return (FATAL);
-	while (command && command->argv_tokens)
+	while (j < dst.size - 1)
 	{
-		tab[i] = command->argv_tokens->arg;
-		tab[i] = ft_strdup(remove_quotes(tab[i]));
-		i++;
-		command->argv_tokens = command->argv_tokens->next;
-
+		if (dst.data[j][0])
+		{
+			dst.data[i] = remove_quotes(dst.data[j]);
+			i++;
+		}
+		j++;
 	}
-	tab[i] = NULL;
-	command->argv = tab;
+	dst.data[i] = NULL;
+	command->argv = dst.data;
 	return (OK);
 }
 

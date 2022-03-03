@@ -37,7 +37,7 @@ t_builtin	*is_special_built_in(char *name)
 			return (f[i]);
 	return (NULL);
 }
-
+unsigned char test(char **argv, t_env *env);
 t_builtin	*is_built_in(char *name) {
 	const char *list[] = {
 		"env",

@@ -23,7 +23,7 @@ unsigned char	sh_echo(char **argv, t_env *env)
 	{
 		ft_putstr_fd((*argv), 1);
 		argv++;
-		if (*argv && *argv[0] != '\0')
+		if (*argv)
 			write(1, " ", 1);
 	}
 	if (!dest['n'])

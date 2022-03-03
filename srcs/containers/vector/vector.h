@@ -18,6 +18,7 @@ typedef struct s_NAME {
 
 int			NAME_push(t_NAME *v, type_NAME value);
 type_NAME		NAME_pop(t_NAME *v);
+int			NAME_concat(t_NAME *v, t_NAME other);
 int			NAME_reserve(t_NAME *v, int new_cap);
 int			NAME_insert_one(t_NAME *v, int pos, type_NAME value);
 int			NAME_resize(t_NAME *v, int new_size, type_NAME value);

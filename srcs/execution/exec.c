@@ -26,8 +26,8 @@ t_status	exec_simple(union u_command cmd, t_env *env)
 	ret = perform_redirection(env, s.redir_list);
 	if (ret == KO && !env->is_interactive && is_special_built_in(s.argv[0]))
 		ret = FATAL;
-	if (ret != OK)
-		return (ret);
+	if (ret == FATAL)
+		return (FATAL);
 	if (!s.argv || !s.argv[0])
 		ret = OK;
 	else if (ft_strchr(s.argv[0], '/'))
