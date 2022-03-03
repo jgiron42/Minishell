@@ -78,6 +78,8 @@ size_t	create_t_token_list(char **str, t_token_list **line)
 			return (FATAL);
 		ft_lstadd_back(line, node);
 	}
+	else
+		free(node);
 	*str += len;
 	return (OK);
 }

@@ -6,7 +6,7 @@
 /*   By: ereali <ereali@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 01:12:29 by ereali            #+#    #+#             */
-/*   Updated: 2022/03/03 05:23:15 by ereali           ###   ########.fr       */
+/*   Updated: 2022/03/03 07:18:56 by ereali           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,11 @@ char	*expand_word_all(char *str, t_env *env)
 			str = ft_strreplace(str, new, i, i + ft_strlen(key) + 1);
 			if (!str)
 				return (NULL);
+			else
+			{
+				free(key);
+				free(new);
+			}
 		}
 		else if (str[i])
 			i++;
@@ -100,6 +105,7 @@ char	*expand_word(char *str, t_env *env)
 	size_t	j;
 
 	i = 0;
+	// key = NULL;
 	while (str[i])
 	{
 		while (str[i] && str[i] != '$')
@@ -126,7 +132,11 @@ char	*expand_word(char *str, t_env *env)
 			str = ft_strreplace(str, new, i, i + ft_strlen(key) + 1);
 			if (!str)
 				return (NULL);
-
+			else
+			{
+				free(key);
+				free(new);
+			}
 		}
 		else if (str[i])
 			i++;
