@@ -44,7 +44,7 @@ t_builtin	*is_built_in(char *name) {
 		"echo",
 //		"alias",
 //		"bg",
-//		"cd",
+		"cd",
 //		"command",
 //		"false",
 //		"fc",
@@ -54,7 +54,7 @@ t_builtin	*is_built_in(char *name) {
 //		"jobs",
 //		"kill",
 //		"newgrp",
-//		"pwd",
+		"pwd",
 //		"read",
 //		"true",
 //		"umask",
@@ -66,10 +66,10 @@ t_builtin	*is_built_in(char *name) {
 			{
 					&sh_env,
 					&sh_echo,
-//					&shell_cd,
+					&sh_cd,
 //					&shell_false,
 //					&shell_kill,
-//					&shell_pwd,
+					&sh_pwd,
 //					&shell_read,
 //					&shell_true
 			};

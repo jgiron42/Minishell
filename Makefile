@@ -6,7 +6,7 @@
 #    By: ereali <ereali@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/10/18 05:33:00 by ereali            #+#    #+#              #
-#    Updated: 2022/03/03 00:33:40 by ereali           ###   ########.fr        #
+#    Updated: 2022/03/03 03:17:05 by ereali           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,7 +37,7 @@ SRC = main.c tokeniser.c parsing.c utils_parser.c parse_grouping.c parse_list.c 
 		redirections.c utils.c dupenv.c init_env.c merge_env.c parse_env.c\
 		serialize_env.c char_vec.c str_vec.c echo.c sh_env.c export.c unset.c\
 		false.c true.c signals.c input.c get_next_line.c get_next_line_utils.c\
-		path_match.c utils_list.c
+		path_match.c utils_list.c pwd.c cd.c
 ##List every .h found inside INC_DIR
 INC = parsing.h minishell.h
 

@@ -140,10 +140,12 @@ t_status	my_tmp_file(int *fd, char **dst);
 
 //builtin
 unsigned char	sh_echo(char **argv, t_env *env);
+unsigned char	sh_pwd(char **argv, t_env *env);
 unsigned char	sh_env(char **argv, t_env *env);
 unsigned char	sh_export(char **argv, t_env *env);
 unsigned char	sh_unset(char **argv, t_env *env);
 unsigned char	sh_exit(char **argv, t_env *env);
+unsigned char	sh_cd(char **argv, t_env *env);
 // input
 char		*my_readline(t_env *env, char *prompt);
 t_status	readnline(char **line, t_env *env);
