@@ -30,7 +30,7 @@ t_status	open_redir(t_env *env, t_redir *r)
 		old_fd = open(r->word, O_CREAT | O_WRONLY | O_TRUNC, 00644);
 	else if (r->type == APPEND)
 		old_fd = open(r->word, O_CREAT | O_WRONLY | O_APPEND, 00644);
-	else if (r->type == INPUT)
+	else if (r->type == INPUT || r->type == HERE)
 		old_fd = open(r->word, O_RDONLY);
 	else // (r->type == RW)
 		old_fd = open(r->word, O_RDWR | O_CREAT | O_TRUNC, 00644);
@@ -46,7 +46,7 @@ t_status perform_redirection(t_env *env, t_redir *list)
 	ret = OK;
 	while (list)
 	{
-		if ((list->type == HERE || list->type == DUPIN || list->type == DUPOUT))
+		if ((list->type == DUPIN || list->type == DUPOUT))
 			ret = redir(list->oldfd, list->newfd, &list->fd_save, env);
 		else
 			ret = open_redir(env, list);
@@ -68,7 +68,8 @@ t_status reset_redirection(t_env *env, t_redir *list) // TODO: iteratize
 		return (ret);
 	if (list->type == DUPIN || list->type == DUPOUT)
 		ret |= redir(list->newfd, list->oldfd, NULL, env) == FATAL;
-	else if (list->fd_save != -1) {
+	else if (list->fd_save != -1)
+	{
 		ret |= dup2(list->fd_save, list->newfd);
 		close(list->fd_save);
 		env->opened_files.data[list->fd_save] = FD_CLOSE;
@@ -78,5 +79,7 @@ t_status reset_redirection(t_env *env, t_redir *list) // TODO: iteratize
 		close(list->newfd);
 		env->opened_files.data[list->newfd] = FD_CLOSE;
 	}
+	if (list->type == HERE && unlink(list->word) == -1)
+		return (FATAL);
 	return (ret);
 }

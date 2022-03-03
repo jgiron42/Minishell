@@ -40,12 +40,10 @@ void	free_redir(t_redir *list)
 
 t_status	new_redir_list(t_token_list **current, t_redir **dst, t_env *env)
 {
-	t_token_list *cpy;
-
 	*dst = (t_redir *)malloc(sizeof(t_redir));
 	if (!*dst)
 		return (FATAL);
-	**dst = (t_redir){};
+	**dst = (t_redir){.fd_save = -1};
 	if((*current)->type == LESS)
 		(*dst)->type = INPUT;
 	else if ((*current)->type == GREAT)
@@ -59,18 +57,22 @@ t_status	new_redir_list(t_token_list **current, t_redir **dst, t_env *env)
 	if ((*current)->next && (*current)->next->type == WORD)
 	{
 		(*current) = ((*current)->next);
-		cpy = ft_lstcpy(*current);
-		if (!cpy)
+		(*dst)->word = ft_strdup((*current)->arg);
+		if (!(*dst)->word)
 		{
+			free((*dst)->word);
 			free(*dst);
 			return(FATAL);
 		}
-		(*dst)->word = (cpy)->arg;
 	}
 	else
 		return (KO);
-	if ((*dst)->type == HERE)
-		ft_heredoc(env, *dst);
+	if ((*dst)->type == HERE && ft_heredoc(env, *dst) == KO)
+	{
+		free((*dst)->word);
+		free(*dst);
+		return (my_perror(env, (char *[2]) {"can't create here-document", NULL}, true, KO));
+	}
 	return (OK);
 }
 

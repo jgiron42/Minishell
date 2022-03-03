@@ -24,6 +24,7 @@ t_status ft_heredoc(t_env *env, t_redir *redir)
 	char	*rl;
 	int		fd;
 	bool	quote;
+	char	*word;
 
 	quote = false;
 	if (ft_strchr(redir->word, '\'') || ft_strchr(redir->word, '\"'))
@@ -31,25 +32,26 @@ t_status ft_heredoc(t_env *env, t_redir *redir)
 		quote = true;
 		redir->word = remove_quotes(redir->word);
 	}
-	fd = open("/tmp/tmp_minishell" , O_CREAT | O_TRUNC | O_RDWR, 0644);
-	if (fd < 0)
+	word = redir->word;
+	if (my_tmp_file(&fd, &redir->word) == KO)
 		return (KO);
 	rl = my_readline(env, "PS2");
-	while (ft_strcmp(redir->word, rl))
+	while (ft_strcmp(word, rl))
 	{
 		if (quote == false)
 			rl = expand_word_all(rl, env);
 		if (rl)
 			write(fd, rl, ft_strlen(rl));
 		write(fd, "\n", 1);
+		free(rl);
 		rl = my_readline(env, "PS2");
 	}
+	free(rl);
+	free(word);
 	if(close(fd) != 0)
 		return(KO);
-	fd = open("/tmp/tmp_minishell" , O_RDONLY);
 	if (fd < 0)
 		return (KO);
-	// redir ->word = path
 	redir->oldfd = fd;
 	return (OK);
 }

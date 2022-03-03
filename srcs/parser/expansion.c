@@ -192,14 +192,16 @@ t_status	ft_fillargv(t_simple *command)
 	int		i;
 
 	i = 0;
+	if (!command->argv_tokens)
+		return (OK);
 	tab = (char **)malloc(sizeof(char *) * (ft_lstsize(command->argv_tokens) + 1));
 	if (!tab)
 		return (FATAL);
 	while (command && command->argv_tokens)
 	{
 		tab[i] = command->argv_tokens->arg;
-		tab[i] = remove_quotes(tab[i]);
-		// tab[i] = ft_strdup(remove_quotes(tab[i]));
+//		tab[i] = remove_quotes(tab[i]);
+		 tab[i] = ft_strdup(remove_quotes(tab[i]));
 		i++;
 		command->argv_tokens = command->argv_tokens->next;
 

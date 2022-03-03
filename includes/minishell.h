@@ -136,6 +136,8 @@ void		path_pop(char *path);
 t_status	path_push(char *path, char *component);
 t_status	my_perror(t_env *env, char *error[2], bool use_errno, t_status ret);
 bool		is_dir(char *path);
+t_status	my_tmp_file(int *fd, char **dst);
+
 //builtin
 unsigned char	sh_echo(char **argv, t_env *env);
 unsigned char	sh_env(char **argv, t_env *env);

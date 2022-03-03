@@ -55,8 +55,6 @@ int main(int argc, char **argv, char **envp)
 {
 	t_env		env;
 
-	// path_match(argv[1]);
-	// return(0);
 	(void)argc;
 	(void)argv;
 	if (parse_env(envp, &env) != FATAL && init_env(&env) != FATAL)
