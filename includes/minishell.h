@@ -6,7 +6,7 @@
 /*   By: ereali <ereali@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/04 10:31:30 by ereali            #+#    #+#             */
-/*   Updated: 2022/03/04 20:41:18 by ereali           ###   ########.fr       */
+/*   Updated: 2022/03/04 21:19:54 by ereali           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -225,6 +225,10 @@ t_status		ft_lstinsertword(t_token_list **alst, char *str);
 t_status		ft_heredoc(t_env *env, t_redir *redir);
 
 //expansion
+t_status		ft_fillargv(t_simple *command);
+t_status		ft_field_split(t_token_list **lst);
+t_status		found_val(char **new, char *key, t_env *env);
+char			*ft_replacekey(size_t i, size_t j, char *str, t_env *env);
 char			*expand_word_all(char *str, t_env *env);
 t_status		expand_simple(t_simple *command, t_env *env);
 t_status		path_match(char *str, t_str_vec *dst);

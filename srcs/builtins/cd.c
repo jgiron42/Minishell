@@ -6,7 +6,7 @@
 /*   By: ereali <ereali@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 04:00:47 by ereali            #+#    #+#             */
-/*   Updated: 2022/03/04 20:52:04 by ereali           ###   ########.fr       */
+/*   Updated: 2022/03/04 21:14:37 by ereali           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 unsigned char	sh_cd(char **argv, t_env *env)
 {
 	char	*pathname;
-	int		ret;
 
 	argv++;
 	if (!(*argv))

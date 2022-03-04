@@ -6,7 +6,7 @@
 /*   By: jgiron <jgiron@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/04 11:03:04 by jgiron            #+#    #+#             */
-/*   Updated: 2022/03/04 11:03:05 by jgiron           ###   ########.fr       */
+/*   Updated: 2022/03/04 21:00:45 by ereali           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,39 +109,6 @@ t_status	remove_var(t_env *env, char *key)
 			return (OK);
 		}
 		old = tmp;
-		tmp = tmp->next;
-	}
-	return (KO);
-}
-
-void free_env(t_env *env)
-{
-	t_var_list	*tmp;
-
-	while (env->vars)
-	{
-		free(env->vars->key);
-		free(env->vars->value);
-		tmp = env->vars->next;
-		free(env->vars);
-		env->vars = tmp;
-	}
-	free(env->opened_files.data);
-	clear_history();
-}
-
-t_status	export_var(t_env *env, char *key)
-{
-	t_var_list *tmp;
-
-	tmp = env->vars;
-	while(tmp)
-	{
-		if (!ft_strcmp(key, tmp->key))
-		{
-			tmp->is_exported = true;
-			return (OK);
-		}
 		tmp = tmp->next;
 	}
 	return (KO);

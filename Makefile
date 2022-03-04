@@ -6,7 +6,7 @@
 #    By: ereali <ereali@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/10/18 05:33:00 by ereali            #+#    #+#              #
-#    Updated: 2022/03/04 11:07:34 by jgiron           ###   ########.fr        #
+#    Updated: 2022/03/04 21:15:46 by ereali           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,7 +38,7 @@ SRC = main.c tokeniser.c parsing.c utils_parser.c parse_grouping.c parse_list.c 
 		serialize_env.c char_vec.c str_vec.c echo.c sh_env.c export.c unset.c \
 		signals.c input.c get_next_line.c get_next_line_utils.c \
 		path_match.c utils_list.c pwd.c cd.c tmp_file.c str_vec2.c \
-		char_vec2.c env_utils.c\
+		char_vec2.c env_utils.c expansion_utils.c\
 
 INC = parsing.h minishell.h
 
