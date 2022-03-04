@@ -46,6 +46,10 @@ bool glob_include(char * glob, char * str)
 
 	state = NONE;
 	escaped = false;
+	if (*glob == '.' && *str != '.')
+		return false;
+	if (*glob != '.' && *str == '.')
+		return false;
 	do {
 		if (escaped)
 			escaped = false;
