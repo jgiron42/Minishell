@@ -6,7 +6,7 @@
 /*   By: jgiron <jgiron@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/04 11:40:57 by jgiron            #+#    #+#             */
-/*   Updated: 2022/03/04 11:40:58 by jgiron           ###   ########.fr       */
+/*   Updated: 2022/03/04 11:54:20 by jgiron           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ t_status path_match_recurse(char *path, char **array, t_str_vec *dst)
 		current = opendir(".");
 	else
 	{
-		printf("-> %s\n", path);
+		// printf("-> %s\n", path);
 		current = opendir(path);
 	}
 	if (!current)
@@ -127,7 +127,7 @@ t_status	path_match(char *str, t_str_vec *dst)
 	if (!array)
 		return (FATAL);
 	for (int i = 0; array[i]; i++)
-		printf("==> %s\n", array[i]);
+		// printf("==> %s\n", array[i]);
 	if (*str == '/')
 		ft_strcpy(path, "/");
 	else
