@@ -42,5 +42,5 @@ t_command	parse_grouping(t_token_list **current, t_env *env)
 		ft_lstadd_back_redir(&(tree.command.grouping->redir_list), tmp);
 		(*current) = (*current)->next;
 	}
-	return(tree);
+	return (tree);
 }

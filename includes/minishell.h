@@ -6,7 +6,7 @@
 /*   By: ereali <ereali@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/04 10:31:30 by ereali            #+#    #+#             */
-/*   Updated: 2022/03/04 10:50:25 by ereali           ###   ########.fr       */
+/*   Updated: 2022/03/04 11:08:23 by jgiron           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,6 +179,7 @@ t_status		exec_program(char *name, t_simple s, t_env *env);
 void			ft_exit(t_env *env);
 
 //lst :
+t_var_list		*ft_lstlast(t_var_list *lst);
 size_t			ft_lstsize(t_token_list *lst);
 t_token_list	*ft_lstcpy(t_token_list *current);
 t_token_list	*ft_lstnew(t_token_type token);

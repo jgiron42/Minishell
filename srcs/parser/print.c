@@ -6,7 +6,7 @@
 /*   By: ereali <ereali@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 01:17:25 by ereali            #+#    #+#             */
-/*   Updated: 2022/03/03 01:17:26 by ereali           ###   ########.fr       */
+/*   Updated: 2022/03/04 11:38:03 by jgiron           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	ft_prin(t_token_list	**line)
 	if (!tmp)
 	{
 		printf("empty\n");
-		exit(3);
+		return ;
 	}
 	while (tmp)
 	{
@@ -41,7 +41,7 @@ void	ft_prin_redir(t_redir	**line)
 	if (!tmp)
 	{
 		printf("empty redir\n");
-		exit(3);
+		return ;
 	}
 	while (tmp)
 	{
@@ -60,20 +60,16 @@ void	ft_print_pipe(t_pipeline **line)
 	if (!tmp)
 	{
 		printf("empty\n");
-		exit(3);
+		return ;
 	}
 	while (tmp)
 	{
 		if (tmp->command.type == SIMPLE)
-		{
 			ft_prin(&(tmp->command.command.simple.argv_tokens));
-		}
 		if (tmp->command.type == GROUPING)
-		{
 			ft_print_grouping(&(tmp->command.command.grouping));
-		}
 		tmp = tmp->next;
-	}
+
 }
 
 void	ft_print_list(t_list **line)
@@ -84,23 +80,17 @@ void	ft_print_list(t_list **line)
 	if (!tmp)
 	{
 		printf("empty list\n");
-		exit(3);
+		return ;
 	}
 	while (tmp)
 	{
 		printf("Mon sparateur est le %d\n", tmp->sep);
 		if (tmp->command.type == SIMPLE)
-		{
 			ft_prin(&(tmp->command.command.simple.argv_tokens));
-		}
 		if (tmp->command.type == PIPELINE)
-		{
 			ft_print_pipe(&(tmp->command.command.pipeline));
-		}
 		if (tmp->command.type == GROUPING)
-		{
 			ft_print_grouping(&(tmp->command.command.grouping));
-		}
 		tmp = tmp->next;
 	}
 }
@@ -113,20 +103,14 @@ void	ft_print_grouping(t_grouping **line)
 	if (!tmp)
 	{
 		printf("empty list\n");
-		exit(3);
+		return ;
 	}
-		if (tmp->command.type == SIMPLE)
-		{
-			ft_prin(&(tmp->command.command.simple.argv_tokens));
-		}
-		if (tmp->command.type == PIPELINE)
-		{
-			ft_print_pipe(&(tmp->command.command.pipeline));
-		}
-		if (tmp->command.type == LIST)
-		{
-			ft_print_list(&(tmp->command.command.list));
-		}
-			printf("-------redir------------\n");
-			ft_prin_redir(&(tmp->redir_list));
+	if (tmp->command.type == SIMPLE)
+		ft_prin(&(tmp->command.command.simple.argv_tokens));
+	if (tmp->command.type == PIPELINE)
+		ft_print_pipe(&(tmp->command.command.pipeline));
+	if (tmp->command.type == LIST)
+		ft_print_list(&(tmp->command.command.list));
+	printf("-------redir------------\n");
+	ft_prin_redir(&(tmp->redir_list));
 }

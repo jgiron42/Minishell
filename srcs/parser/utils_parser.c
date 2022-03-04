@@ -6,7 +6,7 @@
 /*   By: ereali <ereali@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 00:51:43 by ereali            #+#    #+#             */
-/*   Updated: 2022/03/03 06:10:31 by ereali           ###   ########.fr       */
+/*   Updated: 2022/03/04 11:29:02 by jgiron           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,6 @@ t_status ft_heredoc(t_env *env, t_redir *redir)
 	free(word);
 	if(close(fd) != 0)
 		return(KO);
-	if (fd < 0)
-		return (KO);
 	redir->oldfd = fd;
 	return (OK);
 }
