@@ -2,8 +2,6 @@
 
 typedef void	(*t_command_destructor)(union u_command c);
 
-//TODO
-
 void	destroy_simple(union u_command c)
 {
 	free(c.simple.argv);

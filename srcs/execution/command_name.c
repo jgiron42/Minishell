@@ -5,9 +5,9 @@
 
 t_builtin	*is_special_built_in(char *name)
 {
-	const char	*list[] = {"exit", "export", "unset", NULL};
-	t_builtin	*f[] = {&sh_exit, &sh_export, &sh_unset};
-	int			i;
+	const char		*list[] = {"exit", "export", "unset", NULL};
+	const t_builtin	*f[] = {&sh_exit, &sh_export, &sh_unset};
+	int				i;
 
 	i = -1;
 	while (list[++i])
@@ -18,11 +18,13 @@ t_builtin	*is_special_built_in(char *name)
 
 t_builtin	*is_built_in(char *name)
 {
-	const char	*list[] = {"env", "echo", "cd", "pwd", NULL};
-	t_builtin	*f[] = {&sh_env, &sh_echo, &sh_cd, &sh_pwd};
-	int			i;
+	const char		*list[] = {"env", "echo", "cd", "pwd", NULL};
+	const t_builtin	*f[] = {&sh_env, &sh_echo, &sh_cd, &sh_pwd};
+	int				i;
 
 	i = -1;
+	if (!name)
+		return (NULL);
 	while (list[++i])
 		if (!ft_strcmp(list[i], name))
 			return (f[i]);

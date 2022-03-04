@@ -1,7 +1,6 @@
 //
 // Created by joachim on 27/02/2022.
 //
-
 #include "minishell.h"
 
 void	sigint_handler(int sig)
