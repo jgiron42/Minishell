@@ -4,9 +4,9 @@
 
 #include "minishell.h"
 
-static t_status init_pwd(t_env *env)
+static t_status	init_pwd(t_env *env)
 {
-	char	*true_pwd;
+	char		*true_pwd;
 	t_status	ret;
 
 	true_pwd = my_get_working_directory("shell-init");
@@ -19,7 +19,7 @@ static t_status init_pwd(t_env *env)
 	return (ret);
 }
 
-static t_status init_shlvl(t_env *env)
+static t_status	init_shlvl(t_env *env)
 {
 	char	*current;
 
@@ -38,9 +38,9 @@ static t_status init_shlvl(t_env *env)
 	return (OK);
 }
 
-t_status init_env(t_env *env)
+t_status	init_env(t_env *env)
 {
-	env->is_interactive = isatty(0) && isatty(2);
+	env->is_interactive = (isatty(0) && isatty(2));
 	if (env->is_interactive)
 	{
 		set_signal(SIGINT, sigint_handler, env);
@@ -48,12 +48,12 @@ t_status init_env(t_env *env)
 		set_signal(SIGTERM, SIG_IGN, env);
 	}
 	rl_outstream = stderr;
-	if (!char_vec_resize(&env->opened_files, 3, FD_OPEN) ||
-		set_var(env, "PS1", "$ ", false) == FATAL ||
-		set_var(env, "PS2", "> ", false) == FATAL ||
-		set_var(env, "IFS", " \t\n", false) == FATAL ||
-		init_pwd(env) == FATAL ||
-		init_shlvl(env) == FATAL)
+	if (!char_vec_resize(&env->opened_files, 3, FD_OPEN)
+		|| set_var(env, "PS1", "$ ", false) == FATAL
+		|| set_var(env, "PS2", "> ", false) == FATAL
+		|| set_var(env, "IFS", " \t\n", false) == FATAL
+		|| init_pwd(env) == FATAL
+		|| init_shlvl(env) == FATAL)
 		return (FATAL);
-	return(OK);
+	return (OK);
 }

@@ -6,16 +6,16 @@
 /*   By: ereali <ereali@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/11 19:49:49 by ereali            #+#    #+#             */
-/*   Updated: 2022/03/03 12:47:19 by ereali           ###   ########.fr       */
+/*   Updated: 2022/03/04 10:18:15 by ereali           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static size_t    ft_count_word(char const *s, char c)
+static size_t	ft_count_word(char const *s, char c)
 {
-	size_t    i;
-	size_t    word;
+	size_t	i;
+	size_t	word;
 
 	i = 0;
 	word = 0;
@@ -28,11 +28,11 @@ static size_t    ft_count_word(char const *s, char c)
 	return (word + 1);
 }
 
-static char    *ft_get_next_word(char const *s, char c, size_t *j)
+static char	*ft_get_next_word(char const *s, char c, size_t *j)
 {
-	char    *word;
-	size_t    jcopy;
-	size_t    i;
+	char	*word;
+	size_t	jcopy;
+	size_t	i;
 
 	i = 0;
 	jcopy = *j;
@@ -52,7 +52,7 @@ static char    *ft_get_next_word(char const *s, char c, size_t *j)
 	return (word);
 }
 
-static void    ft_freetablib(char **tab, int i)
+static void	ft_freetablib(char **tab, int i)
 {
 	while (i >= 0)
 	{
@@ -62,12 +62,12 @@ static void    ft_freetablib(char **tab, int i)
 	free(tab);
 }
 
-char    **ft_split(char const *s, char c)
+char	**ft_split(char const *s, char c)
 {
-	char    **tab;
-	size_t    i;
-	size_t    j;
-	size_t    word;
+	char	**tab;
+	size_t	i;
+	size_t	j;
+	size_t	word;
 
 	i = 0;
 	j = 0;
@@ -91,13 +91,13 @@ char    **ft_split(char const *s, char c)
 	return (tab);
 }
 
-void    ft_free_split(char **array)
+void	ft_free_split(char **array)
 {
-	int    i;
+	int	i;
 
 	i = 0;
 	if (!array)
-		return;
+		return ;
 	while (array[i])
 		free(array[i++]);
 	free(array);

@@ -2,8 +2,8 @@
 
 int	add_var(t_env *env, char *key, char *value, bool is_exported)
 {
-	t_var_list *new_node;
-	t_var_list *tmp;
+	t_var_list	*new_node;
+	t_var_list	*tmp;
 
 	new_node = malloc(sizeof(t_var_list));
 	if (!new_node)
@@ -23,8 +23,7 @@ int	add_var(t_env *env, char *key, char *value, bool is_exported)
 	else
 	{
 		tmp = env->vars;
-		while (tmp->next)
-			tmp = tmp->next;
+		tmp = ft_lstlast(tmp);
 		tmp->next = new_node;
 	}
 	return (OK);
@@ -32,10 +31,10 @@ int	add_var(t_env *env, char *key, char *value, bool is_exported)
 
 char	*get_var_val(t_env *env, char *key)
 {
-	t_var_list *tmp;
+	t_var_list	*tmp;
 
 	tmp = env->vars;
-	while(tmp)
+	while (tmp)
 	{
 		if (!ft_strcmp(key, tmp->key))
 			return (tmp->value);
@@ -44,12 +43,12 @@ char	*get_var_val(t_env *env, char *key)
 	return (NULL);
 }
 
-t_var_list		*get_var_ptr(t_env *env, char *key)
+t_var_list	*get_var_ptr(t_env *env, char *key)
 {
-	t_var_list *tmp;
+	t_var_list	*tmp;
 
 	tmp = env->vars;
-	while(tmp)
+	while (tmp)
 	{
 		if (!ft_strcmp(key, tmp->key))
 			return (tmp);
@@ -58,12 +57,12 @@ t_var_list		*get_var_ptr(t_env *env, char *key)
 	return (NULL);
 }
 
-t_status		set_var(t_env *env, char *key, char *value, bool is_exported)
+t_status	set_var(t_env *env, char *key, char *value, bool is_exported)
 {
-	t_var_list *tmp;
+	t_var_list	*tmp;
 
 	tmp = env->vars;
-	while(tmp)
+	while (tmp)
 	{
 		if (!ft_strcmp(key, tmp->key))
 		{
@@ -80,8 +79,8 @@ t_status		set_var(t_env *env, char *key, char *value, bool is_exported)
 
 t_status	remove_var(t_env *env, char *key)
 {
-	t_var_list *tmp;
-	t_var_list *old;
+	t_var_list	*tmp;
+	t_var_list	*old;
 
 	tmp = env->vars;
 	old = NULL;

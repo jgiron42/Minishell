@@ -5,13 +5,13 @@
 # include <stdlib.h>
 # include <stdio.h>
 
-typedef enum	e_token_type {INVALID, WORD = 1, GREAT = 2, LESS = 4, DLESS = 8, DGREAT = 16, PIPE = 32, AND_IF = 64, OR_IF = 128, LPARENTHESIS = 256, RPARENTHESIS = 512, SEMI = 1024, END = 2048}	t_token_type;
+typedef enum e_token_type {INVALID, WORD = 1, GREAT = 2, LESS = 4, DLESS = 8, DGREAT = 16, PIPE = 32, AND_IF = 64, OR_IF = 128, LPARENTHESIS = 256, RPARENTHESIS = 512, SEMI = 1024, END = 2048}	t_token_type;
 
-typedef enum	e_quote {NONE, ONE, DOUBLE, BACKSLASH}	t_quote;
+typedef enum e_quote {NONE, ONE, DOUBLE, BACKSLASH}	t_quote;
 
 typedef struct s_token_list
 {
-	char*				arg;
+	char				*arg;
 	t_token_type		type;
 	t_quote				nb;
 	struct s_token_list	*next;
@@ -29,11 +29,10 @@ size_t			ft_lstsize(t_token_list *lst);
 void			ft_putnbr_fd(int n, int fd);
 char			*ft_itoa(int n);
 char			*ft_strndup(size_t n, const char *s1);
-t_token_list	*ft_lstcpy(t_token_list	 *current);
+t_token_list	*ft_lstcpy(t_token_list	*current);
 size_t			ft_countoccur(char *str, const char *to_count);
 char			*ft_inhibit(char *str, const char *inibit);
 int				need_to_expand(char *str, size_t dollard);
-char			*remove_quotes(char* str);
-
+char			*remove_quotes(char *str);
 
 #endif

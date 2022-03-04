@@ -1,14 +1,12 @@
-
 #include <string.h>
 #include "minishell.h"
 
 char	*sig_message_1(int sig)
 {
-	char *a[NSIG];
+	char	*a[NSIG];
 
 	memset(a, NSIG, sizeof (char *));
 	a[SIGHUP] = "Hangup";
-//	a[SIGINT] = "Interrupt";
 	a[SIGQUIT] = "Quit";
 	a[SIGILL] = "Illegal instruction";
 	a[SIGTRAP] = "BPT trace/trap";
@@ -27,9 +25,10 @@ char	*sig_message_1(int sig)
 	a[SIGCONT] = "Continue";
 	return (a[sig]);
 }
+
 char	*sig_message_2(int sig)
 {
-	char *a[NSIG];
+	char	*a[NSIG];
 
 	memset(a, NSIG, sizeof (char *));
 	a[SIGCHLD] = "Child death or stop";
@@ -47,9 +46,9 @@ char	*sig_message_2(int sig)
 	return (a[sig]);
 }
 
-char *get_sig_message(int sig)
+char	*get_sig_message(int sig)
 {
-	char *ret;
+	char	*ret;
 
 	ret = sig_message_1(sig);
 	if (!ret)
@@ -61,12 +60,12 @@ char *get_sig_message(int sig)
 
 t_status	get_g_err(t_env *env, pid_t pid)
 {
-	int status;
+	int	status;
 
 	if (waitpid(pid, &status, 0) == -1 && errno == EINTR)
 		return (FATAL);
 	if (WIFEXITED(status))
- 		g_err = WEXITSTATUS(status);
+		g_err = WEXITSTATUS(status);
 	else
 	{
 		g_err = 128 + WTERMSIG(status);
@@ -81,7 +80,7 @@ t_status	get_g_err(t_env *env, pid_t pid)
 
 bool	is_dir(char *path)
 {
-	struct stat buf;
+	struct stat	buf;
 
 	if (stat(path, &buf) == 0 && S_ISDIR(buf.st_mode))
 		return (true);
@@ -90,7 +89,7 @@ bool	is_dir(char *path)
 
 t_status	my_perror(t_env *env, char *error[2], bool use_errno, t_status ret)
 {
-	int errno_save;
+	int	errno_save;
 
 	(void)env;
 	errno_save = errno;

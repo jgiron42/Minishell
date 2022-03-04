@@ -1,10 +1,9 @@
 //
 // Created by joachim on 22/11/2021.
 //
-
 #include "minishell.h"
 
-t_var_list *dup_var_list(t_var_list *src)
+t_var_list	*dup_var_list(t_var_list *src)
 {
 	t_env	ret;
 

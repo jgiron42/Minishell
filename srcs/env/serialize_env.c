@@ -3,9 +3,9 @@
 //
 #include "minishell.h"
 
-static char *join_key_value(char *key, char *value)
+static char	*join_key_value(char *key, char *value)
 {
-	char *ret;
+	char	*ret;
 	int		i;
 
 	i = 0;
@@ -32,7 +32,7 @@ static size_t	get_env_size(t_var_list *env)
 	size_t	ret;
 
 	ret = 1;
-	while(env)
+	while (env)
 	{
 		env = env->next;
 		ret++;
@@ -40,7 +40,7 @@ static size_t	get_env_size(t_var_list *env)
 	return (ret);
 }
 
-char **serialize_env(t_var_list *env)
+char	**serialize_env(t_var_list *env)
 {
 	ssize_t	i;
 	char	**ret;

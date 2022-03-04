@@ -7,7 +7,8 @@ t_status	redir(int oldfd, int newfd, int *save, t_env *env)
 		*save = dup (newfd);
 		if (*save == -1)
 			return (FATAL);
-		if (env->opened_files.size <= *save && !char_vec_resize(&env->opened_files, *save + 1, FD_CLOSE))
+		if (env->opened_files.size <= *save
+			&& !char_vec_resize(&env->opened_files, *save + 1, FD_CLOSE))
 			return (FATAL);
 		env->opened_files.data[*save] = FD_TMP;
 	}
@@ -15,7 +16,8 @@ t_status	redir(int oldfd, int newfd, int *save, t_env *env)
 		return (FATAL);
 	if (oldfd < env->opened_files.size)
 		env->opened_files.data[oldfd] = FD_CLOSE;
-	if (newfd >= env->opened_files.size && !char_vec_resize(&env->opened_files, newfd + 1, FD_CLOSE))
+	if (newfd >= env->opened_files.size
+		&& !char_vec_resize(&env->opened_files, newfd + 1, FD_CLOSE))
 		return (FATAL);
 	env->opened_files.data[newfd] = FD_OPEN;
 	close(oldfd);
@@ -24,7 +26,7 @@ t_status	redir(int oldfd, int newfd, int *save, t_env *env)
 
 t_status	open_redir(t_env *env, t_redir *r)
 {
-	int old_fd;
+	int	old_fd;
 
 	if (r->type == OUTPUT || r->type == CLOBBER)
 		old_fd = open(r->word, O_CREAT | O_WRONLY | O_TRUNC, 00644);
@@ -39,7 +41,7 @@ t_status	open_redir(t_env *env, t_redir *r)
 	return (redir(old_fd, r->newfd, &r->fd_save, env));
 }
 
-t_status perform_redirection(t_env *env, t_redir *list)
+t_status	perform_redirection(t_env *env, t_redir *list)
 {
 	int	ret;
 
@@ -51,13 +53,13 @@ t_status perform_redirection(t_env *env, t_redir *list)
 		else
 			ret = open_redir(env, list);
 		if (ret != OK)
-			break;
+			break ;
 		list = list->next;
 	}
 	return (ret);
 }
 
-t_status reset_redirection(t_env *env, t_redir *list) // TODO: iteratize
+t_status	reset_redirection(t_env *env, t_redir *list)
 {
 	int	ret;
 

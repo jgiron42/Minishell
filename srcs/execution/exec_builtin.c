@@ -4,13 +4,13 @@
 
 #include "minishell.h"
 
-t_status exec_regular_builtin(t_simple s, t_env *env)
+t_status	exec_regular_builtin(t_simple s, t_env *env)
 {
 	g_err = is_built_in(s.argv[0])(s.argv, env);
 	return (OK);
 }
 
-t_status exec_special_builtin(t_simple s, t_env *env)
+t_status	exec_special_builtin(t_simple s, t_env *env)
 {
 	g_err = is_special_built_in(s.argv[0])(s.argv, env);
 	if (g_err == 0)

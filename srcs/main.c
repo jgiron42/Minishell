@@ -10,7 +10,7 @@ t_status	ft_shell(t_env *env, char *line)
 	t_command		tree;
 	int				ret;
 
-	if (tokenise(line, &tokens, env) != OK	)
+	if (tokenise(line, &tokens, env) != OK)
 	{
 		free_token_list(tokens);
 		if (env->is_interactive)
@@ -51,7 +51,7 @@ t_status	loop(t_env *env)
 	}
 }
 
-int main(int argc, char **argv, char **envp)
+int	main(int argc, char **argv, char **envp)
 {
 	t_env		env;
 
