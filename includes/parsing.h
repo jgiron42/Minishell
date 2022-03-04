@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parsing.h                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ereali <ereali@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/03/04 20:41:11 by ereali            #+#    #+#             */
+/*   Updated: 2022/03/04 20:41:13 by ereali           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef PARSING_H
 # define PARSING_H
 
@@ -5,7 +17,22 @@
 # include <stdlib.h>
 # include <stdio.h>
 
-typedef enum e_token_type {INVALID, WORD = 1, GREAT = 2, LESS = 4, DLESS = 8, DGREAT = 16, PIPE = 32, AND_IF = 64, OR_IF = 128, LPARENTHESIS = 256, RPARENTHESIS = 512, SEMI = 1024, END = 2048}	t_token_type;
+typedef enum e_token_type
+{
+	INVALID,
+	WORD = 1,
+	GREAT = 2,
+	LESS = 4,
+	DLESS = 8,
+	DGREAT = 16,
+	PIPE = 32,
+	AND_IF = 64,
+	OR_IF = 128,
+	LPARENTHESIS = 256,
+	RPARENTHESIS = 512,
+	SEMI = 1024,
+	END = 2048
+}	t_token_type;
 
 typedef enum e_quote {NONE, ONE, DOUBLE, BACKSLASH}	t_quote;
 

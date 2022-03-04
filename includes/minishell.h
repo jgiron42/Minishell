@@ -6,7 +6,7 @@
 /*   By: ereali <ereali@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/04 10:31:30 by ereali            #+#    #+#             */
-/*   Updated: 2022/03/04 11:08:23 by jgiron           ###   ########.fr       */
+/*   Updated: 2022/03/04 20:41:18 by ereali           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ typedef struct s_redir
 {
 	enum e_redir	type;
 	char			*word;
-	int				newfd; // output:1, input: 0, append: 1, here: 0
+	int				newfd;
 	int				oldfd;
 	int				fd_save;
 	struct s_redir	*next;
@@ -75,7 +75,15 @@ union	u_command
 	t_token_type		error_type;
 };
 
-enum e_command_type {SIMPLE, PIPELINE, LIST, GROUPING, PARSE_ERROR, PARSE_FATAL};
+enum e_command_type
+{
+	SIMPLE,
+	PIPELINE,
+	LIST,
+	GROUPING,
+	PARSE_ERROR,
+	PARSE_FATAL
+};
 
 typedef struct s_command
 {
@@ -125,7 +133,7 @@ extern unsigned char	g_err;
 
 // env manip:
 t_status		remove_var(t_env *env, char *key);
-int				add_var(t_env *env, char *key, char *value, bool is_exported); // use in specific case, prefer set_var()
+int				add_var(t_env *env, char *key, char *value, bool is_exported);
 t_status		set_var(t_env *env, char *key, char *value, bool is_exported);
 t_status		export_env(t_var_list *env, char *key);
 char			*get_var_val(t_env *env, char *key);
@@ -149,7 +157,8 @@ void			reset_signals(t_env *env);
 void			sigint_handler(int sig);
 void			path_pop(char *path);
 t_status		path_push(char *path, char *component);
-t_status		my_perror(t_env *env, char *error[2], bool use_errno, t_status ret);
+t_status		my_perror(t_env *env, char *error[2], bool use_errno,
+					t_status ret);
 bool			is_dir(char *path);
 t_status		my_tmp_file(int *fd, char **dst);
 
@@ -170,7 +179,7 @@ t_status		get_g_err(t_env *env, pid_t pid);
 t_status		exec_command(t_command cmd, t_env *env);
 t_status		perform_redirection(t_env *env, t_redir *list);
 t_status		reset_redirection(t_env *env, t_redir *list);
-t_status		perform_assignments(t_env *env, t_simple cmd, bool export); // Lara
+t_status		perform_assignments(t_env *env, t_simple cmd, bool export);
 t_builtin		*is_special_built_in(char *name);
 t_builtin		*is_built_in(char *name);
 t_status		exec_special_builtin(t_simple s, t_env *env);
@@ -196,12 +205,16 @@ void			ft_print_pipe(t_pipeline **line);
 void			ft_print_list(t_list **line);
 void			ft_print_grouping(t_grouping **line);
 int				isvalid_name_letter(char c);
-t_status		new_redir_list(t_token_list **current, t_redir **dst, t_env *env);
+t_status		new_redir_list(t_token_list **current, t_redir **dst,
+					t_env *env);
 t_command		parse_grouping(t_token_list **current, t_env *env);
-t_command		parse_pipe(t_token_list **current, t_command prev_command, t_env *env);
-t_command		parse_list(t_token_list **current, t_command prev_command, t_env *env);
+t_command		parse_pipe(t_token_list **current, t_command prev_command,
+					t_env *env);
+t_command		parse_list(t_token_list **current, t_command prev_command,
+					t_env *env);
 t_command		parse_simple(t_token_list **current, t_env *env);
-t_command		parsing(t_token_list **current, t_token_type expected, t_env *env);
+t_command		parsing(t_token_list **current, t_token_type expected,
+					t_env *env);
 void			ft_lstadd_back_redir(t_redir **alst, t_redir *new);
 void			destroy_grouping(union u_command c);
 void			destroy_list(union u_command c);
@@ -216,6 +229,6 @@ char			*expand_word_all(char *str, t_env *env);
 t_status		expand_simple(t_simple *command, t_env *env);
 t_status		path_match(char *str, t_str_vec *dst);
 t_status		expand_redir(t_redir **first, t_env *env);
-t_status	path_match_current(char *glob, t_str_vec *dst);
+t_status		path_match_current(char *glob, t_str_vec *dst);
 
 #endif
