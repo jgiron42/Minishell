@@ -7,12 +7,12 @@ t_str_vec	str_vec_init(void)
 
 int	str_vec_reserve(t_str_vec *v, int new_cap)
 {
-	type_str_vec	*tmp;
+	t_type_str_vec	*tmp;
 	int				i;
 
 	if (new_cap < v->capacity)
 		return (1);
-	tmp = malloc(sizeof(type_str_vec) * new_cap);
+	tmp = malloc(sizeof(t_type_str_vec) * new_cap);
 	if (!tmp)
 		return (0);
 	i = 0;
@@ -27,7 +27,7 @@ int	str_vec_reserve(t_str_vec *v, int new_cap)
 	return (1);
 }
 
-int	str_vec_push(t_str_vec *v, type_str_vec value)
+int	str_vec_push(t_str_vec *v, t_type_str_vec value)
 {
 	if (v->size >= v->capacity)
 	{
@@ -62,7 +62,7 @@ int	str_vec_concat(t_str_vec *v, t_str_vec other)
 	return (1);
 }
 
-type_str_vec	str_vec_pop(t_str_vec *v)
+t_type_str_vec	str_vec_pop(t_str_vec *v)
 {
 	if (v->size)
 	{

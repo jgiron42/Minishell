@@ -11,7 +11,7 @@
 typedef char	t_type_char_vec;
 
 typedef struct s_char_vec {
-	type_char_vec	*data;
+	t_type_char_vec	*data;
 	int				size;
 	int				capacity;
 }				t_char_vec;

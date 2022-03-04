@@ -6,7 +6,7 @@
 /*   By: ereali <ereali@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 00:51:43 by ereali            #+#    #+#             */
-/*   Updated: 2022/03/03 06:10:31 by ereali           ###   ########.fr       */
+/*   Updated: 2022/03/04 09:13:25 by ereali           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	isvalid_name_letter(char c)
 	return (0);
 }
 
-t_status ft_heredoc(t_env *env, t_redir *redir)
+t_status	ft_heredoc(t_env *env, t_redir *redir)
 {
 	char	*rl;
 	int		fd;
@@ -46,29 +46,26 @@ t_status ft_heredoc(t_env *env, t_redir *redir)
 		free(rl);
 		rl = my_readline(env, "PS2");
 	}
-	free(rl);
-	free(word);
-	if(close(fd) != 0)
-		return(KO);
-	if (fd < 0)
-		return (KO);
+	if (close(fd) != 0)
+		return (free(rl), free(word), KO);
 	redir->oldfd = fd;
-	return (OK);
+	return (free(rl), free(word), OK);
 }
 
-char	*remove_quotes(char* str)
+char	*remove_quotes(char *str)
 {
-	char	*cpy;
+	char		*cpy;
 	size_t		i;
 	size_t		j;
 
 	i = 0;
 	j = 0;
 	cpy = ft_strdup(str);
-	while(cpy[i + j])
+	while (cpy[i + j])
 	{
-		if ((ft_strchr("\\\"" , cpy[i + j]) && need_to_expand(cpy, i + j) < 2) ||
-			(cpy[i + j] == '\'' && (need_to_expand(cpy, i + j) == 2 || need_to_expand(cpy, i + j) == 0)))
+		if ((ft_strchr("\\\"", cpy[i + j]) && need_to_expand(cpy, i + j) < 2)
+			|| (cpy[i + j] == '\'' && (need_to_expand(cpy, i + j) == 2
+					|| need_to_expand(cpy, i + j) == 0)))
 		{
 			j++;
 			str[i] = cpy[i + j];
@@ -86,21 +83,17 @@ char	*remove_quotes(char* str)
 
 char	*ft_inhibit(char *str, const char *inibit)
 {
-	char *new;
+	char	*new;
 	size_t	i;
 	size_t	j;
 
-	i = 0;
 	j = 0;
+	i = 0;
 	if (!str)
 		return (ft_strdup(""));
-	if (!inibit)
-		return (str);
-	new = ft_calloc(sizeof(char) , ft_strlen(str) +
-		ft_countoccur(str, inibit) + 1);
-	if (!new)
-		return (NULL);
-	while(str[i])
+	new = ft_calloc(sizeof(char), ft_strlen(str)
+			+ ft_countoccur(str, inibit) + 1);
+	while (str[i] && new)
 	{
 		if (ft_strchr(inibit, str[i]))
 		{

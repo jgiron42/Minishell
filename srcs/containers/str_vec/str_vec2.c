@@ -21,7 +21,7 @@ int	str_vec_cpy(t_str_vec src, t_str_vec *dst)
 	return (1);
 }
 
-int	str_vec_insert_one(t_str_vec *v, int pos, type_str_vec value)
+int	str_vec_insert_one(t_str_vec *v, int pos, t_type_str_vec value)
 {
 	int	i;
 
@@ -43,7 +43,7 @@ int	str_vec_insert_one(t_str_vec *v, int pos, type_str_vec value)
 	return (1);
 }
 
-int	str_vec_resize(t_str_vec *v, int new_size, type_str_vec value)
+int	str_vec_resize(t_str_vec *v, int new_size, t_type_str_vec value)
 {
 	int	i;
 
@@ -70,9 +70,9 @@ int	str_vec_resize(t_str_vec *v, int new_size, type_str_vec value)
 	return (1);
 }
 
-type_str_vec	str_vec_erase_one(t_str_vec *v, int pos)
+t_type_str_vec	str_vec_erase_one(t_str_vec *v, int pos)
 {
-	type_str_vec	ret;
+	t_type_str_vec	ret;
 
 	ret = v->data[pos];
 	--v->size;

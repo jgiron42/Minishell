@@ -7,12 +7,12 @@ t_char_vec	char_vec_init(void)
 
 int	char_vec_reserve(t_char_vec *v, int new_cap)
 {
-	type_char_vec	*tmp;
+	t_type_char_vec	*tmp;
 	int				i;
 
 	if (new_cap < v->capacity)
 		return (1);
-	tmp = malloc(sizeof(type_char_vec) * new_cap);
+	tmp = malloc(sizeof(t_type_char_vec) * new_cap);
 	if (!tmp)
 		return (0);
 	i = 0;
@@ -27,7 +27,7 @@ int	char_vec_reserve(t_char_vec *v, int new_cap)
 	return (1);
 }
 
-int	char_vec_push(t_char_vec *v, type_char_vec value)
+int	char_vec_push(t_char_vec *v, t_type_char_vec value)
 {
 	if (v->size >= v->capacity)
 	{
@@ -62,7 +62,7 @@ int	char_vec_concat(t_char_vec *v, t_char_vec other)
 	return (1);
 }
 
-type_char_vec	char_vec_pop(t_char_vec *v)
+t_type_char_vec	char_vec_pop(t_char_vec *v)
 {
 	if (v->size)
 	{

@@ -23,8 +23,6 @@ int	add_var(t_env *env, char *key, char *value, bool is_exported)
 	else
 	{
 		tmp = env->vars;
-		// while (tmp->next)
-		// 	tmp = tmp->next;
 		tmp = ft_lstlast(tmp);
 		tmp->next = new_node;
 	}

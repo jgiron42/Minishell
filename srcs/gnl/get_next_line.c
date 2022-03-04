@@ -6,7 +6,7 @@
 /*   By: ereali <ereali@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/27 17:06:15 by ereali            #+#    #+#             */
-/*   Updated: 2022/03/03 11:05:16 by ereali           ###   ########.fr       */
+/*   Updated: 2022/03/04 04:23:16 by ereali           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ char	*gnl_ft_use_read(char *str, char *str1, int fd, int *i)
 	return (str);
 }
 
-int		gnl_ft_line(char **line, char **str, int i)
+int	gnl_ft_line(char **line, char **str, int i)
 {
 	int		k;
 	char	*str1;
@@ -71,14 +71,14 @@ int		gnl_ft_line(char **line, char **str, int i)
 	return (1);
 }
 
-int		gnl_free(char **str)
+int	gnl_free(char **str)
 {
 	free(*str);
 	*str = NULL;
 	return (-1);
 }
 
-int		get_next_line(int fd, char **line)
+int	get_next_line(int fd, char **line)
 {
 	static char	*str;
 	char		*str1;
@@ -96,7 +96,7 @@ int		get_next_line(int fd, char **line)
 	str = gnl_ft_use_read(str, str1, fd, &i);
 	if (i == 0 && !str)
 	{
-		*line = (char*)malloc(sizeof(char) * 1);
+		*line = (char *)malloc(sizeof(char) * 1);
 		*line[0] = '\0';
 		return (0);
 	}
