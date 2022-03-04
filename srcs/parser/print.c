@@ -6,7 +6,7 @@
 /*   By: ereali <ereali@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 01:17:25 by ereali            #+#    #+#             */
-/*   Updated: 2022/03/04 11:38:03 by jgiron           ###   ########.fr       */
+/*   Updated: 2022/03/04 11:50:30 by jgiron           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ void	ft_print_pipe(t_pipeline **line)
 		if (tmp->command.type == GROUPING)
 			ft_print_grouping(&(tmp->command.command.grouping));
 		tmp = tmp->next;
-
+	}
 }
 
 void	ft_print_list(t_list **line)

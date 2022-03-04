@@ -6,7 +6,7 @@
 /*   By: ereali <ereali@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 01:12:29 by ereali            #+#    #+#             */
-/*   Updated: 2022/03/04 11:29:47 by jgiron           ###   ########.fr       */
+/*   Updated: 2022/03/04 11:56:20 by jgiron           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,11 @@ char	*expand_word(char *str, t_env *env)
 			if (!key)
 				return (NULL);
 			if (!ft_strcmp(key, "?"))
+			{
 				new = ft_itoa(g_err);
+				if (!new)
+					return (NULL);
+			}
 			else
 			{
 				new = get_var_val(env, key);
