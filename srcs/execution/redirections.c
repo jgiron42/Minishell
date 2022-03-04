@@ -67,14 +67,14 @@ t_status reset_redirection(t_env *env, t_redir *list) // TODO: iteratize
 	if (ret == FATAL)
 		return (ret);
 	if (list->type == DUPIN || list->type == DUPOUT)
-		ret |= redir(list->newfd, list->oldfd, NULL, env) == FATAL;
+		ret |= (redir(list->newfd, list->oldfd, NULL, env) == FATAL) * FATAL;
 	else if (list->fd_save != -1)
 	{
 		ret |= dup2(list->fd_save, list->newfd);
 		close(list->fd_save);
 		env->opened_files.data[list->fd_save] = FD_CLOSE;
 	}
-	else
+	else if (list->oldfd == -1)
 	{
 		close(list->newfd);
 		env->opened_files.data[list->newfd] = FD_CLOSE;

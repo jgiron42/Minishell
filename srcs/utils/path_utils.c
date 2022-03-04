@@ -36,7 +36,8 @@ t_status path_push(char *path, char *component)
 		return (KO);
 	}
 	path += len;
-	if (len > 0 && path[-1] != '/')
+	if (len > 0 && (path[-1] != '/' || !*component))
+//	if (len > 0)
 	{
 		*path = '/';
 		++path;
@@ -58,9 +59,9 @@ void path_pop(char *path)
 	if (!path)
 		return;
 	tmp = path + ft_strlen(path);
-	while (--tmp != path && *tmp != '/')
-		;
-	if (*tmp == '/' && tmp == path)
+	while (tmp != path && *tmp != '/')
+		--tmp;
+	if (*tmp == '/' && (tmp == path || tmp[-1] == '/'))
 		tmp[1] = 0;
 	else
 		*tmp = 0;

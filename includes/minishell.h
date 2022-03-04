@@ -169,7 +169,7 @@ t_token_list	*ft_lstnew(t_token_type	 token);
 
 
 //parsing :
-t_status	tokenise(char *str, t_token_list **dst);
+t_status tokenise(char *str, t_token_list **dst, t_env *env);
 void		free_token_list(t_token_list *ptr);
 t_status 	parse_tree(t_token_list *current, t_command *tree, t_env *env);
 void		ft_prin(t_token_list	**line);

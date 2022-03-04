@@ -24,7 +24,7 @@ t_status	exec_simple(union u_command cmd, t_env *env)
 	s = cmd.simple;
 	expand_simple(&s, env);
 	ret = perform_redirection(env, s.redir_list);
-	if (ret == KO && !env->is_interactive && is_special_built_in(s.argv[0]))
+	if (ret == KO && !env->is_interactive && (s.argv && is_special_built_in(s.argv[0])))
 		ret = FATAL;
 	if (ret == FATAL)
 		return (FATAL);
@@ -122,12 +122,12 @@ t_status	exec_grouping(union u_command cmd, t_env *env)
 	int			ret;
 	pid_t		pid;
 
-	new_env = *env;
 	g = cmd.grouping;
 	if (perform_redirection(env, g->redir_list) == FATAL)
 		return (FATAL);
 	if (g->is_in_subshell)
 	{
+		new_env = *env;
 		new_env.vars = dup_var_list(new_env.vars);
 		if (!new_env.vars)
 			return (FATAL);

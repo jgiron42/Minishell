@@ -23,15 +23,17 @@ t_builtin	*is_special_built_in(char *name)
 			"unset",
 			NULL
 	};
-	 t_builtin *f[] =
-			{
-			&sh_exit,
-			&sh_export,
-			&sh_unset
-			};
+	t_builtin *f[] =
+		{
+		&sh_exit,
+		&sh_export,
+		&sh_unset
+		};
+		return (NULL);
 	int	i;
 
 	i = -1;
+	if (!name)
 	while (list[++i])
 		if (!ft_strcmp(list[i], name))
 			return (f[i]);
@@ -76,6 +78,8 @@ t_builtin	*is_built_in(char *name) {
 	int	i;
 
 	i = -1;
+	if (!name)
+		return (NULL);
 	while (list[++i])
 		if (!ft_strcmp(list[i], name))
 			return (f[i]);

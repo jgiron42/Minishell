@@ -67,10 +67,18 @@ t_status path_match_recurse(char *path, char **array, t_str_vec *dst)
 	struct dirent	*entry;
 	char			*tmp;
 
+	while (!**array)
+	{
+		path_push(path, *array);
+		++array;
+	}
 	if (!*path)
 		current = opendir(".");
 	else
+	{
+		printf("-> %s\n", path);
 		current = opendir(path);
+	}
 	if (!current)
 		return (KO);
 	entry = readdir(current);
@@ -110,14 +118,16 @@ t_status	path_match(char *str, t_str_vec *dst)
 	array = ft_split(str, '/');
 	if (!array)
 		return (FATAL);
+	for (int i = 0; array[i]; i++)
+		printf("==> %s\n", array[i]);
 	if (*str == '/')
 		ft_strcpy(path, "/");
 	else
 		ft_strcpy(path, "");
 	tmpsize = dst->size;
 	ret = OK;
-	if (*array)
-		ret = path_match_recurse(path, array, dst) == FATAL;
+//	if (*array)
+//		ret = path_match_recurse(path, array + (*str == '/'), dst);
 	if (dst->size == tmpsize && ret != FATAL)
 	{
 		str = ft_strdup(str);

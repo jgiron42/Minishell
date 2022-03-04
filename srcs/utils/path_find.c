@@ -38,6 +38,7 @@ t_status	path_find(char *name, t_env *env, char **dst)
 	int 	ret;
 
 	path = get_var_val(env, "PATH");
+	*dst = NULL;
 	if (!path)
 		return (KO);
 	directories = ft_split(path, ':');
@@ -45,7 +46,7 @@ t_status	path_find(char *name, t_env *env, char **dst)
 		return (FATAL);
 	ret = path_find2(directories, name, dst);
 	ft_free_split(directories);
-	if (ret == KO)
+	if (ret != OK)
 		*dst = NULL;
 	return (ret);
 }

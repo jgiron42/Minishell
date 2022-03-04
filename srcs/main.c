@@ -10,7 +10,7 @@ t_status	ft_shell(t_env *env, char *line)
 	t_command		tree;
 	int				ret;
 
-	if (tokenise(line, &tokens) == FATAL)
+	if (tokenise(line, &tokens, env) != OK	)
 	{
 		free_token_list(tokens);
 		if (env->is_interactive)

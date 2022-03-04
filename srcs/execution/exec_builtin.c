@@ -6,19 +6,17 @@
 
 t_status exec_regular_builtin(t_simple s, t_env *env)
 {
-	int	ret;
-
-	ret = is_built_in(s.argv[0])(s.argv, env);
-	return (ret);
+	g_err = is_built_in(s.argv[0])(s.argv, env);
+	return (OK);
 }
 
 t_status exec_special_builtin(t_simple s, t_env *env)
 {
-	unsigned char ret;
-
-	ret = is_special_built_in(s.argv[0])(s.argv, env);
-	if (ret == OK || env->is_interactive)
-		return (ret);
+	g_err = is_special_built_in(s.argv[0])(s.argv, env);
+	if (g_err == 0)
+		return (OK);
+	if (env->is_interactive)
+		return (KO);
 	else
 		return (FATAL);
 }

@@ -28,7 +28,7 @@ t_token_type	c_type(t_quote nb, const char *str, size_t len)
 	return (type[i]);
 }
 
-size_t	create_t_token_list(char **str, t_token_list **line)
+size_t create_t_token_list(char **str, t_token_list **line, t_env *env)
 {
 	size_t			len;
 	t_token_list	*node;
@@ -68,8 +68,7 @@ size_t	create_t_token_list(char **str, t_token_list **line)
 		len++;
 	if (!(*str)[len] && node->nb)
 	{
-		ft_putstr_fd("\033[0;31merreur syntax: missing closing quote\n", 2);
-		return (KO);
+		return (my_perror(env, (char*[2]){"Syntax error: missing closing quote", NULL}, false, KO));
 	}
 	if (node->type != INVALID)
 	{
@@ -84,19 +83,22 @@ size_t	create_t_token_list(char **str, t_token_list **line)
 	return (OK);
 }
 
-t_status	tokenise(char *str, t_token_list **dst)
+t_status tokenise(char *str, t_token_list **dst, t_env *env)
 {
 	size_t			i;
+	t_status		ret;
 	t_token_list	*tmp;
 
 	i = 0;
 	*dst = NULL;
 	while (i < ft_strlen(str))
-		if (create_t_token_list(&str, dst) == FATAL)
-		{
+	{
+		ret = create_t_token_list(&str, dst, env);
+		if (ret != OK) {
 			free_token_list(*dst);
-			return (FATAL);
+			return (KO);
 		}
+	}
 	tmp = ft_lstnew(END);
 	if (!tmp)
 	{
