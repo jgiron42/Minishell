@@ -6,7 +6,7 @@
 #    By: ereali <ereali@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/10/18 05:33:00 by ereali            #+#    #+#              #
-#    Updated: 2022/03/03 05:50:25 by ereali           ###   ########.fr        #
+#    Updated: 2022/03/04 04:04:31 by ereali           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,11 +33,13 @@ SRC = main.c tokeniser.c parsing.c utils_parser.c parse_grouping.c parse_list.c 
 		parse_pipe.c parse_simple.c print.c expansion.c \
 		env.c split_ifs.c path_utils.c path_find.c my_getopt.c\
 		my_get_working_directory.c destroy_tree.c \
-		command_name.c exec_builtin.c exec_program.c exec.c ft_exit.c exit.c\
-		redirections.c utils.c dupenv.c init_env.c merge_env.c parse_env.c\
-		serialize_env.c char_vec.c str_vec.c echo.c sh_env.c export.c unset.c\
-		false.c true.c signals.c input.c get_next_line.c get_next_line_utils.c\
-		path_match.c utils_list.c pwd.c cd.c tmp_file.c
+		command_name.c exec_builtin.c exec_program.c exec.c ft_exit.c exit.c \
+		redirections.c utils.c dupenv.c init_env.c parse_env.c \
+		serialize_env.c char_vec.c str_vec.c echo.c sh_env.c export.c unset.c \
+		signals.c input.c get_next_line.c get_next_line_utils.c \
+		path_match.c utils_list.c pwd.c cd.c tmp_file.c str_vec2.c \
+		char_vec2.c env_utils.c\
+
 INC = parsing.h minishell.h
 
 ## Local lib found inside LIB_DIR

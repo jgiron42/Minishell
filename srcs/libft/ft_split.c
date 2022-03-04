@@ -6,7 +6,7 @@
 /*   By: ereali <ereali@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/11 19:49:49 by ereali            #+#    #+#             */
-/*   Updated: 2022/03/03 10:03:32 by ereali           ###   ########.fr       */
+/*   Updated: 2022/03/04 02:22:09 by ereali           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,23 +21,19 @@ static size_t	ft_count_word(char const *s, char c)
 	word = 0;
 	if (ft_strlen(s) == 0)
 		return (0);
-	while (s[i] == c)
-		i++;
 	while (s[i])
 	{
 		if (s[i] == c)
 		{
 			word++;
-			while (s[i] == c)
-				i++;
-			if (!(s[i]))
-				i--;
+			i++;
 		}
-		i++;
+		else
+			i++;
 	}
 	if (s[i - 1] == c)
-		return (word);
-	return (word + 1);
+		return (word - 1);
+	return (word);
 }
 
 static char	*ft_get_next_word(char const *s, char c, size_t *j)
@@ -47,8 +43,8 @@ static char	*ft_get_next_word(char const *s, char c, size_t *j)
 	size_t	i;
 
 	i = 0;
-	while (s[*j] == c)
-		(*j)++;
+	// if (s[*j] == c)
+	// 	(*j)++;
 	jcopy = *j;
 	while (s[jcopy] && s[jcopy] != c)
 		jcopy++;
