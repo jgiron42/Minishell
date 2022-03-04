@@ -215,5 +215,7 @@ t_status		ft_heredoc(t_env *env, t_redir *redir);
 char			*expand_word_all(char *str, t_env *env);
 t_status		expand_simple(t_simple *command, t_env *env);
 t_status		path_match(char *str, t_str_vec *dst);
+t_status		expand_redir(t_redir **first, t_env *env);
+t_status	path_match_current(char *glob, t_str_vec *dst);
 
 #endif

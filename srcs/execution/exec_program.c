@@ -14,6 +14,7 @@
 
 t_status	permission_denied(char *name)
 {
+	ft_putstr_fd(NAME": ", 2);
 	ft_putstr_fd(name, 2);
 	ft_putstr_fd(": Permission denied\n", 2);
 	g_err = 126;
@@ -22,9 +23,20 @@ t_status	permission_denied(char *name)
 
 t_status	is_a_directory(char *name)
 {
+	ft_putstr_fd(NAME": ", 2);
 	ft_putstr_fd(name, 2);
 	ft_putstr_fd(": Is a directory\n", 2);
 	g_err = 126;
+	return (OK);
+}
+
+t_status	command_not_found(char *name)
+{
+	ft_putstr_fd(NAME": ", 2);
+	if (name)
+		ft_putstr_fd(name, 2);
+	ft_putstr_fd(": Not found\n", 2);
+	g_err = 127;
 	return (OK);
 }
 
@@ -48,9 +60,10 @@ t_status	exec_program(char *name, t_simple s, t_env *env)
 {
 	char		**envp;
 	pid_t		pid;
-	struct stat	buf;
 
-	if (stat(name, &buf) == -1 || S_ISDIR(buf.st_mode))
+	if (!name || (access(name, X_OK) && (errno == ENOENT || errno == ENOTDIR)))
+		return (command_not_found(name));
+	if (is_dir(name))
 		return (is_a_directory(name));
 	if (access(name, X_OK))
 		return (permission_denied(name));

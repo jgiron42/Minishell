@@ -116,6 +116,35 @@ t_status path_match_recurse(char *path, char **array, t_str_vec *dst)
 	return (OK);
 }
 
+t_status	path_match_current(char *glob, t_str_vec *dst)
+{
+
+	DIR				*current;
+	struct dirent	*entry;
+	char			*tmp;
+
+	current = opendir(".");
+	if (!current)
+		return (KO);
+	entry = readdir(current);
+	while (entry)
+	{
+		if ((ft_strcmp(entry->d_name, ".") && ft_strcmp(entry->d_name, "..")
+			 && glob_include(glob, entry->d_name)))
+		{
+			tmp = ft_strdup(entry->d_name);
+			if (!tmp || !str_vec_push(dst, tmp))
+			{
+				closedir(current);
+				return (FATAL);
+			}
+		}
+		entry = readdir(current);
+	}
+	closedir(current);
+	return (OK);
+}
+
 t_status	path_match(char *str, t_str_vec *dst)
 {
 	char	**array;

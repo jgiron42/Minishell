@@ -195,20 +195,35 @@ t_status	ft_field_split(t_token_list **lst)
 	return (OK);
 }
 
+void		free_vec(t_str_vec *v)
+{
+	while (--v->size >= 0)
+		free(v->data[v->size]);
+	free(v->data);
+	v->data = NULL;
+}
+
 t_status	expand_path(t_token_list *lst, t_str_vec *dst)
 {
+	int	tmp;
+	char *tmp_s;
+
 	*dst = str_vec_init();
 	while (lst)
 	{
-		if (lst->arg[0] && path_match(lst->arg, dst) == FATAL)
+		tmp = dst->size;
+		if (lst->arg[0] && path_match_current(lst->arg, dst) == FATAL)
+			return (free_vec(dst), FATAL);
+		if (tmp == dst->size)
 		{
-			while (--dst->size >= 0)
-				free(dst->data[dst->size]);
-			return (FATAL);
+			tmp_s = ft_strdup(lst->arg);
+			if (!tmp_s || str_vec_push(dst, tmp_s) == FATAL)
+				return (free_vec(dst), FATAL);
 		}
 		lst = lst->next;
 	}
-	str_vec_push(dst, NULL);
+	if (str_vec_push(dst, NULL) == FATAL)
+		return (free_vec(dst), FATAL);
 	return (OK);
 }
 

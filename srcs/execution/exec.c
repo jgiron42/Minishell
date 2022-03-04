@@ -16,14 +16,6 @@ unsigned char 		g_err;
 
 typedef		t_status (*t_command_handler)(union u_command, t_env *env);
 
-t_status	command_not_found(char *name)
-{
-	ft_putstr_fd(name, 2);
-	ft_putstr_fd(": command not found\n", 2);
-	g_err = 127;
-	return (OK);
-}
-
 t_status	exec_simple(union u_command cmd, t_env *env)
 {
 	t_simple	s;
@@ -48,10 +40,8 @@ t_status	exec_simple(union u_command cmd, t_env *env)
 	else
 	{
 		ret = path_find(s.argv[0], env,&name);
-		if (ret == OK)
+		if (ret != FATAL)
 			ret = exec_program(name, s, env);
-		else if (ret == KO)
-			ret = command_not_found(s.argv[0]);
 		free(name);
 	}
 	ft_free_split(s.argv);
@@ -86,7 +76,7 @@ t_status	exec_pipeline(union u_command cmd, t_env *env)
 			if ((p->next && (dup2(next_pipe[1], 1) == -1
 				|| close(next_pipe[0]) == -1)) ||
 			 	(prev_pipe_read != -1 && dup2(prev_pipe_read, 0)))
-			{}	//TODO
+				return (FATAL);
 			exec_command(p->command, env);
 			exit(g_err);
 		}
@@ -127,19 +117,17 @@ t_status	exec_list(union u_command cmd, t_env *env)
 t_status	exec_grouping(union u_command cmd, t_env *env)
 {
 	t_grouping	*g;
-	t_env		new_env;
 	int			ret;
 	pid_t		pid;
 
 	g = cmd.grouping;
+	ret = OK;
+	if (expand_redir(&g->redir_list, env) == FATAL)
+		return (FATAL);
 	if (perform_redirection(env, g->redir_list) == FATAL)
 		return (FATAL);
 	if (g->is_in_subshell)
 	{
-		new_env = *env;
-		new_env.vars = dup_var_list(new_env.vars);
-		if (!new_env.vars)
-			return (FATAL);
 		pid = fork();
 		if (pid == -1)
 			return (FATAL);
@@ -147,13 +135,13 @@ t_status	exec_grouping(union u_command cmd, t_env *env)
 		{
 			reset_signals(env);
 			env->is_interactive = false;
-			exec_command(g->command, &new_env);
+			exec_command(g->command, env);
 			ft_exit(env);
 		}
 		get_g_err(env, pid);
 	}
 	else
-		ret = exec_command(g->command, &new_env);
+		ret = exec_command(g->command, env);
 	if (reset_redirection(env, g->redir_list) == FATAL)
 		return (FATAL);
 	return (ret);

@@ -69,7 +69,7 @@ void	ft_print_pipe(t_pipeline **line)
 		if (tmp->command.type == GROUPING)
 			ft_print_grouping(&(tmp->command.command.grouping));
 		tmp = tmp->next;
-
+	}
 }
 
 void	ft_print_list(t_list **line)
@@ -113,4 +113,5 @@ void	ft_print_grouping(t_grouping **line)
 		ft_print_list(&(tmp->command.command.list));
 	printf("-------redir------------\n");
 	ft_prin_redir(&(tmp->redir_list));
+	return;
 }
