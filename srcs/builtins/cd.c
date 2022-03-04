@@ -6,7 +6,7 @@
 /*   By: ereali <ereali@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 04:00:47 by ereali            #+#    #+#             */
-/*   Updated: 2022/03/04 11:18:29 by jgiron           ###   ########.fr       */
+/*   Updated: 2022/03/04 20:52:04 by ereali           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,10 @@ unsigned char	sh_cd(char **argv, t_env *env)
 	if (!pathname)
 		return (FATAL);
 	if (chdir(pathname) < 0)
-	{
-		ret = my_perror(env, (char *[2]){"cd: can't cd to ", pathname}, true, KO);
-		free(pathname);
-		return (ret);
-	}
+		return (my_perror(env, (char *[2]){"cd: can't cd to ", pathname},
+			true, KO), free(pathname), KO);
 	if (set_var(env, "PWD", pathname, 1))
 		return (FATAL);
-	free(pathname);
-	return (OK);
+	return (free(pathname), OK);
 }
+// free path name ?
