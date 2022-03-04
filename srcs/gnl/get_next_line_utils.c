@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ereali <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: ereali <ereali@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/27 19:00:52 by ereali            #+#    #+#             */
-/*   Updated: 2019/11/30 21:00:53 by ereali           ###   ########.fr       */
+/*   Updated: 2022/03/03 11:04:09 by ereali           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ char	*gnl_ft_swap(int start, int end, char *str)
 	if (end < 0 || end < start)
 		end = gnl_ft_strlen(str);
 	tmp = str;
-	if (!(str = (char *)malloc(sizeof(char) * (end - start + 1))))
+	str = (char *)malloc(sizeof(char) * (end - start + 1));
+	if (!str)
 		return (NULL);
 	while ((start + i) < end)
 	{
@@ -32,7 +33,7 @@ char	*gnl_ft_swap(int start, int end, char *str)
 	return (str);
 }
 
-int		gnl_ft_strlen(char *s1)
+int	gnl_ft_strlen(char *s1)
 {
 	int	i;
 
@@ -59,7 +60,7 @@ char	*gnl_ft_bzero(char *str, int n)
 	return (str);
 }
 
-int		gnl_ft_strchr(const char *s, int c)
+int	gnl_ft_strchr(const char *s, int c)
 {
 	size_t	i;
 
@@ -81,8 +82,9 @@ char	*gnl_ft_strjoin(char *s1, char *s2)
 	i = 0;
 	if ((!(s1)) && (!(s2)))
 		return (NULL);
-	if (!(result = (char *)malloc(sizeof(char) * (gnl_ft_strlen(s1) +
-			gnl_ft_strlen(s2) + 1))))
+	result = (char *)malloc(sizeof(char) * (gnl_ft_strlen(s1)
+				+ gnl_ft_strlen(s2) + 1));
+	if (!result)
 		return (NULL);
 	while (i < gnl_ft_strlen(s1) + gnl_ft_strlen(s2))
 	{

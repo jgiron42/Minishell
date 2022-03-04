@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ereali <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: ereali <ereali@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/30 20:29:15 by ereali            #+#    #+#             */
-/*   Updated: 2019/11/30 21:01:51 by ereali           ###   ########.fr       */
+/*   Updated: 2022/03/03 11:11:01 by ereali           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 100
 # endif
+
 int		gnl_ft_check_str(char **str, char **line);
 char	*gnl_ft_use_read(char *str, char *str1, int fd, int *i);
 int		gnl_ft_line(char **line, char **str, int i);

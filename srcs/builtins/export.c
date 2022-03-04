@@ -6,7 +6,7 @@
 /*   By: ereali <ereali@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 02:40:37 by ereali            #+#    #+#             */
-/*   Updated: 2022/03/03 02:40:38 by ereali           ###   ########.fr       */
+/*   Updated: 2022/03/03 10:15:24 by ereali           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,20 @@
 
 unsigned char	sh_export(char **argv, t_env *env)
 {
-	int ret;
+	int	ret;
 	int	i;
 
 	ret = 0;
-	argv++;
-	while (argv && *argv)
+	while (++argv && *argv)
 	{
 		i = 0;
-		while ((*argv)[i] && !ft_isdigit((*argv)[0]) && isvalid_name_letter((*argv)[i]))
+		while ((*argv)[i] && !ft_isdigit((*argv)[0])
+			&& isvalid_name_letter((*argv)[i]))
 			i++;
 		if (i > 0 && (*argv)[i] == '=')
 		{
 			(*argv)[i] = '\0';
-			if(set_var(env, *argv,*argv + i + 1, 1) == FATAL)
+			if (set_var(env, *argv,*argv + i + 1, 1) == FATAL)
 				return (-1);
 			(*argv)[i] = '=';
 		}
@@ -36,7 +36,6 @@ unsigned char	sh_export(char **argv, t_env *env)
 			ret = 1;
 			ft_putstr_fd("export :bad variable name\n", 2);
 		}
-		argv++;
 	}
 	return (ret);
 }

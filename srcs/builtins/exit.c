@@ -6,7 +6,7 @@
 /*   By: ereali <ereali@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 02:40:29 by ereali            #+#    #+#             */
-/*   Updated: 2022/03/03 02:40:30 by ereali           ###   ########.fr       */
+/*   Updated: 2022/03/03 10:11:58 by ereali           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,5 +25,5 @@ unsigned char	sh_exit(char **argv, t_env *env)
 	if ((*argv)[i] == '\0')
 		g_err = ft_atoi(*argv);
 	ft_exit(env);
-	return(0);
+	return (0);
 }

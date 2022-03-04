@@ -4,7 +4,7 @@
 
 #include "minishell.h"
 
-t_var_list *dup_var_list(t_var_list *src)
+t_var_list	*dup_var_list(t_var_list *src)
 {
 	t_env	ret;
 

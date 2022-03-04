@@ -21,8 +21,9 @@ t_status	is_a_directory(char *name)
 
 void	clean_fds(t_env *env)
 {
-	int i = 0;
+	int	i;
 
+	i = 0;
 	while (i < env->opened_files.size)
 	{
 		if (env->opened_files.data[i] == FD_TMP)
@@ -34,11 +35,11 @@ void	clean_fds(t_env *env)
 	}
 }
 
-t_status exec_program(char *name, t_simple s, t_env *env)
+t_status	exec_program(char *name, t_simple s, t_env *env)
 {
-	char **envp;
-	pid_t pid;
-	struct	stat buf;
+	char		**envp;
+	pid_t		pid;
+	struct stat	buf;
 
 	if (stat(name, &buf) == -1 || S_ISDIR(buf.st_mode))
 		return (is_a_directory(name));

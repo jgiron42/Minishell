@@ -7,7 +7,7 @@
 
 typedef enum	e_token_type {INVALID, WORD = 1, GREAT = 2, LESS = 4, DLESS = 8, DGREAT = 16, PIPE = 32, AND_IF = 64, OR_IF = 128, LPARENTHESIS = 256, RPARENTHESIS = 512, SEMI = 1024, END = 2048}	t_token_type;
 
-typedef enum	e_quote {NONE, ONE, DOUBLE, BACKSLASH}	t_quote;
+typedef enum	e_quote {NONE, ONE, DOUBLE}	t_quote;
 
 typedef struct s_token_list
 {

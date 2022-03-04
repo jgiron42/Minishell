@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ereali <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: ereali <ereali@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/27 17:06:15 by ereali            #+#    #+#             */
-/*   Updated: 2019/12/21 20:37:00 by ereali           ###   ########.fr       */
+/*   Updated: 2022/03/03 11:05:16 by ereali           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-int		gnl_ft_check_str(char **str, char **line)
+int	gnl_ft_check_str(char **str, char **line)
 {
 	char	*tmp;
 	int		k;
@@ -20,7 +20,8 @@ int		gnl_ft_check_str(char **str, char **line)
 	k = 0;
 	if (!str)
 	{
-		if (!((*str) = (char *)malloc((sizeof(char) * BUFFER_SIZE) + 1)))
+		(*str) = (char *)malloc((sizeof(char) * BUFFER_SIZE) + 1);
+		if (!(*str))
 			return (-1);
 	}
 	else if ((k = gnl_ft_strchr(*str, '\n')) >= 0)

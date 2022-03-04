@@ -124,6 +124,7 @@ t_status	init_env(t_env *env);
 // path_utils:
 bool		path_has_dot(char *path);
 char 		*ft_realpath(const char *path, char *resolved_path);
+char 		*path_match(char *str);
 
 // utils
 char		*my_get_working_directory(const char *for_whom);
@@ -199,6 +200,6 @@ t_status	ft_heredoc(t_env *env, t_redir *redir);
 //expansion
 char		*expand_word_all(char *str, t_env *env);
 t_status	expand_simple(t_simple *command, t_env *env);
-t_status	path_match(char *str, t_str_vec *dst);
+char		*path_match(char *str);
 
 #endif

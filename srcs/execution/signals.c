@@ -26,7 +26,7 @@ t_status	set_signal(int sig, sighandler_t action, t_env *env)
 	return (OK);
 }
 
-void		reset_signals(t_env *env)
+void	reset_signals(t_env *env)
 {
 	if (env->default_signals[SIGINT] != (sighandler_t)-1)
 		signal(SIGINT, env->default_signals[SIGINT]);

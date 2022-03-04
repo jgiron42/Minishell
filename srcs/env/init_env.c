@@ -4,22 +4,30 @@
 
 #include "minishell.h"
 
-static t_status init_pwd(t_env *env)
+static t_status	init_pwd(t_env *env)
 {
-	char	*true_pwd;
+	char		*current;
+	char		*real_current;
+	char		*true_pwd;
 	t_status	ret;
 
 	true_pwd = my_get_working_directory("shell-init");
 	if (!true_pwd && errno == ENOMEM)
 		return (FATAL);
-	if (!true_pwd)
-		ret = KO;
-	ret = set_var(env, "PWD", true_pwd, true);
+	current = get_var_val(env, "PWD");
+	real_current = ft_realpath(current, NULL); // TODO: unauthorized function
+	if (!true_pwd || (!real_current && (errno == EIO || errno == ENOMEM)))
+		ret = FATAL;
+	else if (current && ft_strlen(current) < PATH_MAX && !path_has_dot(current) && !ft_strcmp(real_current, true_pwd))
+		ret = OK;//ret = set_var(env, "PWD", current, true);
+	else
+		ret = set_var(env, "PWD", true_pwd, true);
 	free(true_pwd);
+	free(real_current);
 	return (ret);
 }
 
-static t_status init_shlvl(t_env *env)
+static t_status	init_shlvl(t_env *env)
 {
 	char	*current;
 
@@ -38,9 +46,9 @@ static t_status init_shlvl(t_env *env)
 	return (OK);
 }
 
-t_status init_env(t_env *env)
+t_status	init_env(t_env *env)
 {
-	env->is_interactive = isatty(0) && isatty(2);
+	env->is_interactive = (isatty(0) && isatty(2));
 	if (env->is_interactive)
 	{
 		set_signal(SIGINT, sigint_handler, env);
@@ -48,12 +56,12 @@ t_status init_env(t_env *env)
 		set_signal(SIGTERM, SIG_IGN, env);
 	}
 	rl_outstream = stderr;
-	if (!char_vec_resize(&env->opened_files, 3, FD_OPEN) ||
-		set_var(env, "PS1", "$ ", false) == FATAL ||
-		set_var(env, "PS2", "> ", false) == FATAL ||
-		set_var(env, "IFS", " \t\n", false) == FATAL ||
-		init_pwd(env) == FATAL ||
-		init_shlvl(env) == FATAL)
+	if (!char_vec_resize(&env->opened_files, 3, FD_OPEN)
+		|| set_var(env, "PS1", "$ ", false) == FATAL
+		|| set_var(env, "PS2", "> ", false) == FATAL
+		|| set_var(env, "IFS", " \t\n", false) == FATAL
+		|| init_pwd(env) == FATAL
+		|| init_shlvl(env) == FATAL)
 		return (FATAL);
-	return(OK);
+	return (OK);
 }

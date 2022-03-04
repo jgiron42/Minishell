@@ -19,7 +19,7 @@ t_status	path_find2(char **array, char *name, char **dst)
 			ret = FATAL;
 			break;
 		}
-		if (!access(*dst, F_OK) && !is_dir(*dst))
+		if (!access(*dst, F_OK))
 		{
 			ret = OK;
 			break;

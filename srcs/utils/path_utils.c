@@ -28,15 +28,13 @@ bool	path_has_dot(char *path)
 
 t_status path_push(char *path, char *component)
 {
-	int	len;
-
-	len = ft_strlen(path);
-	if (len + ft_strlen(component) + 1 >= PATH_MAX || ft_strlen(component) > NAME_MAX) {
+	if (ft_strlen(path) + ft_strlen(component) + 1 >= PATH_MAX || ft_strlen(component) > NAME_MAX)
+	{
 		errno = ENAMETOOLONG;
 		return (KO);
 	}
-	path += len;
-	if (len > 0 && path[-1] != '/')
+	path += ft_strlen(path);
+	if (path[-1] != '/')
 	{
 		*path = '/';
 		++path;
@@ -60,10 +58,7 @@ void path_pop(char *path)
 	tmp = path + ft_strlen(path);
 	while (--tmp != path && *tmp != '/')
 		;
-	if (*tmp == '/' && tmp == path)
-		tmp[1] = 0;
-	else
-		*tmp = 0;
+	*tmp = 0;
 }
 
 static	t_status compute_path(char *current, char **splitted) {

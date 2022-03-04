@@ -3,9 +3,9 @@
 //
 #include "minishell.h"
 
-unsigned char 		g_err;
+unsigned char	g_err;
 
-typedef		t_status (*t_command_handler)(union u_command, t_env *env);
+typedef	t_status (*t_command_handler)(union u_command, t_env *env);
 
 t_status	command_not_found(char *name)
 {
@@ -26,8 +26,8 @@ t_status	exec_simple(union u_command cmd, t_env *env)
 	ret = perform_redirection(env, s.redir_list);
 	if (ret == KO && !env->is_interactive && is_special_built_in(s.argv[0]))
 		ret = FATAL;
-	if (ret == FATAL)
-		return (FATAL);
+	if (ret != OK)
+		return (ret);
 	if (!s.argv || !s.argv[0])
 		ret = OK;
 	else if (ft_strchr(s.argv[0], '/'))
@@ -38,7 +38,7 @@ t_status	exec_simple(union u_command cmd, t_env *env)
 		ret = exec_regular_builtin(s, env);
 	else
 	{
-		ret = path_find(s.argv[0], env,&name);
+		ret = path_find(s.argv[0], env, &name);
 		if (ret == OK)
 			ret = exec_program(name, s, env);
 		else if (ret == KO)
@@ -53,10 +53,10 @@ t_status	exec_simple(union u_command cmd, t_env *env)
 
 t_status	exec_pipeline(union u_command cmd, t_env *env)
 {
-	t_pipeline *p;
+	t_pipeline	*p;
 	int			next_pipe[2];
 	int			prev_pipe_read;
-	int 		ret;
+	int			ret;
 	int			to_wait;
 
 	to_wait = -1;
@@ -66,18 +66,19 @@ t_status	exec_pipeline(union u_command cmd, t_env *env)
 	{
 		next_pipe[0] = -1;
 		if (p->next && pipe(next_pipe) < -1)
-			return(FATAL);
+			return (FATAL);
 		ret = fork();
 		if (ret == -1)
-			return(FATAL);
+			return (FATAL);
 		else if (!ret)
 		{
 			reset_signals(env);
 			env->is_interactive = false;
 			if ((p->next && (dup2(next_pipe[1], 1) == -1
-				|| close(next_pipe[0]) == -1)) ||
-			 	(prev_pipe_read != -1 && dup2(prev_pipe_read, 0)))
-			{}	//TODO
+					|| close(next_pipe[0]) == -1))
+					|| (prev_pipe_read != -1 && dup2(prev_pipe_read, 0)))
+			{
+			}	//TODO
 			exec_command(p->command, env);
 			exit(g_err);
 		}
@@ -99,17 +100,16 @@ t_status	exec_pipeline(union u_command cmd, t_env *env)
 
 t_status	exec_list(union u_command cmd, t_env *env)
 {
-	t_list *l;
-	t_status ret;
+	t_list		*l;
+	t_status	ret;
 
 	l = cmd.list;
 	while (l)
 	{
 		ret = exec_command(l->command, env);
-		if ( ret != OK ||
-			(l->sep == AND_IF && g_err != 0) ||
-			(l->sep == OR_IF && g_err == 0))
-			break;
+		if (ret != OK || (l->sep == AND_IF && g_err != 0)
+			|| (l->sep == OR_IF && g_err == 0))
+			break ;
 		l = l->next;
 	}
 	return (ret);
@@ -152,12 +152,8 @@ t_status	exec_grouping(union u_command cmd, t_env *env)
 
 t_status	exec_command(t_command cmd, t_env *env)
 {
-	t_command_handler a[] = {
-			&exec_simple,
-			&exec_pipeline,
-			&exec_list,
-			&exec_grouping
-	};
+	t_command_handler	a[] = {&exec_simple, &exec_pipeline,
+		&exec_list, &exec_grouping};
 
 	return (a[cmd.type](cmd.command, env));
 }
