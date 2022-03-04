@@ -20,7 +20,6 @@ t_status	ft_shell(t_env *env, char *line)
 
 	if (tokenise(line, &tokens, env) != OK)
 	{
-		free_token_list(tokens);
 		if (env->is_interactive)
 			return (KO);
 		else
@@ -43,13 +42,15 @@ t_status	loop(t_env *env)
 	char	*line;
 	int		ret;
 
+	ret = 0;
 	while (1)
 	{
 		ret = readnline(&line, env);
 		if (ret == FATAL)
 			return (FATAL);
 		set_signal(SIGINT, SIG_IGN, env);
-		if (ret == OK && ft_shell(env, line) == FATAL)
+		if (ret == OK
+		&& ft_shell(env, line) == FATAL)
 		{
 			free(line);
 			return (FATAL);

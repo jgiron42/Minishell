@@ -113,4 +113,5 @@ void	ft_print_grouping(t_grouping **line)
 		ft_print_list(&(tmp->command.command.list));
 	printf("-------redir------------\n");
 	ft_prin_redir(&(tmp->redir_list));
+	return;
 }
