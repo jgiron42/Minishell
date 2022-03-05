@@ -28,12 +28,10 @@ t_status	ft_shell(t_env *env, char *line)
 	if (tokens->type == END)
 		return (free_token_list(tokens), OK);
 	ret = parse_tree(tokens, &tree, env);
-	set_signal(SIGINT, SIG_IGN, env);
 	if (ret == OK)
 		ret = exec_command(tree, env);
 	else if (!env->is_interactive)
 		ret = FATAL;
-	set_signal(SIGINT, sigint_handler, env);
 	destroy_tree(tree);
 	free_token_list(tokens);
 	return (ret);

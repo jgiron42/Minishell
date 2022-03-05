@@ -15,10 +15,6 @@
 void	sigint_handler(int sig)
 {
 	(void)sig;
-//	printf("\n");
-//	rl_on_new_line();
-//	rl_replace_line("", 1);
-//	rl_redisplay();
 	rl_done = 1;
 	g_int = 1;
 }

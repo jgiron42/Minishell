@@ -19,7 +19,11 @@ char		*my_readline(t_env *env, char *prompt)
 
 	g_int = 0;
 	if (env->is_interactive)
+	{
+		set_signal(SIGINT, sigint_handler, env);
 		line = readline(get_var_val(env, prompt));
+		set_signal(SIGINT, SIG_IGN, env);
+	}
 	else
 	{
 		ret = get_next_line(0, &line);
