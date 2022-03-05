@@ -115,13 +115,14 @@ typedef struct s_env
 	t_char_vec		opened_files;
 	sighandler_t	default_signals[64];
 	bool			is_interactive;
+	unsigned char	err;
 }				t_env;
 
 typedef enum e_status {OK, KO, FATAL}	t_status;
 
 typedef unsigned char	t_builtin(char **, t_env *);
 
-extern unsigned char	g_err;
+extern unsigned char	g_int;
 
 // env manip:
 t_status		remove_var(t_env *env, char *key);
@@ -166,7 +167,7 @@ char			*my_readline(t_env *env, char *prompt);
 t_status		readnline(char **line, t_env *env);
 // exec
 t_status		path_find(char *name, t_env *env, char **dst);
-t_status		get_g_err(t_env *env, pid_t pid);
+t_status		get_err(t_env *env, pid_t pid);
 t_status		exec_command(t_command cmd, t_env *env);
 t_status		perform_redirection(t_env *env, t_redir *list);
 t_status		reset_redirection(t_env *env, t_redir *list);
@@ -177,6 +178,7 @@ t_status		exec_special_builtin(t_simple s, t_env *env);
 t_status		exec_regular_builtin(t_simple s, t_env *env);
 t_status		exec_program(char *name, t_simple s, t_env *env);
 void			ft_exit(t_env *env);
+t_status		redir(int oldfd, int newfd, int *save, t_env *env);
 
 //lst :
 t_var_list		*ft_lstlast(t_var_list *lst);

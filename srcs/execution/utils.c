@@ -17,7 +17,7 @@ char	*sig_message_1(int sig)
 {
 	char	*a[NSIG];
 
-	memset(a, NSIG, sizeof (char *));
+	ft_memset(a, 0, NSIG * sizeof (char *));
 	a[SIGHUP] = "Hangup";
 	a[SIGQUIT] = "Quit";
 	a[SIGILL] = "Illegal instruction";
@@ -42,7 +42,7 @@ char	*sig_message_2(int sig)
 {
 	char	*a[NSIG];
 
-	memset(a, NSIG, sizeof (char *));
+	ft_memset(a, 0, NSIG * sizeof (char *));
 	a[SIGCHLD] = "Child death or stop";
 	a[SIGTTIN] = "Stopped (tty input)";
 	a[SIGTTOU] = "Stopped (tty output)";
@@ -70,17 +70,17 @@ char	*get_sig_message(int sig)
 	return (ret);
 }
 
-t_status	get_g_err(t_env *env, pid_t pid)
+t_status	get_err(t_env *env, pid_t pid)
 {
 	int	status;
 
 	if (waitpid(pid, &status, 0) == -1 && errno == EINTR)
 		return (FATAL);
 	if (WIFEXITED(status))
-		g_err = WEXITSTATUS(status);
+		env->err = WEXITSTATUS(status);
 	else
 	{
-		g_err = 128 + WTERMSIG(status);
+		env->err = 128 + WTERMSIG(status);
 		if (env->is_interactive)
 		{
 			ft_putstr_fd((char *) get_sig_message(WTERMSIG(status)), 2);

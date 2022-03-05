@@ -45,6 +45,10 @@ static t_status	init_shlvl(t_env *env)
 	free(current);
 	return (OK);
 }
+int readline_hack(void)
+{
+	return (0);
+}
 
 t_status	init_env(t_env *env)
 {
@@ -56,6 +60,7 @@ t_status	init_env(t_env *env)
 		set_signal(SIGTERM, SIG_IGN, env);
 	}
 	rl_outstream = stderr;
+	rl_event_hook = &readline_hack;
 	if (!char_vec_resize(&env->opened_files, 3, FD_OPEN)
 		|| set_var(env, "PS1", "$ ", false) == FATAL
 		|| set_var(env, "PS2", "> ", false) == FATAL

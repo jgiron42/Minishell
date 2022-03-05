@@ -23,11 +23,11 @@ unsigned char	sh_exit(char **argv, t_env *env)
 	while (ft_isdigit((*argv)[i]))
 		i++;
 	if ((*argv)[i] == '\0' && i < 20)
-		g_err = ft_atoi(*argv);
+		env->err = ft_atoi(*argv);
 	else if (i > 20 && (*argv)[i] == '\0')
 	{
 		return(ft_putstr_fd("exit : numeric argument required\n", 2), OK);
-		g_err = 2;
+		env->err = 2;
 	}
 	ft_exit(env);
 	return (0);

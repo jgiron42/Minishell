@@ -17,11 +17,17 @@ char		*my_readline(t_env *env, char *prompt)
 	char	*line;
 	int		ret;
 
+	g_int = 0;
 	if (env->is_interactive)
-		return (readline(get_var_val(env, prompt)));
-	ret = get_next_line(0, &line);
-	if (ret <= 0)
-		return (NULL);
+		line = readline(get_var_val(env, prompt));
+	else
+	{
+		ret = get_next_line(0, &line);
+		if (ret <= 0)
+			line = NULL;
+	}
+	if (g_int)
+		env->err = 128 + SIGINT;
 	return (line);
 }
 
@@ -49,13 +55,13 @@ t_status	readnline(char **line, t_env *env)
 	*line = my_readline(env, "PS1");
 	if(!*line)
 		ft_exit(env);
-	if (!**line)
+	if (!**line || g_int)
 		return (KO);
 	while (count_trailing_backslashes(*line) % 2)
 	{
 		(*line)[ft_strlen(*line) - 1] = '\0';
 		tmp = my_readline(env, "PS2");
-		if (!tmp)
+		if (!tmp || g_int)
 			break;
 		if (*tmp)
 			*line = ft_strjoinf1(*line, tmp);
@@ -63,7 +69,7 @@ t_status	readnline(char **line, t_env *env)
 			return (FATAL);
 		free(tmp);
 	}
-	if (**line)
+	if (**line && !g_int)
 		add_history(*line);
-	return (OK);
+	return (KO * g_int);
 }

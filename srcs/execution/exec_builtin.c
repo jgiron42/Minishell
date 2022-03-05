@@ -14,14 +14,14 @@
 
 t_status	exec_regular_builtin(t_simple s, t_env *env)
 {
-	g_err = is_built_in(s.argv[0])(s.argv, env);
+	env->err = is_built_in(s.argv[0])(s.argv, env);
 	return (OK);
 }
 
 t_status	exec_special_builtin(t_simple s, t_env *env)
 {
-	g_err = is_special_built_in(s.argv[0])(s.argv, env);
-	if (g_err == 0)
+	env->err = is_special_built_in(s.argv[0])(s.argv, env);
+	if (env->err == 0)
 		return (OK);
 	if (env->is_interactive)
 		return (KO);

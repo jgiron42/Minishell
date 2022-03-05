@@ -67,11 +67,11 @@ t_status	new_redir_list(t_token_list **current, t_redir **dst, t_env *env)
 	}
 	else
 		return (KO);
-	if ((*dst)->type == HERE && ft_heredoc(env, *dst) == KO)
+	if ((*dst)->type == HERE && ft_heredoc(env, *dst) != OK)
 	{
 		free((*dst)->word);
 		free(*dst);
-		return (my_perror(env, (char *[2]) {"can't create here-document", NULL}, true, KO));
+		return (KO);
 	}
 	return (OK);
 }
@@ -139,6 +139,8 @@ t_status 	parse_tree(t_token_list *current, t_command *tree, t_env *env)
 	*tree = parsing(&current, END, env);
 	if (tree->type == PARSE_FATAL)
 		return (FATAL);
+	else if (g_int)
+		return (KO);
 	else if (tree->type == PARSE_ERROR)
 		return (my_perror(env, (char *[2]){"Syntax error near unexpected token: ",
    (char *)get_token_str(current->type)}, false, KO));

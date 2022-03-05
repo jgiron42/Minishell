@@ -73,7 +73,7 @@ char	*expand_word_all(char *str, t_env *env)
 			if (!key)
 				return (NULL);
 			if (!ft_strcmp(key, "?"))
-				new = ft_itoa(g_err);
+				new = ft_itoa(env->err);
 			else
 			{
 				new = get_var_val(env, key);
@@ -122,7 +122,7 @@ char	*expand_word(char *str, t_env *env)
 				return (NULL);
 			if (!ft_strcmp(key, "?"))
 			{
-				new = ft_itoa(g_err);
+				new = ft_itoa(env->err);
 				if (!new)
 					return (NULL);
 			}
