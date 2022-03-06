@@ -6,7 +6,7 @@
 /*   By: ereali <ereali@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/04 21:09:46 by ereali            #+#    #+#             */
-/*   Updated: 2022/03/04 21:20:54 by ereali           ###   ########.fr       */
+/*   Updated: 2022/03/06 20:03:08 by ereali           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,20 +71,12 @@ t_status	new_redir_list(t_token_list **current, t_redir **dst, t_env *env)
 		(*current) = ((*current)->next);
 		(*dst)->word = ft_strdup((*current)->arg);
 		if (!(*dst)->word)
-		{
-			free((*dst)->word);
-			free(*dst);
-			return (FATAL);
-		}
+			return (free((*dst)->word), free(*dst), FATAL);
 	}
 	else
-		return (KO);
+		return (free((*dst)->word), free(*dst), KO);
 	if ((*dst)->type == HERE && ft_heredoc(env, *dst) != OK)
-	{
-		free((*dst)->word);
-		free(*dst);
-		return (KO);
-	}
+		return (free((*dst)->word), free(*dst), KO);
 	return (OK);
 }
 
@@ -110,10 +102,7 @@ t_command	parsing(t_token_list **current, t_token_type expected, t_env *env)
 				|| (*current)->type == AND_IF))
 			tree = parse_list(current, tree, env);
 		else
-		{
-			destroy_tree(tree);
-			return ((t_command){.type = PARSE_ERROR});
-		}
+			return (destroy_tree(tree), (t_command){.type = PARSE_ERROR});
 		if (tree.type == PARSE_ERROR || tree.type == PARSE_FATAL)
 			return (tree);
 		operator = true;

@@ -6,7 +6,7 @@
 /*   By: ereali <ereali@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 00:51:43 by ereali            #+#    #+#             */
-/*   Updated: 2022/03/04 11:29:02 by jgiron           ###   ########.fr       */
+/*   Updated: 2022/03/06 19:52:52 by ereali           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,17 +47,11 @@ t_status	ft_heredoc(t_env *env, t_redir *redir)
 		free(rl);
 		rl = my_readline(env, "PS2");
 	}
-	free(rl);
-	free(word);
 	if (close(fd) != 0)
-		return (KO);
+		return (free(rl), free(word), KO);
 	if (g_int)
-	{
-		unlink(redir->word);
-		return (KO);
-	}
-	redir->oldfd = fd;
-	return (OK);
+		return (free(rl), free(word), unlink(redir->word), KO);
+	return (free(rl), free(word), redir->oldfd = fd, OK);
 }
 
 char	*remove_quotes(char	*str)
@@ -89,7 +83,31 @@ char	*remove_quotes(char	*str)
 	return (str);
 }
 
-char	*ft_inhibit(char *str, const char *inibit)
+char	*ft_fill_with_bslash(char *str, char *new, const char *inhibit)
+{
+	size_t	i;
+	size_t	j;
+
+	i = 0;
+	j = 0;
+	while (str[i])
+	{
+		if (ft_strchr(inhibit, str[i]))
+		{
+			new[i + j++] = '\\';
+			new[i + j] = str[i];
+			i++;
+		}
+		while (!ft_strchr(inhibit, str[i]))
+		{
+			new[i + j] = str[i];
+			i++;
+		}
+	}
+	return (new);
+}
+
+char	*ft_inhibit(char *str, const char *inhibit)
 {
 	char	*new;
 	size_t	i;
@@ -99,25 +117,12 @@ char	*ft_inhibit(char *str, const char *inibit)
 	j = 0;
 	if (!str)
 		return (ft_strdup(""));
-	if (!inibit)
+	if (!inhibit)
 		return (str);
 	new = ft_calloc(sizeof(char), ft_strlen(str)
-			+ ft_countoccur(str, inibit) + 1);
+			+ ft_countoccur(str, inhibit) + 1);
 	if (!new)
 		return (NULL);
-	while (str[i])
-	{
-		if (ft_strchr(inibit, str[i]))
-		{
-			new[i + j++] = '\\';
-			new[i + j] = str[i];
-			i++;
-		}
-		while (!ft_strchr(inibit, str[i]))
-		{
-			new[i + j] = str[i];
-			i++;
-		}
-	}
+	new = ft_fill_with_bslash(str, new, inhibit);
 	return (new);
 }

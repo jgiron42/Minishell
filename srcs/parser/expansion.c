@@ -6,7 +6,7 @@
 /*   By: ereali <ereali@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 01:12:29 by ereali            #+#    #+#             */
-/*   Updated: 2022/03/04 21:20:44 by ereali           ###   ########.fr       */
+/*   Updated: 2022/03/06 20:34:51 by ereali           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,7 +148,6 @@ t_status	ft_fillargv(t_simple *command)
 	return (OK);
 }
 
-// pour < a sans arg return KO
 t_status	expand_simple(t_simple *command, t_env *env)
 {
 	t_status		ret;
