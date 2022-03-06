@@ -34,9 +34,9 @@ t_status ft_heredoc(t_env *env, t_redir *redir)
 	}
 	word = redir->word;
 	if (my_tmp_file(&fd, &redir->word) == KO)
-		return (KO);
+		return (my_perror(env, (char *[2]) {"can't create here-document", NULL}, true, KO));
 	rl = my_readline(env, "PS2");
-	while (ft_strcmp(word, rl))
+	while (rl && !g_int && ft_strcmp(word, rl))
 	{
 		if (quote == false)
 			rl = expand_word_all(rl, env);
@@ -50,6 +50,11 @@ t_status ft_heredoc(t_env *env, t_redir *redir)
 	free(word);
 	if(close(fd) != 0)
 		return(KO);
+	if (g_int)
+	{
+		unlink(redir->word);
+		return (KO);
+	}
 	redir->oldfd = fd;
 	return (OK);
 }

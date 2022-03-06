@@ -57,7 +57,7 @@ char	*ft_replacekey(size_t i, size_t j, char *str, t_env *env)
 		return (NULL);
 	if (!ft_strcmp(key, "?"))
 	{
-		new = ft_itoa(g_err);
+		new = ft_itoa(env->err);
 		if (!new)
 			return (free(key), NULL);
 	}

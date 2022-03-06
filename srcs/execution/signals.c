@@ -15,12 +15,8 @@
 void	sigint_handler(int sig)
 {
 	(void)sig;
-	printf("\n");
-	rl_on_new_line();
-	rl_replace_line("", 1);
-	rl_redisplay();
-	g_err = 128 + SIGSEGV;
-}
+	rl_done = 1;
+	g_int = 1;}
 
 t_status	set_signal(int sig, sighandler_t action, t_env *env)
 {

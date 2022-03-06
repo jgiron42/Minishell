@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-unsigned char 		g_err;
+unsigned char 		g_int;
 
 typedef		t_status (*t_command_handler)(union u_command, t_env *env);
 
@@ -50,6 +50,25 @@ t_status	exec_simple(union u_command cmd, t_env *env)
 	return (ret);
 }
 
+t_status set_pipe(const t_pipeline *p, const int *next_pipe, int prev_pipe_read, t_env *env) {
+	int ret;
+
+	ret = OK;
+	if (p->next)
+	{
+		if (redir(next_pipe[1], 1, NULL, env) == FATAL || close(next_pipe[0]) == -1)
+			ret = FATAL;
+	}
+	if (prev_pipe_read != -1)
+	{
+		if (redir(prev_pipe_read, 0, NULL, env) == FATAL)
+			ret = FATAL;
+	}
+	if (ret != OK)
+		return (my_perror(env, (char *[2]){"Can't set pipe", NULL}, true, FATAL), FATAL);
+	return (OK);
+}
+
 t_status	exec_pipeline(union u_command cmd, t_env *env)
 {
 	t_pipeline *p;
@@ -73,12 +92,9 @@ t_status	exec_pipeline(union u_command cmd, t_env *env)
 		{
 			reset_signals(env);
 			env->is_interactive = false;
-			if ((p->next && (dup2(next_pipe[1], 1) == -1
-				|| close(next_pipe[0]) == -1)) ||
-			 	(prev_pipe_read != -1 && dup2(prev_pipe_read, 0)))
-				return (FATAL);
-			exec_command(p->command, env);
-			exit(g_err);
+			if (set_pipe(p, next_pipe, prev_pipe_read, env) == OK)
+				exec_command(p->command, env);
+			exit(env->err);
 		}
 		if (prev_pipe_read != -1)
 			close(prev_pipe_read);
@@ -89,7 +105,7 @@ t_status	exec_pipeline(union u_command cmd, t_env *env)
 		p = p->next;
 	}
 	if (to_wait >= 0)
-		get_g_err(env, ret);
+		get_err(env, ret);
 	while (--to_wait >= 0)
 		if (wait(NULL) == -1 && errno == EINTR)
 			return (FATAL);
@@ -106,8 +122,8 @@ t_status	exec_list(union u_command cmd, t_env *env)
 	{
 		ret = exec_command(l->command, env);
 		if ( ret != OK ||
-			(l->sep == AND_IF && g_err != 0) ||
-			(l->sep == OR_IF && g_err == 0))
+			(l->sep == AND_IF && env->err != 0) ||
+			(l->sep == OR_IF && env->err == 0))
 			break;
 		l = l->next;
 	}
@@ -138,7 +154,7 @@ t_status	exec_grouping(union u_command cmd, t_env *env)
 			exec_command(g->command, env);
 			ft_exit(env);
 		}
-		get_g_err(env, pid);
+		get_err(env, pid);
 	}
 	else
 		ret = exec_command(g->command, env);

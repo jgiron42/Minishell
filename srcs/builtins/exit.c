@@ -24,11 +24,11 @@ unsigned char	sh_exit(char **argv, t_env *env)
 		i++;
 	if ((*argv)[i] == '\0'
 		&& !(nb_is_superior(*argv, "9223372036854775807")))
-		g_err = ft_atoi(*argv);
+		env->err = ft_atoi(*argv);
 	else if ((i >= 20 || nb_is_superior(*argv, "9223372036854775807"))
 		&& (*argv)[i] == '\0')
 	{
-		g_err = 2;
+		env->err = 2;
 		return (ft_putstr_fd("exit : numeric argument required\n", 2),
 			ft_exit(env), OK);
 	}

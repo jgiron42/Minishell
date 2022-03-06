@@ -12,6 +12,10 @@
 
 #include "minishell.h"
 
+/**
+ * redirect oldfd to newd and save a copy of newfd in save
+ * @return OK or FATAL if a syscall fail
+ */
 t_status	redir(int oldfd, int newfd, int *save, t_env *env)
 {
 	if (save)

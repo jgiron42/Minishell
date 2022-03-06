@@ -26,7 +26,7 @@ t_status	ft_shell(t_env *env, char *line)
 			return (FATAL);
 	}
 	if (tokens->type == END)
-		return (OK);
+		return (free_token_list(tokens), OK);
 	ret = parse_tree(tokens, &tree, env);
 	if (ret == OK)
 		ret = exec_command(tree, env);
@@ -48,14 +48,11 @@ t_status	loop(t_env *env)
 		ret = readnline(&line, env);
 		if (ret == FATAL)
 			return (FATAL);
-		set_signal(SIGINT, SIG_IGN, env);
-		if (ret == OK
-		&& ft_shell(env, line) == FATAL)
+		if (ret == OK && ft_shell(env, line) == FATAL)
 		{
 			free(line);
 			return (FATAL);
 		}
-		set_signal(SIGINT, sigint_handler, env);
 		free(line);
 	}
 }

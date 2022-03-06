@@ -12,31 +12,31 @@
 
 #include "minishell.h"
 
-t_status	permission_denied(char *name)
+t_status	permission_denied(char *name, t_env *env)
 {
 	ft_putstr_fd(NAME": ", 2);
 	ft_putstr_fd(name, 2);
 	ft_putstr_fd(": Permission denied\n", 2);
-	g_err = 126;
+	env->err = 126;
 	return (OK);
 }
 
-t_status	is_a_directory(char *name)
+t_status	is_a_directory(char *name, t_env *env)
 {
 	ft_putstr_fd(NAME": ", 2);
 	ft_putstr_fd(name, 2);
 	ft_putstr_fd(": Is a directory\n", 2);
-	g_err = 126;
+	env->err = 126;
 	return (OK);
 }
 
-t_status	command_not_found(char *name)
+t_status	command_not_found(char *name, t_env *env)
 {
 	ft_putstr_fd(NAME": ", 2);
 	if (name)
 		ft_putstr_fd(name, 2);
 	ft_putstr_fd(": Not found\n", 2);
-	g_err = 127;
+	env->err = 127;
 	return (OK);
 }
 
@@ -62,11 +62,11 @@ t_status	exec_program(char *name, t_simple s, t_env *env)
 	pid_t		pid;
 
 	if (!name || (access(name, X_OK) && (errno == ENOENT || errno == ENOTDIR)))
-		return (command_not_found(name));
+		return (command_not_found(s.argv[0], env));
 	if (is_dir(name))
-		return (is_a_directory(name));
+		return (is_a_directory(s.argv[0], env));
 	if (access(name, X_OK))
-		return (permission_denied(name));
+		return (permission_denied(s.argv[0], env));
 	pid = fork();
 	if (pid == -1)
 		return (FATAL);
@@ -82,6 +82,6 @@ t_status	exec_program(char *name, t_simple s, t_env *env)
 		perror(NAME);
 		exit (1);
 	}
-	get_g_err(env, pid);
+	get_err(env, pid);
 	return (OK);
 }
