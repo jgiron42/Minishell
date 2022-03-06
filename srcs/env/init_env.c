@@ -6,7 +6,7 @@
 /*   By: jgiron <jgiron@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/04 11:03:12 by jgiron            #+#    #+#             */
-/*   Updated: 2022/03/04 11:03:13 by jgiron           ###   ########.fr       */
+/*   Updated: 2022/03/06 19:09:39 by ereali           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,8 @@ static t_status	init_shlvl(t_env *env)
 	return (OK);
 }
 
-int readline_hack(void) {
+int	readline_hack(void)
+{
 	return (0);
 }
 
