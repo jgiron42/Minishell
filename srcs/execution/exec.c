@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-unsigned char 		g_int;
+bool	g_int;
 
 typedef		t_status (*t_command_handler)(union u_command, t_env *env);
 

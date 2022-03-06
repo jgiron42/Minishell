@@ -130,7 +130,7 @@ typedef enum e_status {OK, KO, FATAL}	t_status;
 
 typedef unsigned char	t_builtin(char **, t_env *);
 
-extern unsigned char	g_int;
+extern bool	g_int;
 
 // env manip:
 t_status		remove_var(t_env *env, char *key);

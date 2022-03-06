@@ -17,7 +17,7 @@ char		*my_readline(t_env *env, char *prompt)
 	char	*line;
 	int		ret;
 
-	g_int = 0;
+	g_int = false;
 	if (env->is_interactive)
 	{
 		set_signal(SIGINT, sigint_handler, env);
