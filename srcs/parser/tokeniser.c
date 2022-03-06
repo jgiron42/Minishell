@@ -1,9 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   tokeniser.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ereali <ereali@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/03/04 21:09:46 by ereali            #+#    #+#             */
+/*   Updated: 2022/03/04 21:20:54 by ereali           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 void	free_token_list(t_token_list *ptr)
 {
 	if (!ptr)
-		return;
+		return ;
 	free_token_list(ptr->next);
 	free(ptr->arg);
 	free(ptr);
@@ -28,7 +40,7 @@ t_token_type	c_type(t_quote nb, const char *str, size_t len)
 	return (type[i]);
 }
 
-size_t create_t_token_list(char **str, t_token_list **line, t_env *env)
+size_t	create_t_token_list(char **str, t_token_list **line, t_env *env)
 {
 	size_t			len;
 	t_token_list	*node;
@@ -64,11 +76,14 @@ size_t create_t_token_list(char **str, t_token_list **line, t_env *env)
 	}
 	if (node->type != WORD)
 		len ++;
-	if (node->type == DLESS || node->type == DGREAT || node->type == OR_IF || node->type == AND_IF)
+	if (node->type == DLESS || node->type == DGREAT || node->type == OR_IF
+		|| node->type == AND_IF)
 		len++;
 	if (!(*str)[len] && node->nb)
 	{
-		return (my_perror(env, (char*[2]){"Syntax error: missing closing quote", NULL}, false, KO));
+		return (my_perror(env, (char *[2]){
+				"Syntax error: missing closing quote",
+				NULL}, false, KO));
 	}
 	if (node->type != INVALID)
 	{
@@ -83,7 +98,7 @@ size_t create_t_token_list(char **str, t_token_list **line, t_env *env)
 	return (OK);
 }
 
-t_status tokenise(char *str, t_token_list **dst, t_env *env)
+t_status	tokenise(char *str, t_token_list **dst, t_env *env)
 {
 	size_t			i;
 	t_status		ret;
@@ -94,7 +109,8 @@ t_status tokenise(char *str, t_token_list **dst, t_env *env)
 	while (i < ft_strlen(str))
 	{
 		ret = create_t_token_list(&str, dst, env);
-		if (ret != OK) {
+		if (ret != OK)
+		{
 			free_token_list(*dst);
 			return (KO);
 		}

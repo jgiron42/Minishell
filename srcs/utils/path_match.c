@@ -12,47 +12,51 @@
 
 #include "minishell.h"
 
-bool glob_include(char * glob, char * str);
+bool	glob_include(char *glob, char *str);
 
 static char	manage_glob(char **glob, char **str, bool escaped)
 {
-	if (**glob == '*'&& !escaped)
+	if (**glob == '*' && !escaped)
 	{
 		while (**glob == '*')
 			++*glob;
 		if (!**glob)
-			return true;
-		while (**str && **str != '/') {
+			return (true);
+		while (**str && **str != '/')
+		{
 			if ((**glob == **str || **glob == '?') && glob_include(*glob, *str))
-				return true;
+				return (true);
 			++*str;
 		}
-		return false;
+		return (false);
 	}
-	else if (**glob && ((**glob == '?' && **str != '/'&& !escaped) || **glob == **str))
+	else if (**glob && ((**glob == '?' && **str != '/' && !escaped)
+			|| **glob == **str))
 	{
 		++*str;
 		++*glob;
 	}
 	else
-		return false;
+		return (false);
 	return (-1);
 }
-bool glob_include(char * glob, char * str)
+
+bool	glob_include(char *glob, char *str)
 {
-	t_quote state;
+	t_quote	state;
 	bool	escaped;
-	int 	ret;
+	int		ret;
 
 	state = NONE;
 	escaped = false;
 	if (*glob == '.' && *str != '.')
-		return false;
+		return (false);
 	if (*glob != '.' && *str == '.')
-		return false;
-	do {
+		return (false);
+	do
+	{
 		if (escaped)
-			escaped = false;
+			escaped = (false);
 		else if (*glob == '\'')
 			state = (state != ONE) * ONE;
 		else if (*glob == '"')
@@ -120,35 +124,6 @@ t_status path_match_recurse(char *path, char **array, t_str_vec *dst)
 	return (OK);
 }
 
-t_status	path_match_current(char *glob, t_str_vec *dst)
-{
-
-	DIR				*current;
-	struct dirent	*entry;
-	char			*tmp;
-
-	current = opendir(".");
-	if (!current)
-		return (KO);
-	entry = readdir(current);
-	while (entry)
-	{
-		if ((ft_strcmp(entry->d_name, ".") && ft_strcmp(entry->d_name, "..")
-			 && glob_include(glob, entry->d_name)))
-		{
-			tmp = ft_strdup(entry->d_name);
-			if (!tmp || !str_vec_push(dst, tmp))
-			{
-				closedir(current);
-				return (FATAL);
-			}
-		}
-		entry = readdir(current);
-	}
-	closedir(current);
-	return (OK);
-}
-
 t_status	path_match(char *str, t_str_vec *dst)
 {
 	char	**array;
@@ -161,10 +136,10 @@ t_status	path_match(char *str, t_str_vec *dst)
 		return (FATAL);
 	for (int i = 0; array[i]; i++)
 		// printf("==> %s\n", array[i]);
-	if (*str == '/')
-		ft_strcpy(path, "/");
-	else
-		ft_strcpy(path, "");
+		if (*str == '/')
+			ft_strcpy(path, "/");
+		else
+			ft_strcpy(path, "");
 	tmpsize = dst->size;
 	ret = OK;
 //	if (*array)
@@ -180,10 +155,30 @@ t_status	path_match(char *str, t_str_vec *dst)
 	return (ret);
 }
 
-//unsigned char test(char **argv, t_env *env)
-//{
-//	if (argv[1])
-//		path_match(argv[1]);
-//	(void)env;
-//	return (0);
-//}
+t_status	path_match_current(char *glob, t_str_vec *dst)
+{
+	DIR				*current;
+	struct dirent	*entry;
+	char			*tmp;
+
+	current = opendir(".");
+	if (!current)
+		return (KO);
+	entry = readdir(current);
+	while (entry)
+	{
+		if ((ft_strcmp(entry->d_name, ".") && ft_strcmp(entry->d_name, "..")
+				&& glob_include(glob, entry->d_name)))
+		{
+			tmp = ft_strdup(entry->d_name);
+			if (!tmp || !str_vec_push(dst, tmp))
+			{
+				closedir(current);
+				return (FATAL);
+			}
+		}
+		entry = readdir(current);
+	}
+	closedir(current);
+	return (OK);
+}

@@ -21,7 +21,7 @@ char	*expand_word_all(char *str, t_env *env)
 	while (str[i])
 	{
 		while (str[i] && str[i] != '$')
-		i++;
+			i++;
 		j = i + 1;
 		if (str[i] && str[j] && !ft_isdigit(str[j]))
 		{
@@ -90,7 +90,7 @@ t_status	expand_redir(t_redir **first, t_env *env)
 	return (KO);
 }
 
-void		free_vec(t_str_vec *v)
+void	free_vec(t_str_vec *v)
 {
 	while (--v->size >= 0)
 		free(v->data[v->size]);
@@ -100,8 +100,8 @@ void		free_vec(t_str_vec *v)
 
 t_status	expand_path(t_token_list *lst, t_str_vec *dst)
 {
-	int	tmp;
-	char *tmp_s;
+	int		tmp;
+	char	*tmp_s;
 
 	*dst = str_vec_init();
 	while (lst)
@@ -151,17 +151,17 @@ t_status	ft_fillargv(t_simple *command)
 // pour < a sans arg return KO
 t_status	expand_simple(t_simple *command, t_env *env)
 {
-	t_status ret;
-	t_token_list *begin;
+	t_status		ret;
+	t_token_list	*begin;
 
 	if (!command || !command->argv_tokens)
-		return(KO);
+		return (KO);
 	begin = command->argv_tokens;
 	while (command->argv_tokens && command->argv_tokens->arg)
 	{
 		command->argv_tokens->arg = expand_word(command->argv_tokens->arg, env);
 		if (!command->argv_tokens->arg)
-			return (FATAL);;
+			return (FATAL);
 		if (ft_field_split(&command->argv_tokens) != OK)
 			return (FATAL);
 		command->argv_tokens = command->argv_tokens->next;

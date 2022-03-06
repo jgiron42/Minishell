@@ -12,14 +12,14 @@
 
 #include "minishell.h"
 
-int	need_to_expand(char *str, size_t dollard)
+int	need_to_expand(char *str, size_t dollars)
 {
 	size_t	i;
 	int		tab[3];
 
 	i = 0;
 	ft_bzero(tab, 3 * sizeof(int));
-	while (i < dollard)
+	while (i < dollars)
 	{
 		if (tab[2] == 4)
 			tab[2] = 0;
@@ -73,16 +73,16 @@ char	*ft_replacekey(size_t i, size_t j, char *str, t_env *env)
 
 t_status	ft_field_split(t_token_list **lst)
 {
-	char *arg;
-	int	i;
+	char	*arg;
+	int		i;
 
 	i = ft_strlen((*lst)->arg);
 	if (i > 0)
 		i -= 1;
 	while (i != 0)
 	{
-		while (i != 0 && !(ft_isspace((*lst)->arg[i]) &&
-			need_to_expand((*lst)->arg, i) == 0))
+		while (i != 0 && !(ft_isspace((*lst)->arg[i])
+				&& need_to_expand((*lst)->arg, i) == 0))
 			i--;
 		if (i != 0)
 		{

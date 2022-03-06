@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parse_grouping.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ereali <ereali@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/03/04 21:09:46 by ereali            #+#    #+#             */
+/*   Updated: 2022/03/04 21:20:54 by ereali           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 t_grouping	*ft_new_grouping(t_command command)
@@ -38,7 +50,8 @@ t_command	parse_grouping(t_token_list **current, t_env *env)
 	{
 		ret = new_redir_list(current, &tmp, env);
 		if (ret != OK || !tmp)
-			return (parse_error((t_command[2]){tree}, (t_command){.type = ret - 1 + PARSE_ERROR}));
+			return (parse_error((t_command[2]){tree},
+				(t_command){.type = ret - 1 + PARSE_ERROR}));
 		ft_lstadd_back_redir(&(tree.command.grouping->redir_list), tmp);
 		(*current) = (*current)->next;
 	}

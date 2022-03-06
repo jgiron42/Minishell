@@ -26,12 +26,12 @@ t_status	path_find2(char **array, char *name, char **dst)
 		if (!*dst)
 		{
 			ret = FATAL;
-			break;
+			break ;
 		}
 		if (!access(*dst, F_OK) && !is_dir(*dst))
 		{
 			ret = OK;
-			break;
+			break ;
 		}
 		free(*dst);
 		++array;
@@ -42,9 +42,9 @@ t_status	path_find2(char **array, char *name, char **dst)
 
 t_status	path_find(char *name, t_env *env, char **dst)
 {
-	char **directories;
+	char	**directories;
 	char	*path;
-	int 	ret;
+	int		ret;
 
 	path = get_var_val(env, "PATH");
 	*dst = NULL;

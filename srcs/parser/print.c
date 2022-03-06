@@ -28,7 +28,8 @@ void	ft_prin(t_token_list	**line)
 	}
 	while (tmp)
 	{
-		printf("La string || %s ||\n type de token : %d\n nb de quote :%d\n", (tmp)->arg, tmp->type, tmp->nb);
+		printf("La string || %s ||\n type de token : %d\n nb de quote :%d\n",
+			(tmp)->arg, tmp->type, tmp->nb);
 		tmp = tmp->next;
 	}
 }
@@ -113,5 +114,5 @@ void	ft_print_grouping(t_grouping **line)
 		ft_print_list(&(tmp->command.command.list));
 	printf("-------redir------------\n");
 	ft_prin_redir(&(tmp->redir_list));
-	return;
+	return ;
 }

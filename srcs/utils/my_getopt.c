@@ -23,11 +23,11 @@ void	my_getopt(char ***argv, char *option, char *dest)
 	while (**argv && ***argv == '-')
 	{
 		if (!(**argv)[1])
-			return;
+			return ;
 		i = 0;
 		while ((**argv)[++i])
 			if (!ft_strchr(option, (**argv)[i]))
-				return;
+				return ;
 		i = 0;
 		while ((**argv)[++i])
 			dest[(int)*ft_strchr(option, (**argv)[i])] = 1;

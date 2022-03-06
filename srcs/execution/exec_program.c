@@ -12,48 +12,29 @@
 
 #include "minishell.h"
 
-t_status	permission_denied(char *name, t_env *env)
+bool	check_file(char *name, t_simple s, t_env *env)
 {
-	ft_putstr_fd(NAME": ", 2);
-	ft_putstr_fd(name, 2);
-	ft_putstr_fd(": Permission denied\n", 2);
-	env->err = 126;
-	return (OK);
-}
+	char	*msg;
 
-t_status	is_a_directory(char *name, t_env *env)
-{
-	ft_putstr_fd(NAME": ", 2);
-	ft_putstr_fd(name, 2);
-	ft_putstr_fd(": Is a directory\n", 2);
-	env->err = 126;
-	return (OK);
-}
-
-t_status	command_not_found(char *name, t_env *env)
-{
-	ft_putstr_fd(NAME": ", 2);
-	if (name)
-		ft_putstr_fd(name, 2);
-	ft_putstr_fd(": Not found\n", 2);
-	env->err = 127;
-	return (OK);
-}
-
-void	clean_fds(t_env *env)
-{
-	int	i;
-
-	i = 0;
-	while (i < env->opened_files.size)
+	if (!name || (access(name, X_OK) && (errno == ENOENT || errno == ENOTDIR)))
 	{
-		if (env->opened_files.data[i] == FD_TMP)
-		{
-			close(i);
-			env->opened_files.data[i] = FD_CLOSE;
-		}
-		i++;
+		msg = "Not found";
+		env->err = 127;
 	}
+	else if (is_dir(name))
+	{
+		msg = "Is a directory";
+		env->err = 126;
+	}
+	else if (access(name, X_OK))
+	{
+		msg = "Permission denied";
+		env->err = 126;
+	}
+	else
+		return (true);
+	my_perror(env, (char *[2]){s.argv[0], msg}, false, OK);
+	return (false);
 }
 
 t_status	exec_program(char *name, t_simple s, t_env *env)
@@ -61,27 +42,23 @@ t_status	exec_program(char *name, t_simple s, t_env *env)
 	char		**envp;
 	pid_t		pid;
 
-	if (!name || (access(name, X_OK) && (errno == ENOENT || errno == ENOTDIR)))
-		return (command_not_found(s.argv[0], env));
-	if (is_dir(name))
-		return (is_a_directory(s.argv[0], env));
-	if (access(name, X_OK))
-		return (permission_denied(s.argv[0], env));
+	if (!check_file(name, s, env))
+		return (OK);
 	pid = fork();
 	if (pid == -1)
 		return (FATAL);
 	else if (!pid)
 	{
 		reset_signals(env);
+		env->is_interactive = false;
 		clean_fds(env);
 		envp = serialize_env(env->vars);
 		if (!envp)
 			return (FATAL);
 		execve(name, s.argv, envp);
-		free_env(env);
 		perror(NAME);
-		exit (1);
+		env->err = 126;
+		ft_exit (env);
 	}
-	get_err(env, pid);
-	return (OK);
+	return (get_err(env, pid), OK);
 }

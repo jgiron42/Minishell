@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-char 		tobase64(unsigned char c)
+char	tobase64(unsigned char c)
 {
 	c %= 64;
 	if (c < 10)
@@ -28,10 +28,10 @@ char 		tobase64(unsigned char c)
 	return (c);
 }
 
-char		*rand_str(void)
+char	*rand_str(void)
 {
-	int	fd;
-	int ret;
+	int		fd;
+	int		ret;
 	char	buf[21];
 	int		i;
 
@@ -79,10 +79,10 @@ t_status	my_tmp_file(int *fd, char **dst)
 			return (KO);
 		*dst = ft_strjoinf2(dir, *dst);
 		if (!*dst)
-		    return (KO);
+			return (KO);
 		*fd = open(*dst, O_RDWR | O_CREAT | O_EXCL, 0600);
 		if (*fd == -1 && errno != EEXIST)
-			break;
+			break ;
 	}
 	return (OK);
 }

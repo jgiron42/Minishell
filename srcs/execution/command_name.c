@@ -12,10 +12,10 @@
 
 #include <minishell.h>
 
-t_builtin	*is_special_built_in(char *name)
+t_builtin	is_special_built_in(char *name)
 {
-	char		*list[] = {"exit", "export", "unset", NULL};
-	t_builtin	*f[] = {&sh_exit, &sh_export, &sh_unset};
+	const char		*list[] = {"exit", "export", "unset", NULL};
+	const t_builtin	f[] = {&sh_exit, &sh_export, &sh_unset};
 	int				i;
 
 	i = -1;
@@ -25,10 +25,10 @@ t_builtin	*is_special_built_in(char *name)
 	return (NULL);
 }
 
-t_builtin	*is_built_in(char *name)
+t_builtin	is_built_in(char *name)
 {
-	char		*list[] = {"env", "echo", "cd", "pwd", NULL};
-	t_builtin	*f[] = {&sh_env, &sh_echo, &sh_cd, &sh_pwd};
+	const char		*list[] = {"env", "echo", "cd", "pwd", NULL};
+	const t_builtin	f[] = {&sh_env, &sh_echo, &sh_cd, &sh_pwd};
 	int				i;
 
 	i = -1;

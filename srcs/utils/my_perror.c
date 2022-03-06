@@ -1,32 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   my_get_working_directory.c                         :+:      :+:    :+:   */
+/*   my_perror.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jgiron <jgiron@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/04 11:06:25 by jgiron            #+#    #+#             */
-/*   Updated: 2022/03/04 11:06:26 by jgiron           ###   ########.fr       */
+/*   Created: 2022/03/04 11:04:25 by jgiron            #+#    #+#             */
+/*   Updated: 2022/03/04 11:04:26 by jgiron           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*my_get_working_directory(const char *for_whom)
+t_status	my_perror(t_env *env, char *error[2], bool use_errno, t_status ret)
 {
-	char	*ret;
-	char	buf[PATH_MAX];
+	int	errno_save;
 
-	ret = NULL;
-	ret = getcwd(buf, PATH_MAX);
-	if (!ret)
+	(void)env;
+	errno_save = errno;
+	ft_putstr_fd(NAME ": ", 2);
+	ft_putstr_fd(error[0], 2);
+	if (error[1])
+		ft_putstr_fd(error[1], 2);
+	if (use_errno)
 	{
-		if (errno == ENOMEM)
-			return (NULL);
-		ft_putstr_fd((char *)for_whom, 2);
-		write(2, ": ", 2);
-		perror("get_cwd()");
-		return (NULL);
+		ft_putstr_fd(": ", 2);
+		ft_putstr_fd(strerror(errno_save), 2);
 	}
-	return (ft_strdup(ret));
+	write(2, "\n", 1);
+	errno = errno_save;
+	return (ret);
 }

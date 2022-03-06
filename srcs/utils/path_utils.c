@@ -14,14 +14,14 @@
 
 bool	path_has_dot(char *path)
 {
-	int dots;
+	int	dots;
 
 	dots = 0;
-	while(*path)
+	while (*path)
 	{
 		if (*path == '/')
 		{
-			if (/*dots == 0 ||*/dots == 1 || dots == 2)
+			if (dots == 1 || dots == 2)
 				return (1);
 			dots = 0;
 		}
@@ -34,18 +34,18 @@ bool	path_has_dot(char *path)
 	return (0);
 }
 
-t_status path_push(char *path, char *component)
+t_status	path_push(char *path, char *component)
 {
 	int	len;
 
 	len = ft_strlen(path);
-	if (len + ft_strlen(component) + 1 >= PATH_MAX || ft_strlen(component) > NAME_MAX) {
+	if (len + ft_strlen(component) + 1 >= PATH_MAX || ft_strlen(component) > NAME_MAX)
+	{
 		errno = ENAMETOOLONG;
 		return (KO);
 	}
 	path += len;
 	if (len > 0 && (path[-1] != '/' || !*component))
-//	if (len > 0)
 	{
 		*path = '/';
 		++path;
@@ -60,12 +60,12 @@ t_status path_push(char *path, char *component)
 	return (OK);
 }
 
-void path_pop(char *path)
+void	path_pop(char *path)
 {
-	char *tmp;
+	char	*tmp;
 
 	if (!path)
-		return;
+		return ;
 	tmp = path + ft_strlen(path);
 	while (tmp != path && *tmp != '/')
 		--tmp;
@@ -75,11 +75,12 @@ void path_pop(char *path)
 		*tmp = 0;
 }
 
-static	t_status compute_path(char *current, char **splitted) {
-	struct stat statbuf;
+static	t_status	compute_path(char *current, char **splitted)
+{
+	struct stat	statbuf;
 	char		buf[NAME_MAX + 1];
-	ssize_t 		ret;
-	int				link;
+	ssize_t		ret;
+	int			link;
 
 	link = 0;
 #ifdef LINK_MAX
@@ -120,7 +121,7 @@ static	t_status compute_path(char *current, char **splitted) {
 	return (OK);
 }
 
-char 	*ft_realpath(const char *path, char *resolved_path)
+char	*ft_realpath(const char *path, char *resolved_path)
 {
 	char	current[PATH_MAX];
 	char	**splited;

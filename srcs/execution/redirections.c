@@ -50,7 +50,7 @@ t_status	open_redir(t_env *env, t_redir *r)
 		old_fd = open(r->word, O_CREAT | O_WRONLY | O_APPEND, 00644);
 	else if (r->type == INPUT || r->type == HERE)
 		old_fd = open(r->word, O_RDONLY);
-	else // (r->type == RW)
+	else
 		old_fd = open(r->word, O_RDWR | O_CREAT | O_TRUNC, 00644);
 	if (old_fd == -1)
 		return (my_perror(env, (char *[2]){"cannot open ", r->word}, true, KO));
@@ -73,6 +73,22 @@ t_status	perform_redirection(t_env *env, t_redir *list)
 		list = list->next;
 	}
 	return (ret);
+}
+
+void	clean_fds(t_env *env)
+{
+	int	i;
+
+	i = 0;
+	while (i < env->opened_files.size)
+	{
+		if (env->opened_files.data[i] == FD_TMP)
+		{
+			close(i);
+			env->opened_files.data[i] = FD_CLOSE;
+		}
+		i++;
+	}
 }
 
 t_status	reset_redirection(t_env *env, t_redir *list)

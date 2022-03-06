@@ -128,9 +128,9 @@ typedef struct s_env
 
 typedef enum e_status {OK, KO, FATAL}	t_status;
 
-typedef unsigned char	t_builtin(char **, t_env *);
-
-extern bool	g_int;
+typedef unsigned char	(*t_builtin)(char **, t_env *);
+typedef t_status		(*t_command_handler)(union u_command, t_env *env);
+extern bool				g_int;
 
 // env manip:
 t_status		remove_var(t_env *env, char *key);
@@ -180,10 +180,11 @@ t_status		get_err(t_env *env, pid_t pid);
 t_status		exec_command(t_command cmd, t_env *env);
 t_status		redir(int oldfd, int newfd, int *save, t_env *env);
 t_status		perform_redirection(t_env *env, t_redir *list);
+void			clean_fds(t_env *env);
 t_status		reset_redirection(t_env *env, t_redir *list);
 t_status		perform_assignments(t_env *env, t_simple cmd, bool export);
-t_builtin		*is_special_built_in(char *name);
-t_builtin		*is_built_in(char *name);
+t_builtin		is_special_built_in(char *name);
+t_builtin		is_built_in(char *name);
 t_status		exec_special_builtin(t_simple s, t_env *env);
 t_status		exec_regular_builtin(t_simple s, t_env *env);
 t_status		exec_program(char *name, t_simple s, t_env *env);

@@ -16,7 +16,8 @@ void	sigint_handler(int sig)
 {
 	(void)sig;
 	rl_done = 1;
-	g_int = true;}
+	g_int = true;
+}
 
 t_status	set_signal(int sig, sighandler_t action, t_env *env)
 {
