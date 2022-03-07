@@ -6,7 +6,7 @@
 /*   By: ereali <ereali@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 02:40:48 by ereali            #+#    #+#             */
-/*   Updated: 2022/03/03 03:26:31 by ereali           ###   ########.fr       */
+/*   Updated: 2022/03/07 19:01:46 by ereali           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,5 +27,5 @@ unsigned char	sh_pwd(char **argv, t_env *env)
 		return (OK);
 	}
 	else
-		return (KO);
+		return (2);
 }
