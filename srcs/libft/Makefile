@@ -24,9 +24,9 @@ SRC = ft_memset.c ft_bzero.c ft_memcpy.c ft_memccpy.c ft_memchr.c \
 BONUS = ft_lstnew_bonus.c ft_lstadd_front_bonus.c ft_lstadd_back_bonus.c \
 		ft_lstsize_bonus.c ft_lstlast_bonus.c
 
-CC = gcc
+CC = cc
 
-FLAG = -Wextra -Werror -Wall
+CFLAGS = -Wextra -Werror -Wall
 
 OBJSBONUS = $(BONUS:.c=.o)
 
@@ -35,12 +35,12 @@ OBJS = $(SRC:.c=.o)
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	gcc $(FLAG) -c $(SRC)
+	$(CC) $(CFLAGS) -c $(SRC)
 	ar -rc $(NAME) $(OBJS)
 	ranlib $(NAME)
 
 bonus: $(OBJ) $(OBJSBONUS)
-	gcc $(FLAG) -c $(BONUS) $(SRC)
+	$(CC) $(CFLAGS) -c $(BONUS) $(SRC)
 	ar -rc $(NAME) $(OBJS) $(OBJSBONUS)
 	ranlib $(NAME)
 

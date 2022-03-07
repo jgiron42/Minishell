@@ -76,6 +76,7 @@ $(OBJ_DIR)/%.o : %.c
 				$(CC) $(CFLAGS) $(IFLAGS) -o $@ -c $<
 				@echo " DONE"
 
+bonus: $(NAME)
 
 clean:
 				@rm -rf $(OBJ_DIR)
@@ -83,12 +84,9 @@ clean:
 
 fclean:			clean
 				@rm -f $(NAME)
+				@make -C $(LIB_DIR) fclean
 				@echo "fclean"
-
-malloc_test: $(OBJ)
-		make -C $(LIB_DIR)
-		$(CC) $(OBJ) $(CFLAGS) $(IFLAGS) -fsanitize=undefined -rdynamic -L srcs/libft $(LDLIBS) -L. -lmallocator -o $@
 
 re:				fclean all
 
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re bonus
