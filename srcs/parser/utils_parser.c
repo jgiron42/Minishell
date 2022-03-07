@@ -6,7 +6,7 @@
 /*   By: ereali <ereali@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 00:51:43 by ereali            #+#    #+#             */
-/*   Updated: 2022/03/06 19:52:52 by ereali           ###   ########.fr       */
+/*   Updated: 2022/03/07 13:30:41 by ereali           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ char	*remove_quotes(char	*str)
 	i = 0;
 	j = 0;
 	cpy = ft_strdup(str);
-	while (cpy[i + j])
+	while (cpy && cpy[i + j])
 	{
 		if ((ft_strchr("\\\"", cpy[i + j]) && need_to_expand(cpy, i + j) < 2)
 			|| (cpy[i + j] == '\'' && (need_to_expand(cpy, i + j) == 2
@@ -79,7 +79,8 @@ char	*remove_quotes(char	*str)
 		}
 	}
 	str[i] = '\0';
-	free(cpy);
+	if (cpy)
+		free(cpy);
 	return (str);
 }
 

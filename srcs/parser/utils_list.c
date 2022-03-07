@@ -6,7 +6,7 @@
 /*   By: ereali <ereali@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 00:50:40 by ereali            #+#    #+#             */
-/*   Updated: 2022/03/03 00:50:43 by ereali           ###   ########.fr       */
+/*   Updated: 2022/03/07 13:42:34 by ereali           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,11 @@ t_token_list	*ft_lstcpy(t_token_list *current)
 	t_token_list	*cpy;
 
 	cpy = ft_lstnew(current->type);
+	if (!cpy)
+		return (NULL);
 	cpy->arg = ft_strdup((current)->arg);
+	if (!cpy->arg)
+		return (NULL);
 	return (cpy);
 }
 

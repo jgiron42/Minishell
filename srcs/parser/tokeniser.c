@@ -6,7 +6,7 @@
 /*   By: ereali <ereali@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/04 21:09:46 by ereali            #+#    #+#             */
-/*   Updated: 2022/03/04 21:20:54 by ereali           ###   ########.fr       */
+/*   Updated: 2022/03/07 14:03:40 by ereali           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,15 +81,15 @@ size_t	create_t_token_list(char **str, t_token_list **line, t_env *env)
 		len++;
 	if (!(*str)[len] && node->nb)
 	{
-		return (my_perror(env, (char *[2]){
+		return (free(node), my_perror(env, (char *[2]){
 				"Syntax error: missing closing quote",
-				NULL}, false, KO));
+				NULL}, false, KO), KO);
 	}
 	if (node->type != INVALID)
 	{
 		node->arg = ft_strndup(len, *str);
 		if (!node->arg)
-			return (FATAL);
+			return (free(node), FATAL);
 		ft_lstadd_back(line, node);
 	}
 	else

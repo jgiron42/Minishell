@@ -6,7 +6,7 @@
 /*   By: ereali <ereali@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/09 20:06:29 by ereali            #+#    #+#             */
-/*   Updated: 2022/03/03 01:09:50 by ereali           ###   ########.fr       */
+/*   Updated: 2022/03/07 13:44:50 by ereali           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static char	*ft_cpy(char const *s1, char const *s2)
 	i = 0;
 	j = 0;
 	result = (char *)malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2)) + 1);
-	if (!(result))
+	if (!result)
 		return (NULL);
 	while (s1[i])
 	{

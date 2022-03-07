@@ -6,14 +6,11 @@
 /*   By: ereali <ereali@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/04 21:09:46 by ereali            #+#    #+#             */
-/*   Updated: 2022/03/06 20:03:08 by ereali           ###   ########.fr       */
+/*   Updated: 2022/03/07 14:08:51 by ereali           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-//	penser prorteger si nul etc ..
-//	fonction here doc
 
 t_command	parse_error(t_command to_destroy[2], t_command ret)
 {

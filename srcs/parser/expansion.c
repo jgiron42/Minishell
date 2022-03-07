@@ -6,7 +6,7 @@
 /*   By: ereali <ereali@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 01:12:29 by ereali            #+#    #+#             */
-/*   Updated: 2022/03/06 20:34:51 by ereali           ###   ########.fr       */
+/*   Updated: 2022/03/07 13:52:40 by ereali           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,14 +90,6 @@ t_status	expand_redir(t_redir **first, t_env *env)
 	return (KO);
 }
 
-void	free_vec(t_str_vec *v)
-{
-	while (--v->size >= 0)
-		free(v->data[v->size]);
-	free(v->data);
-	v->data = NULL;
-}
-
 t_status	expand_path(t_token_list *lst, t_str_vec *dst)
 {
 	int		tmp;
@@ -166,7 +158,8 @@ t_status	expand_simple(t_simple *command, t_env *env)
 		command->argv_tokens = command->argv_tokens->next;
 	}
 	command->argv_tokens = begin;
-	ft_fillargv(command);
+	if (ft_fillargv(command) != OK)
+		return (FATAL);
 	if (command->redir_list)
 	{
 		ret = expand_redir(&command->redir_list, env);
