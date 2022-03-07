@@ -6,7 +6,7 @@
 /*   By: ereali <ereali@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/04 21:09:46 by ereali            #+#    #+#             */
-/*   Updated: 2022/03/07 16:55:44 by ereali           ###   ########.fr       */
+/*   Updated: 2022/03/07 17:18:02 by ereali           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,8 @@ size_t	create_t_token_list(char **str, t_token_list **line, t_env *env)
 				NULL}, false, KO), KO);
 	if (node->type != INVALID && add_token(&node, len, line, (*str)) == OK)
 		return (*str += len, OK);
+	else if (node->type != INVALID)
+		return (FATAL);
 	return (free(node), *str += len, OK);
 }
 
