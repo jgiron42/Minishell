@@ -101,5 +101,7 @@ void	free_vec(t_str_vec *v)
 	while (--v->size >= 0)
 		free(v->data[v->size]);
 	free(v->data);
+	v->size = 0;
 	v->data = NULL;
+	v->capacity = 0;
 }
