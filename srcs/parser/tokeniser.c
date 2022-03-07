@@ -6,7 +6,7 @@
 /*   By: ereali <ereali@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/04 21:09:46 by ereali            #+#    #+#             */
-/*   Updated: 2022/03/07 14:37:21 by ereali           ###   ########.fr       */
+/*   Updated: 2022/03/07 16:29:34 by ereali           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,42 @@ t_token_type	c_type(t_quote nb, const char *str, size_t len)
 	return (type[i]);
 }
 
+enum e_quote	ft_nbquote(bool *escaped, enum e_quote nb, char **str, size_t l)
+{
+	if (*escaped)
+		(*escaped) = false;
+	else if ((*str)[l] == '\'')
+	{
+		if (nb == ONE)
+			nb = NONE;
+		else if (nb == NONE)
+			nb = ONE;
+	}
+	else if ((*str)[l] == '"')
+	{
+		if (nb == DOUBLE)
+			nb = NONE;
+		else if (nb == NONE)
+			nb = DOUBLE;
+	}
+	else if ((*str)[l] == '\\' && nb != ONE)
+		(*escaped) = true;
+	return (nb);
+}
+
+t_status	add_token(t_token_list **node, size_t len, t_token_list **line,
+		char *str)
+{
+	if ((*node)->type != INVALID)
+	{
+		(*node)->arg = ft_strndup(len, str);
+		if (!(*node)->arg)
+			return (free(*node), FATAL);
+		ft_lstadd_back(line, (*node));
+	}
+	return (OK);
+}
+
 size_t	create_t_token_list(char **str, t_token_list **line, t_env *env)
 {
 	size_t			len;
@@ -52,44 +88,19 @@ size_t	create_t_token_list(char **str, t_token_list **line, t_env *env)
 	node = ft_lstnew(c_type(NONE, *str, len));
 	if (!node)
 		return (FATAL);
-	while ((*str)[len] && (escaped || WORD == c_type(node->nb, *str, len)))
-	{
-		if (escaped)
-			escaped = false;
-		else if ((*str)[len] == '\'')
-		{
-			if (node->nb == ONE)
-				node->nb = NONE;
-			else if (node->nb == NONE)
-				node->nb = ONE;
-		}
-		else if ((*str)[len] == '"')
-		{
-			if (node->nb == DOUBLE)
-				node->nb = NONE;
-			else if (node->nb == NONE)
-				node->nb = DOUBLE;
-		}
-		else if ((*str)[len] == '\\' && node->nb != ONE)
-			escaped = true;
-		len++;
-	}
+	while ((*str)[len] && (escaped || node->nb > NONE
+		|| WORD == c_type(node->nb, *str, len)))
+		node->nb = ft_nbquote(&escaped, node->nb, str, len++);
 	if (node->type != WORD)
-		len ++;
-	if (node->type == DLESS || node->type == DGREAT || node->type == OR_IF
-		|| node->type == AND_IF)
+		len++;
+	if (node->type & (DLESS | DGREAT | OR_IF | AND_IF))
 		len++;
 	if (!(*str)[len] && node->nb)
 		return (free(node), my_perror(env, (char *[2]){
 				"Syntax error: missing closing quote",
 				NULL}, false, KO), KO);
-	if (node->type != INVALID)
-	{
-		node->arg = ft_strndup(len, *str);
-		if (!node->arg)
-			return (free(node), FATAL);
-		return (ft_lstadd_back(line, node), *str += len, OK);
-	}
+	if (node->type != INVALID && add_token(&node, len, line, (*str)) == OK)
+		return (*str += len, OK);
 	return (free(node), *str += len, OK);
 }
 

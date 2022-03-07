@@ -6,7 +6,7 @@
 /*   By: ereali <ereali@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/04 21:09:46 by ereali            #+#    #+#             */
-/*   Updated: 2022/03/07 14:49:34 by ereali           ###   ########.fr       */
+/*   Updated: 2022/03/07 15:11:19 by ereali           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	free_redir(t_redir *list)
 enum e_redir	ft_redir_type(t_token_list **current)
 {
 	if ((*current)->type == LESS)
-		return(INPUT);
+		return (INPUT);
 	else if ((*current)->type == GREAT)
 		return (OUTPUT);
 	else if ((*current)->type == DGREAT)
@@ -93,8 +93,7 @@ t_command	parsing(t_token_list **current, t_token_type expected, t_env *env)
 		return (tree);
 	while (!(expected & (*current)->type))
 	{
-		if (!operator
-			&& ((*current)->type >= WORD && (*current)->type <= DGREAT))
+		if (!operator && ((*current)->type >= WORD && (*current)->type <= 16))
 			tree = parse_simple(current, env);
 		else if (!operator && (*current)->type == LPARENTHESIS)
 			tree = parse_grouping(current, env);
