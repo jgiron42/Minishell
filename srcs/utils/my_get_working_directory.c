@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-t_status my_get_working_directory(const char *for_whom, char **dst)
+t_status	my_get_working_directory(const char *for_whom, char **dst)
 {
 	char	*ret;
 	char	buf[PATH_MAX];

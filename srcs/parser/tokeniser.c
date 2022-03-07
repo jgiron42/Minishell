@@ -78,10 +78,8 @@ size_t	create_t_token_list(char **str, t_token_list **line, t_env *env)
 	while ((*str)[len] && (escaped || node->nb > NONE
 		|| WORD == c_type(node->nb, *str, len)))
 		node->nb = ft_nbquote(&escaped, node->nb, str, len++);
-	if (node->type != WORD)
-		len++;
-	if (node->type & (DLESS | DGREAT | OR_IF | AND_IF))
-		len++;
+	len += (node->type != WORD)
+		+ !!(node->type & (DLESS | DGREAT | OR_IF | AND_IF));
 	if (!(*str)[len] && node->nb)
 		return (free(node), my_perror(env, (char *[2]){
 				"Syntax error: missing closing quote",

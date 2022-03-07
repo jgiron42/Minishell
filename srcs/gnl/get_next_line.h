@@ -19,6 +19,7 @@
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 100
 # endif
+
 int		gnl_ft_check_str(char **str, char **line);
 char	*gnl_ft_use_read(char *str, char *str1, int fd, int *i);
 int		gnl_ft_line(char **line, char **str, int i);

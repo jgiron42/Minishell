@@ -10,7 +10,7 @@
 #                                                                              #
 # **************************************************************************** #
 
-NAME = minichoux
+NAME = minishell
 
 INC_DIR = 	$(shell find includes -type d)
 
@@ -39,6 +39,7 @@ SRC = main.c tokeniser.c parsing.c utils_parser.c parse_grouping.c parse_list.c 
 		signals.c input.c get_next_line.c get_next_line_utils.c \
 		path_match.c utils_list.c pwd.c cd.c tmp_file.c str_vec2.c \
 		char_vec2.c env_utils.c expansion_utils.c my_perror.c\
+		exec_pipeline.c
 
 INC = parsing.h minishell.h
 

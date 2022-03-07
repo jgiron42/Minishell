@@ -48,7 +48,16 @@ typedef struct s_var_list
 	struct s_var_list	*next;
 }				t_var_list;
 
-enum e_redir {INPUT, OUTPUT, CLOBBER, APPEND, HERE, DUPIN, DUPOUT, RW};
+enum e_redir {
+	INPUT,
+	OUTPUT,
+	CLOBBER,
+	APPEND,
+	HERE,
+	DUPIN,
+	DUPOUT,
+	RW
+};
 
 typedef struct s_redir
 {
@@ -113,7 +122,11 @@ typedef struct s_list
 	t_token_type		sep;
 }				t_list;
 
-enum e_fd_status {FD_CLOSE, FD_OPEN, FD_TMP};
+enum e_fd_status {
+	FD_CLOSE,
+	FD_OPEN,
+	FD_TMP
+};
 
 typedef void			(*t_sighandler)(int);
 
@@ -152,7 +165,7 @@ bool			path_has_dot(char *path);
 char			*ft_realpath(const char *path, char *resolved_path);
 
 // utils
-t_status my_get_working_directory(const char *for_whom, char **dst);
+t_status		my_get_working_directory(const char *for_whom, char **dst);
 void			my_getopt(char ***argv, char *option, char dest[256]);
 t_status		set_signal(int sig, t_sighandler action, t_env *env);
 void			reset_signals(t_env *env);
@@ -190,8 +203,8 @@ t_builtin		is_built_in(char *name);
 t_status		exec_special_builtin(t_simple s, t_env *env);
 t_status		exec_regular_builtin(t_simple s, t_env *env);
 t_status		exec_program(char *name, t_simple s, t_env *env);
-t_status	exec_pipeline(union u_command cmd, t_env *env);
-t_status	my_fork(pid_t *dst, t_env *env);
+t_status		exec_pipeline(union u_command cmd, t_env *env);
+t_status		my_fork(pid_t *dst, t_env *env);
 void			ft_exit(t_env *env);
 
 //lst :

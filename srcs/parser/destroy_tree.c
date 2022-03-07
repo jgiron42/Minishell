@@ -48,20 +48,15 @@ void	destroy_grouping(union u_command c)
 	free(c.grouping);
 }
 
-void	destroy_command(t_command c)
+void	destroy_tree(t_command *c)
 {
 	const t_command_destructor	a[] = {&destroy_simple,
 		&destroy_pipeline, &destroy_list, &destroy_grouping};
 
-	if (c.type <= 3)
-		a[c.type](c.command);
-}
-
-void	destroy_tree(t_command *c)
-{
 	if (c)
 	{
-		destroy_command(*c);
+		if (c->type <= 3)
+			a[c->type](c->command);
 		c->type = PARSE_ERROR;
 	}
 }

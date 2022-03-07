@@ -12,24 +12,10 @@
 
 #include "minishell.h"
 
-t_status	ft_heredoc(t_env *env, t_redir *redir)
+char	*read_heredoc(t_env *env, int fd, bool quote, const char *word)
 {
 	char	*rl;
-	int		fd;
-	bool	quote;
-	char	*word;
 
-	quote = false;
-	if (ft_strchr(redir->word, '\'') || ft_strchr(redir->word, '\"'))
-	{
-		quote = true;
-		if (remove_quotes(redir->word) == FATAL)
-			return (FATAL);
-	}
-	word = redir->word;
-	if (my_tmp_file(&fd, &redir->word) == KO)
-		return (my_perror(env, (char *[2]){
-				"can't create here-document", NULL}, true, KO));
 	rl = my_readline(env, "PS2");
 	while (rl && !g_int && ft_strcmp(word, rl))
 	{
@@ -41,6 +27,28 @@ t_status	ft_heredoc(t_env *env, t_redir *redir)
 		free(rl);
 		rl = my_readline(env, "PS2");
 	}
+	return (rl);
+}
+
+t_status	ft_heredoc(t_env *env, t_redir *redir)
+{
+	char	*rl;
+	int		fd;
+	bool	quote;
+	char	*word;
+
+	quote = false;
+	word = redir->word;
+	if (ft_strchr(redir->word, '\'') || ft_strchr(redir->word, '\"'))
+	{
+		quote = true;
+		if (remove_quotes(redir->word) == FATAL)
+			return (FATAL);
+	}
+	if (my_tmp_file(&fd, &redir->word) == KO)
+		return (my_perror(env, (char *[2]){
+				"can't create here-document", NULL}, true, KO));
+	rl = read_heredoc(env, fd, quote, word);
 	if (close(fd) != 0)
 		return (free(rl), free(word), KO);
 	if (g_int)
