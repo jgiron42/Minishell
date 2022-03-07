@@ -6,7 +6,7 @@
 /*   By: ereali <ereali@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 02:40:37 by ereali            #+#    #+#             */
-/*   Updated: 2022/03/07 18:56:49 by ereali           ###   ########.fr       */
+/*   Updated: 2022/03/07 20:16:17 by ereali           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ unsigned char	sh_export(char **argv, t_env *env)
 				return (128);
 			(*argv)[i] = '=';
 		}
-		else
+		else if (!((*argv)[i] == '\0'))
 		{
 			ret = 1;
 			ft_putstr_fd("export :bad variable name\n", 2);
