@@ -6,7 +6,7 @@
 /*   By: jgiron <jgiron@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/04 11:01:47 by jgiron            #+#    #+#             */
-/*   Updated: 2022/03/04 11:01:58 by jgiron           ###   ########.fr       */
+/*   Updated: 2022/03/07 13:13:38 by ereali           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,5 +34,6 @@ int				str_vec_resize(t_str_vec *v, int new_size,
 t_type_str_vec	str_vec_erase_one(t_str_vec *v, int pos);
 int				str_vec_cpy(t_str_vec src, t_str_vec *dst);
 t_str_vec		str_vec_init(void);
+void			free_vec(t_str_vec *v);
 
 #endif

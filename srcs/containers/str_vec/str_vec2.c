@@ -6,7 +6,7 @@
 /*   By: jgiron <jgiron@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/04 11:02:12 by jgiron            #+#    #+#             */
-/*   Updated: 2022/03/04 11:02:13 by jgiron           ###   ########.fr       */
+/*   Updated: 2022/03/07 13:13:15 by ereali           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,4 +94,12 @@ t_type_str_vec	str_vec_erase_one(t_str_vec *v, int pos)
 		pos++;
 	}
 	return (ret);
+}
+
+void	free_vec(t_str_vec *v)
+{
+	while (--v->size >= 0)
+		free(v->data[v->size]);
+	free(v->data);
+	v->data = NULL;
 }
