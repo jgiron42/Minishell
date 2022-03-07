@@ -107,6 +107,7 @@ t_status	remove_var(t_env *env, char *key)
 				env->vars = tmp->next;
 			else
 				old->next = tmp->next;
+			free(tmp);
 			return (OK);
 		}
 		old = tmp;
