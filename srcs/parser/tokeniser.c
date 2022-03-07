@@ -6,7 +6,7 @@
 /*   By: ereali <ereali@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/04 21:09:46 by ereali            #+#    #+#             */
-/*   Updated: 2022/03/07 14:03:40 by ereali           ###   ########.fr       */
+/*   Updated: 2022/03/07 14:37:21 by ereali           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,22 +80,17 @@ size_t	create_t_token_list(char **str, t_token_list **line, t_env *env)
 		|| node->type == AND_IF)
 		len++;
 	if (!(*str)[len] && node->nb)
-	{
 		return (free(node), my_perror(env, (char *[2]){
 				"Syntax error: missing closing quote",
 				NULL}, false, KO), KO);
-	}
 	if (node->type != INVALID)
 	{
 		node->arg = ft_strndup(len, *str);
 		if (!node->arg)
 			return (free(node), FATAL);
-		ft_lstadd_back(line, node);
+		return (ft_lstadd_back(line, node), *str += len, OK);
 	}
-	else
-		free(node);
-	*str += len;
-	return (OK);
+	return (free(node), *str += len, OK);
 }
 
 t_status	tokenise(char *str, t_token_list **dst, t_env *env)

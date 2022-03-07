@@ -6,7 +6,7 @@
 #    By: ereali <ereali@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/10/18 05:33:00 by ereali            #+#    #+#              #
-#    Updated: 2022/03/06 19:50:44 by ereali           ###   ########.fr        #
+#    Updated: 2022/03/07 13:21:53 by ereali           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -74,6 +74,7 @@ $(OBJ_DIR)/%.o : %.c
 				@echo "Compiling $< ...\c"
 				$(CC) $(CFLAGS) $(IFLAGS) -o $@ -c $<
 				@echo " DONE"
+
 
 clean:
 				@rm -rf $(OBJ_DIR)

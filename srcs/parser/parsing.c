@@ -6,7 +6,7 @@
 /*   By: ereali <ereali@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/04 21:09:46 by ereali            #+#    #+#             */
-/*   Updated: 2022/03/07 14:08:51 by ereali           ###   ########.fr       */
+/*   Updated: 2022/03/07 14:49:34 by ereali           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,20 +47,25 @@ void	free_redir(t_redir *list)
 	free(list);
 }
 
+enum e_redir	ft_redir_type(t_token_list **current)
+{
+	if ((*current)->type == LESS)
+		return(INPUT);
+	else if ((*current)->type == GREAT)
+		return (OUTPUT);
+	else if ((*current)->type == DGREAT)
+		return (APPEND);
+	else
+		return (HERE);
+}
+
 t_status	new_redir_list(t_token_list **current, t_redir **dst, t_env *env)
 {
 	*dst = (t_redir *)malloc(sizeof(t_redir));
 	if (!*dst)
 		return (FATAL);
 	**dst = (t_redir){.fd_save = -1};
-	if ((*current)->type == LESS)
-		(*dst)->type = INPUT;
-	else if ((*current)->type == GREAT)
-		(*dst)->type = OUTPUT;
-	else if ((*current)->type == DGREAT)
-		(*dst)->type = APPEND;
-	else
-		(*dst)->type = HERE;
+	(*dst)->type = ft_redir_type(current);
 	if ((*current)->arg[0] == '>')
 		(*dst)->newfd = 1;
 	if ((*current)->next && (*current)->next->type == WORD)

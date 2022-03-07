@@ -6,7 +6,7 @@
 /*   By: jgiron <jgiron@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/04 11:03:04 by jgiron            #+#    #+#             */
-/*   Updated: 2022/03/04 21:00:45 by ereali           ###   ########.fr       */
+/*   Updated: 2022/03/07 14:21:54 by ereali           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,7 @@ int	add_var(t_env *env, char *key, char *value, bool is_exported)
 	if (!new_node->key || !new_node->value)
 	{
 		free(new_node->key);
-		free(new_node->value);
-		free(new_node);
-		return (FATAL);
+		return (free(new_node->value), free(new_node), FATAL);
 	}
 	new_node->next = NULL;
 	if (!env->vars)
