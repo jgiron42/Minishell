@@ -19,22 +19,22 @@ void	sigint_handler(int sig)
 	g_int = true;
 }
 
-t_status	set_signal(int sig, sighandler_t action, t_env *env)
+t_status	set_signal(int sig, t_sighandler action, t_env *env)
 {
-	sighandler_t	ret;
+	t_sighandler	ret;
 
 	ret = signal(sig, action);
-	if (ret == (sighandler_t)-1)
+	if (ret == (t_sighandler)-1)
 		return (KO);
-	if (env->default_signals[sig] == (sighandler_t)-1)
+	if (env->default_signals[sig] == (t_sighandler)-1)
 		env->default_signals[sig] = ret;
 	return (OK);
 }
 
 void	reset_signals(t_env *env)
 {
-	if (env->default_signals[SIGINT] != (sighandler_t)-1)
+	if (env->default_signals[SIGINT] != (t_sighandler)-1)
 		signal(SIGINT, env->default_signals[SIGINT]);
-	if (env->default_signals[SIGQUIT] != (sighandler_t)-1)
+	if (env->default_signals[SIGQUIT] != (t_sighandler)-1)
 		signal(SIGQUIT, env->default_signals[SIGQUIT]);
 }

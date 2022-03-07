@@ -115,14 +115,15 @@ typedef struct s_list
 
 enum e_fd_status {FD_CLOSE, FD_OPEN, FD_TMP};
 
-typedef void			(*sighandler_t)(int);
+typedef void			(*t_sighandler)(int);
 
 typedef struct s_env
 {
 	t_var_list		*vars;
 	t_char_vec		opened_files;
-	sighandler_t	default_signals[64];
+	t_sighandler	default_signals[64];
 	bool			is_interactive;
+	t_command		*current_tree_root;
 	unsigned char	err;
 }				t_env;
 
@@ -153,7 +154,7 @@ char			*ft_realpath(const char *path, char *resolved_path);
 // utils
 t_status my_get_working_directory(const char *for_whom, char **dst);
 void			my_getopt(char ***argv, char *option, char dest[256]);
-t_status		set_signal(int sig, sighandler_t action, t_env *env);
+t_status		set_signal(int sig, t_sighandler action, t_env *env);
 void			reset_signals(t_env *env);
 void			sigint_handler(int sig);
 void			path_pop(char *path);
@@ -208,7 +209,7 @@ t_status		parse_tree(t_token_list *current, t_command *tree, t_env *env);
 void			ft_prin(t_token_list	**line);
 void			ft_prin_redir(t_redir	**line);
 void			free_redir(t_redir *list);
-void			destroy_tree(t_command c);
+void			destroy_tree(t_command *c);
 void			free_redir(t_redir *list);
 void			ft_print_pipe(t_pipeline **line);
 void			ft_print_list(t_list **line);

@@ -26,6 +26,7 @@ void	free_env(t_env *env)
 	}
 	get_next_line(-1, NULL);
 	free(env->opened_files.data);
+	destroy_tree(env->current_tree_root);
 	clear_history();
 }
 

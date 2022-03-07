@@ -14,8 +14,8 @@
 
 t_command	parse_error(t_command to_destroy[2], t_command ret)
 {
-	destroy_tree(to_destroy[0]);
-	destroy_tree(to_destroy[1]);
+	destroy_tree(to_destroy);
+	destroy_tree(to_destroy + 1);
 	return (ret);
 }
 
@@ -40,7 +40,7 @@ t_command	parsing(t_token_list **current, t_token_type expected, t_env *env)
 				|| (*current)->type == AND_IF))
 			tree = parse_list(current, tree, env);
 		else
-			return (destroy_tree(tree), (t_command){.type = PARSE_ERROR});
+			return (destroy_tree(&tree), (t_command){.type = PARSE_ERROR});
 		if (tree.type == PARSE_ERROR || tree.type == PARSE_FATAL)
 			return (tree);
 		operator = true;
@@ -78,6 +78,7 @@ const char	*get_token_str(t_token_type token)
 t_status	parse_tree(t_token_list *current, t_command *tree, t_env *env)
 {
 	*tree = parsing(&current, END, env);
+	env->current_tree_root = tree;
 	if (tree->type == PARSE_FATAL)
 		return (FATAL);
 	else if (g_int)

@@ -37,7 +37,7 @@ t_command	parse_grouping(t_token_list **current, t_env *env)
 	next = parsing(current, RPARENTHESIS, env);
 	if ((*current) && (*current)->type != RPARENTHESIS)
 	{
-		destroy_tree(next);
+		destroy_tree(&next);
 		next.type = PARSE_ERROR;
 	}
 	if (next.type == PARSE_ERROR || next.type == PARSE_FATAL)
@@ -45,7 +45,7 @@ t_command	parse_grouping(t_token_list **current, t_env *env)
 	tree.command.grouping = ft_new_grouping(next);
 	if (!tree.command.grouping)
 	{
-		destroy_tree(next);
+		destroy_tree(&next);
 		return ((t_command){.type = PARSE_FATAL});
 	}
 	(*current) = (*current)->next;

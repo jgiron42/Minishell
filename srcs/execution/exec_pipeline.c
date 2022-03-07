@@ -65,7 +65,7 @@ pid_t	exec_pipe_node(t_env *env, t_pipeline *p, int *next_pipe,
 	{
 		if (set_pipe(p, next_pipe, prev_pipe_read, env) == OK)
 			exec_command(p->command, env);
-		exit(env->err);
+		ft_exit(env);
 	}
 	if (prev_pipe_read != -1)
 		close(prev_pipe_read);
