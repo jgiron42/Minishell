@@ -63,10 +63,10 @@ t_status	exec_list(union u_command cmd, t_env *env)
 	l = cmd.list;
 	while (l)
 	{
-		ret = exec_command(l->command, env);
-		if (ret != OK
-			|| (l->sep == AND_IF && env->err != 0)
-			|| (l->sep == OR_IF && env->err == 0))
+		if ((l->sep == AND_IF && env->err == 0)
+			|| (l->sep == OR_IF && env->err != 0))
+			ret = exec_command(l->command, env);
+		if (ret != OK)
 			break ;
 		l = l->next;
 	}

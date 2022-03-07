@@ -53,7 +53,7 @@ char	*expand_word(char *str, t_env *env)
 		j = i + 1;
 		if (str[i] && str[j] && !ft_isdigit(str[j]
 				&& need_to_expand(str, i) < 2)
-				&& (isvalid_name_letter(str[j]) == true || str[j] == '?'))
+			&& (isvalid_name_letter(str[j]) == true || str[j] == '?'))
 		{
 			while (str[j] && isvalid_name_letter(str[j]) == true)
 				j++;

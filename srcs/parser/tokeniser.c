@@ -81,7 +81,7 @@ size_t	create_t_token_list(char **str, t_token_list **line, t_env *env)
 	len += (node->type != WORD)
 		+ !!(node->type & (DLESS | DGREAT | OR_IF | AND_IF));
 	if (!(*str)[len] && node->nb)
-		return (free(node), my_perror(env, (char *[2]){
+		return (free(node), env->err = 2, my_perror(env, (char *[2]){
 				"Syntax error: missing closing quote",
 				NULL}, false, KO), KO);
 	if (node->type != INVALID && add_token(&node, len, line, (*str)) == OK)
