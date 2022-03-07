@@ -146,8 +146,12 @@ t_status	parse_tree(t_token_list *current, t_command *tree, t_env *env)
 	else if (g_int)
 		return (KO);
 	else if (tree->type == PARSE_ERROR)
+	{
+		env->err = 2;
 		return (my_perror(env, (char *[2]){
-				"Syntax error near unexpected token: ",
-				(char *)get_token_str(current->type)}, false, KO));
+			"Syntax error near unexpected token: ",
+			(char *)get_token_str(current->type)}
+			, false, KO));
+	}
 	return (OK);
 }

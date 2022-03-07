@@ -85,6 +85,7 @@ fclean:			clean
 				@echo "fclean"
 
 malloc_test: $(OBJ)
+		make -C $(LIB_DIR)
 		$(CC) $(OBJ) $(CFLAGS) $(IFLAGS) -fsanitize=undefined -rdynamic -L srcs/libft $(LDLIBS) -L. -lmallocator -o $@
 
 re:				fclean all

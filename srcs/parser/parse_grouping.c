@@ -44,7 +44,10 @@ t_command	parse_grouping(t_token_list **current, t_env *env)
 		return (parse_error((t_command[2]){}, next));
 	tree.command.grouping = ft_new_grouping(next);
 	if (!tree.command.grouping)
+	{
+		destroy_tree(next);
 		return ((t_command){.type = PARSE_FATAL});
+	}
 	(*current) = (*current)->next;
 	while (*current && (*current)->type <= DGREAT && (*current)->type >= GREAT)
 	{

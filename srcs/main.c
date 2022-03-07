@@ -18,10 +18,11 @@ t_status	ft_shell(t_env *env, char *line)
 	t_command		tree;
 	int				ret;
 
-	if (tokenise(line, &tokens, env) != OK)
+	ret = tokenise(line, &tokens, env);
+	if (ret != OK)
 	{
 		if (env->is_interactive)
-			return (KO);
+			return (ret);
 		else
 			return (FATAL);
 	}

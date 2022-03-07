@@ -16,6 +16,7 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <stdio.h>
+#include "minishell.h"
 
 typedef enum e_token_type
 {
@@ -60,6 +61,5 @@ t_token_list	*ft_lstcpy(t_token_list	*current);
 size_t			ft_countoccur(char *str, const char *to_count);
 char			*ft_inhibit(char *str, const char *inibit);
 int				need_to_expand(char *str, size_t dollars);
-char			*remove_quotes(char *str);
 
 #endif

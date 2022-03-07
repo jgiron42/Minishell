@@ -24,6 +24,7 @@ void	free_env(t_env *env)
 		free(env->vars);
 		env->vars = tmp;
 	}
+	get_next_line(-1, NULL);
 	free(env->opened_files.data);
 	clear_history();
 }
