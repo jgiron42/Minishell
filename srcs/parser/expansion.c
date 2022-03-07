@@ -6,7 +6,7 @@
 /*   By: ereali <ereali@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 01:12:29 by ereali            #+#    #+#             */
-/*   Updated: 2022/03/07 16:56:42 by ereali           ###   ########.fr       */
+/*   Updated: 2022/03/07 21:38:46 by ereali           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,8 @@ char	*expand_word_all(char *str, t_env *env)
 		while (str[i] && str[i] != '$')
 			i++;
 		j = i + 1;
-		if (str[i] && str[j] && !ft_isdigit(str[j]))
+		if (str[i] && str[j] && !ft_isdigit(str[j])
+			&& isvalid_name_letter(str[j]) == true)
 		{
 			while (str[j] && isvalid_name_letter(str[j]) == true)
 				j++;
@@ -50,8 +51,8 @@ char	*expand_word(char *str, t_env *env)
 		while (str[i] && str[i] != '$')
 			i++;
 		j = i + 1;
-		if (str[i] && str[j] && !ft_isdigit(str[j])
-			&& need_to_expand(str, i) < 2)
+		if (str[i] && str[j] && !ft_isdigit(str[j]
+				&& need_to_expand(str, i) < 2) && isvalid_name_letter(str[j]))
 		{
 			while (str[j] && isvalid_name_letter(str[j]) == true)
 				j++;
