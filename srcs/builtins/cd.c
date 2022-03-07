@@ -6,7 +6,7 @@
 /*   By: ereali <ereali@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 04:00:47 by ereali            #+#    #+#             */
-/*   Updated: 2022/03/04 21:14:37 by ereali           ###   ########.fr       */
+/*   Updated: 2022/03/07 18:55:37 by ereali           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,20 +21,20 @@ unsigned char	sh_cd(char **argv, t_env *env)
 	{
 		pathname = get_var_val(env, "HOME");
 		if (!pathname)
-			return (KO);
+			return (1);
 		pathname = ft_strdup(pathname);
 		if (!pathname)
-			return (FATAL);
+			return (128);
 	}
 	else
 		pathname = ft_strdup(*argv);
 	if (!pathname)
-		return (FATAL);
+		return (128);
 	if (chdir(pathname) < 0)
 		return (my_perror(env, (char *[2]){"cd: can't cd to ", pathname},
-			true, KO), free(pathname), KO);
+			true, KO), free(pathname), 1);
 	if (set_var(env, "PWD", pathname, 1))
-		return (FATAL);
-	return (free(pathname), OK);
+		return (128);
+	return (free(pathname), 0);
 }
 // free path name ?

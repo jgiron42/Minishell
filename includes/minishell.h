@@ -6,7 +6,7 @@
 /*   By: ereali <ereali@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/04 10:31:30 by ereali            #+#    #+#             */
-/*   Updated: 2022/03/07 17:11:51 by ereali           ###   ########.fr       */
+/*   Updated: 2022/03/07 18:45:21 by ereali           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,7 +162,8 @@ t_status		my_perror(t_env *env, char *error[2], bool use_errno,
 					t_status ret);
 bool			is_dir(char *path);
 t_status		my_tmp_file(int *fd, char **dst);
-int				isvalid_name_letter(char c);
+// int				isvalid_name_letter(char c);
+
 
 //builtin
 unsigned char	sh_echo(char **argv, t_env *env);
@@ -189,8 +190,6 @@ t_builtin		is_built_in(char *name);
 t_status		exec_special_builtin(t_simple s, t_env *env);
 t_status		exec_regular_builtin(t_simple s, t_env *env);
 t_status		exec_program(char *name, t_simple s, t_env *env);
-t_status	exec_pipeline(union u_command cmd, t_env *env);
-t_status	my_fork(pid_t *dst, t_env *env);
 void			ft_exit(t_env *env);
 
 //lst :

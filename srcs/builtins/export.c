@@ -6,7 +6,7 @@
 /*   By: ereali <ereali@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 02:40:37 by ereali            #+#    #+#             */
-/*   Updated: 2022/03/04 11:21:36 by jgiron           ###   ########.fr       */
+/*   Updated: 2022/03/07 18:56:49 by ereali           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ unsigned char	sh_export(char **argv, t_env *env)
 		{
 			(*argv)[i] = '\0';
 			if (set_var(env, *argv,*argv + i + 1, 1) == FATAL)
-				return (-1);
+				return (128);
 			(*argv)[i] = '=';
 		}
 		else
