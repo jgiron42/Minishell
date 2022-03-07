@@ -27,6 +27,7 @@ int	add_var(t_env *env, char *key, char *value, bool is_exported)
 	{
 		free(new_node->key);
 		free(new_node->value);
+		free(new_node);
 		return (FATAL);
 	}
 	new_node->next = NULL;
@@ -82,6 +83,8 @@ t_status	set_var(t_env *env, char *key, char *value, bool is_exported)
 				return (OK);
 			free(tmp->value);
 			tmp->value = ft_strdup(value);
+			if (!tmp->value)
+				return (FATAL);
 			return (OK);
 		}
 		tmp = tmp->next;

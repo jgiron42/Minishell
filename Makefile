@@ -83,6 +83,9 @@ fclean:			clean
 				@rm -f $(NAME)
 				@echo "fclean"
 
+malloc_test: $(OBJ)
+		$(CC) $(OBJ) $(CFLAGS) $(IFLAGS) -fsanitize=undefined -rdynamic -L srcs/libft $(LDLIBS) -L. -lmallocator -o $@
+
 re:				fclean all
 
 .PHONY: all clean fclean re
