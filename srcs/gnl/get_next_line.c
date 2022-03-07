@@ -17,26 +17,14 @@ int	gnl_ft_check_str(char **str, char **line)
 	char	*tmp;
 	int		k;
 
-	k = 0;
-	if (!*str)
+	k = gnl_ft_strchr(*str, '\n');
+	if (k >= 0)
 	{
-		*str = (char *)malloc((sizeof(char) * BUFFER_SIZE) + 1);
-		if (!*str)
-			return (-1);
-	}
-	else
-	{
-		k = gnl_ft_strchr(*str, '\n');
-		if (k >= 0)
-		{
-			(*line) = gnl_ft_swap(0, k, *str);
-			tmp = (*str);
-			(*str) = gnl_ft_swap(k + 1, -1, *str);
-			if (!*line || !*str)
-				return (-1);
-			free(tmp);
-			return (1);
-		}
+		(*line) = gnl_ft_swap(0, k, *str);
+		tmp = (*str);
+		(*str) = gnl_ft_swap(k + 1, -1, *str);
+		free(tmp);
+		return (1);
 	}
 	return (0);
 }
@@ -99,17 +87,17 @@ int	get_next_line(int fd, char **line)
 	i = 0;
 	if (!BUFFER_SIZE || fd < 0 || !line)
 		return (gnl_free(&str));
-	(n = gnl_ft_check_str(&str, line));
+	n = gnl_ft_check_str(&str, line);
 	if (n != 0)
 		return (n);
 	str1 = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if (!str1)
 		return (gnl_free(&str));
-	n = 0;
 	str = gnl_ft_use_read(str, str1, fd, &i);
 	if (i == 0 && !str)
 	{
-		*line = NULL;
+		*line = (char *)malloc(sizeof(char) * 1);
+		*line[0] = '\0';
 		return (0);
 	}
 	if (i == -1)
