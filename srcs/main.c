@@ -66,7 +66,8 @@ int	main(int argc, char **argv, char **envp)
 	(void)argv;
 	if (parse_env(envp, &env) != FATAL && init_env(&env) != FATAL)
 		loop(&env);
-	perror(NAME);
+	if (errno)
+		perror(NAME);
 	free_env(&env);
 	return (1);
 }
