@@ -6,7 +6,7 @@
 /*   By: ereali <ereali@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/04 21:09:46 by ereali            #+#    #+#             */
-/*   Updated: 2022/03/07 16:29:34 by ereali           ###   ########.fr       */
+/*   Updated: 2022/03/07 16:55:44 by ereali           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,19 +61,6 @@ enum e_quote	ft_nbquote(bool *escaped, enum e_quote nb, char **str, size_t l)
 	else if ((*str)[l] == '\\' && nb != ONE)
 		(*escaped) = true;
 	return (nb);
-}
-
-t_status	add_token(t_token_list **node, size_t len, t_token_list **line,
-		char *str)
-{
-	if ((*node)->type != INVALID)
-	{
-		(*node)->arg = ft_strndup(len, str);
-		if (!(*node)->arg)
-			return (free(*node), FATAL);
-		ft_lstadd_back(line, (*node));
-	}
-	return (OK);
 }
 
 size_t	create_t_token_list(char **str, t_token_list **line, t_env *env)

@@ -6,7 +6,7 @@
 /*   By: ereali <ereali@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/04 10:31:30 by ereali            #+#    #+#             */
-/*   Updated: 2022/03/04 21:19:54 by ereali           ###   ########.fr       */
+/*   Updated: 2022/03/07 17:11:51 by ereali           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,6 +162,8 @@ t_status		my_perror(t_env *env, char *error[2], bool use_errno,
 					t_status ret);
 bool			is_dir(char *path);
 t_status		my_tmp_file(int *fd, char **dst);
+int				isvalid_name_letter(char c);
+
 
 //builtin
 unsigned char	sh_echo(char **argv, t_env *env);
@@ -197,11 +199,14 @@ t_token_list	*ft_lstcpy(t_token_list *current);
 t_token_list	*ft_lstnew(t_token_type token);
 
 //parsing :
+t_status		add_token(t_token_list **node, size_t len, t_token_list **line,
+					char *str);
 t_status		tokenise(char *str, t_token_list **dst, t_env *env);
 void			free_token_list(t_token_list *ptr);
 t_status		parse_tree(t_token_list *current, t_command *tree, t_env *env);
 void			ft_prin(t_token_list	**line);
 void			ft_prin_redir(t_redir	**line);
+void			free_redir(t_redir *list);
 void			destroy_tree(t_command c);
 void			free_redir(t_redir *list);
 void			ft_print_pipe(t_pipeline **line);
@@ -229,6 +234,7 @@ t_status		ft_heredoc(t_env *env, t_redir *redir);
 t_status		remove_quotes(char *str);
 
 //expansion
+t_status		expand_path(t_token_list *lst, t_str_vec *dst);
 t_status		ft_fillargv(t_simple *command);
 t_status		ft_field_split(t_token_list **lst);
 t_status		found_val(char **new, char *key, t_env *env);

@@ -6,7 +6,7 @@
 /*   By: ereali <ereali@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 01:12:29 by ereali            #+#    #+#             */
-/*   Updated: 2022/03/07 13:52:40 by ereali           ###   ########.fr       */
+/*   Updated: 2022/03/07 16:56:42 by ereali           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,27 +115,6 @@ t_status	expand_path(t_token_list *lst, t_str_vec *dst)
 	return (OK);
 }
 
-t_status	ft_fillargv(t_simple *command)
-{
-	int			j;
-	t_str_vec	dst;
-
-	j = 0;
-	if (!command->argv_tokens)
-		return (OK);
-	if (expand_path(command->argv_tokens, &dst) == FATAL)
-		return (FATAL);
-	while (j < dst.size - 1)
-	{
-		if (remove_quotes(dst.data[j]) == FATAL)
-			return (free_vec(&dst), FATAL);
-		j++;
-	}
-	dst.data[j] = NULL;
-	command->argv = dst.data;
-	return (OK);
-}
-
 t_status	expand_simple(t_simple *command, t_env *env)
 {
 	t_status		ret;
@@ -147,9 +126,7 @@ t_status	expand_simple(t_simple *command, t_env *env)
 	while (command->argv_tokens && command->argv_tokens->arg)
 	{
 		command->argv_tokens->arg = expand_word(command->argv_tokens->arg, env);
-		if (!command->argv_tokens->arg)
-			return (FATAL);
-		if (ft_field_split(&command->argv_tokens) != OK)
+		if (!command->argv_tokens->arg || ft_field_split(&command->argv_tokens))
 			return (FATAL);
 		command->argv_tokens = command->argv_tokens->next;
 	}

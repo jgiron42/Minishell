@@ -6,7 +6,7 @@
 #    By: ereali <ereali@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/10/18 05:33:00 by ereali            #+#    #+#              #
-#    Updated: 2022/03/07 13:21:53 by ereali           ###   ########.fr        #
+#    Updated: 2022/03/07 17:12:26 by ereali           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,8 +31,8 @@ vpath %.h $(foreach dir, $(INC_DIR), $(dir):)
 ##List every .c found inside SRC_DIR
 SRC = main.c tokeniser.c parsing.c utils_parser.c parse_grouping.c parse_list.c \
 		parse_pipe.c parse_simple.c print.c expansion.c \
-		env.c path_utils.c path_find.c my_getopt.c\
-		my_get_working_directory.c destroy_tree.c \
+		env.c path_utils.c path_find.c my_getopt.c parse_redir.c\
+		my_get_working_directory.c destroy_tree.c classic_utils.c\
 		command_name.c exec_builtin.c exec_program.c exec.c ft_exit.c exit.c \
 		redirections.c utils.c dupenv.c init_env.c parse_env.c \
 		serialize_env.c char_vec.c str_vec.c echo.c sh_env.c export.c unset.c \
