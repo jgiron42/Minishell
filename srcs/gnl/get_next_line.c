@@ -60,9 +60,12 @@ int	gnl_ft_line(char **line, char **str, int i)
 		return (1);
 	}
 	k = gnl_ft_strchr((*str), '\0');
-	if (k >= 0 && i == 0)
+	if (i == 0)
 	{
-		(*line) = gnl_ft_swap(0, k, (*str));
+		if (k > 0)
+			(*line) = gnl_ft_swap(0, k, (*str));
+		else
+			(*line) = NULL;
 		free(*str);
 		(*str) = NULL;
 		return (0);
@@ -96,8 +99,6 @@ int	get_next_line(int fd, char **line)
 	str = gnl_ft_use_read(str, str1, fd, &i);
 	if (i == 0 && !str)
 	{
-		*line = (char *)malloc(sizeof(char) * 1);
-		*line[0] = '\0';
 		return (0);
 	}
 	if (i == -1)
