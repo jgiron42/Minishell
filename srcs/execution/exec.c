@@ -21,27 +21,28 @@ t_status	exec_simple(union u_command cmd, t_env *env)
 	char		*name;
 
 	s = cmd.simple;
-	expand_simple(&s, env);
+	if (expand_simple(&s, env) == FATAL)
+		return (FATAL);
 	ret = perform_redirection(env, s.redir_list);
 	if (ret == KO && !env->is_interactive && (s.argv
 			&& is_special_built_in(s.argv[0])))
 		ret = FATAL;
-	if (ret == FATAL)
-		return (FATAL);
-	if (!s.argv || !s.argv[0])
-		ret = OK;
-	else if (ft_strchr(s.argv[0], '/'))
-		ret = exec_program(s.argv[0], s, env);
-	else if (is_special_built_in(s.argv[0]))
-		ret = exec_special_builtin(s, env);
-	else if (is_built_in(s.argv[0]))
-		ret = exec_regular_builtin(s, env);
-	else
+	if (ret == OK)
 	{
-		ret = path_find(s.argv[0], env, &name);
-		if (ret != FATAL)
-			ret = exec_program(name, s, env);
-		free(name);
+		if (!s.argv || !s.argv[0])
+			ret = OK;
+		else if (ft_strchr(s.argv[0], '/'))
+			ret = exec_program(s.argv[0], s, env);
+		else if (is_special_built_in(s.argv[0]))
+			ret = exec_special_builtin(s, env);
+		else if (is_built_in(s.argv[0]))
+			ret = exec_regular_builtin(s, env);
+		else {
+			ret = path_find(s.argv[0], env, &name);
+			if (ret != FATAL)
+				ret = exec_program(name, s, env);
+			free(name);
+		}
 	}
 	ft_free_split(s.argv);
 	if (reset_redirection(env, s.redir_list) == FATAL)
@@ -132,7 +133,7 @@ t_status	exec_list(union u_command cmd, t_env *env)
 	return (ret);
 }
 
-t_status	exec_grouping(union u_command cmd, t_env *env)
+t_status	exec_grouping(union u_command cmd, t_env *env) // (a=b) leak
 {
 	t_grouping	*g;
 	int			ret;

@@ -39,7 +39,7 @@ char	*rand_str(void)
 	ret = read(fd, &buf, 10);
 	if (ret != 10)
 	{
-		close(ret);
+		close(fd);
 		return (NULL);
 	}
 	i = 10;
@@ -49,6 +49,7 @@ char	*rand_str(void)
 		buf[i * 2] = tobase64(buf[i] >> 4);
 	}
 	buf[20] = 0;
+	close(fd);
 	return (ft_strdup(buf));
 }
 

@@ -82,7 +82,8 @@ t_status	expand_redir(t_redir **first, t_env *env)
 			if (!command->word)
 				return (FATAL);
 		}
-		command->word = remove_quotes(command->word);
+		if (remove_quotes(command->word) == FATAL)
+			return (FATAL);
 		command = command->next;
 	}
 	if (!command)
@@ -101,11 +102,11 @@ t_status	expand_path(t_token_list *lst, t_str_vec *dst)
 		tmp = dst->size;
 		if (lst->arg[0] && path_match_current(lst->arg, dst) == FATAL)
 			return (free_vec(dst), FATAL);
-		if (tmp == dst->size)
+		if (tmp == dst->size && lst->arg[0])
 		{
 			tmp_s = ft_strdup(lst->arg);
 			if (!tmp_s || str_vec_push(dst, tmp_s) == FATAL)
-				return (free_vec(dst), FATAL);
+				return (free(tmp_s), free_vec(dst), FATAL);
 		}
 		lst = lst->next;
 	}
@@ -116,11 +117,9 @@ t_status	expand_path(t_token_list *lst, t_str_vec *dst)
 
 t_status	ft_fillargv(t_simple *command)
 {
-	int			i;
 	int			j;
 	t_str_vec	dst;
 
-	i = 0;
 	j = 0;
 	if (!command->argv_tokens)
 		return (OK);
@@ -128,14 +127,11 @@ t_status	ft_fillargv(t_simple *command)
 		return (FATAL);
 	while (j < dst.size - 1)
 	{
-		if (dst.data[j][0])
-		{
-			dst.data[i] = remove_quotes(dst.data[j]);
-			i++;
-		}
+		if (remove_quotes(dst.data[j]) == FATAL)
+			return (free_vec(&dst), FATAL);
 		j++;
 	}
-	dst.data[i] = NULL;
+	dst.data[j] = NULL;
 	command->argv = dst.data;
 	return (OK);
 }
@@ -160,11 +156,12 @@ t_status	expand_simple(t_simple *command, t_env *env)
 	command->argv_tokens = begin;
 	if (ft_fillargv(command) != OK)
 		return (FATAL);
+	ret = OK;
 	if (command->redir_list)
 	{
 		ret = expand_redir(&command->redir_list, env);
-		if (ret != OK)
-			return (ret);
+		if (ret == FATAL)
+			ft_free_split(command->argv);
 	}
-	return (OK);
+	return (ret);
 }

@@ -107,7 +107,7 @@ t_status	tokenise(char *str, t_token_list **dst, t_env *env)
 		if (ret != OK)
 		{
 			free_token_list(*dst);
-			return (KO);
+			return (ret);
 		}
 	}
 	tmp = ft_lstnew(END);

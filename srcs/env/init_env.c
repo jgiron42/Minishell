@@ -17,11 +17,10 @@ static t_status	init_pwd(t_env *env)
 	char		*true_pwd;
 	t_status	ret;
 
-	true_pwd = my_get_working_directory("shell-init");
-	if (!true_pwd && errno == ENOMEM)
+	if (my_get_working_directory("shell-init", &true_pwd) == FATAL)
 		return (FATAL);
 	if (!true_pwd)
-		ret = KO;
+		return (KO);
 	ret = set_var(env, "PWD", true_pwd, true);
 	free(true_pwd);
 	return (ret);

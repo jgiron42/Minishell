@@ -151,7 +151,7 @@ bool			path_has_dot(char *path);
 char			*ft_realpath(const char *path, char *resolved_path);
 
 // utils
-char			*my_get_working_directory(const char *for_whom);
+t_status my_get_working_directory(const char *for_whom, char **dst);
 void			my_getopt(char ***argv, char *option, char dest[256]);
 t_status		set_signal(int sig, sighandler_t action, t_env *env);
 void			reset_signals(t_env *env);
@@ -226,6 +226,7 @@ void			destroy_simple(union u_command c);
 t_command		parse_error(t_command to_destroy[2], t_command ret);
 t_status		ft_lstinsertword(t_token_list **alst, char *str);
 t_status		ft_heredoc(t_env *env, t_redir *redir);
+t_status		remove_quotes(char *str);
 
 //expansion
 t_status		ft_fillargv(t_simple *command);

@@ -173,6 +173,7 @@ t_status	path_match_current(char *glob, t_str_vec *dst)
 			tmp = ft_strdup(entry->d_name);
 			if (!tmp || !str_vec_push(dst, tmp))
 			{
+				free(tmp);
 				closedir(current);
 				return (FATAL);
 			}

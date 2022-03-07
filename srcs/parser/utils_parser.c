@@ -30,7 +30,8 @@ t_status	ft_heredoc(t_env *env, t_redir *redir)
 	if (ft_strchr(redir->word, '\'') || ft_strchr(redir->word, '\"'))
 	{
 		quote = true;
-		redir->word = remove_quotes(redir->word);
+		if (remove_quotes(redir->word) == FATAL)
+			return (FATAL);
 	}
 	word = redir->word;
 	if (my_tmp_file(&fd, &redir->word) == KO)
@@ -54,7 +55,7 @@ t_status	ft_heredoc(t_env *env, t_redir *redir)
 	return (free(rl), free(word), redir->oldfd = fd, OK);
 }
 
-char	*remove_quotes(char	*str)
+t_status remove_quotes(char	*str)
 {
 	char	*cpy;
 	size_t	i;
@@ -63,25 +64,26 @@ char	*remove_quotes(char	*str)
 	i = 0;
 	j = 0;
 	cpy = ft_strdup(str);
-	while (cpy && cpy[i + j])
+	if (!cpy)
+		return (FATAL);
+	while (cpy[i + j])
 	{
 		if ((ft_strchr("\\\"", cpy[i + j]) && need_to_expand(cpy, i + j) < 2)
 			|| (cpy[i + j] == '\'' && (need_to_expand(cpy, i + j) == 2
 					|| need_to_expand(cpy, i + j) == 0)))
 		{
 			j++;
-			str[i] = cpy[i + j];
+			(str)[i] = cpy[i + j];
 		}
 		else
 		{
-			str[i] = cpy[i + j];
+			(str)[i] = cpy[i + j];
 			i++;
 		}
 	}
-	str[i] = '\0';
-	if (cpy)
-		free(cpy);
-	return (str);
+	(str)[i] = '\0';
+	free(cpy);
+	return (OK);
 }
 
 char	*ft_fill_with_bslash(char *str, char *new, const char *inhibit)
@@ -111,11 +113,11 @@ char	*ft_fill_with_bslash(char *str, char *new, const char *inhibit)
 char	*ft_inhibit(char *str, const char *inhibit)
 {
 	char	*new;
-	size_t	i;
-	size_t	j;
+//	size_t	i;
+//	size_t	j;
 
-	i = 0;
-	j = 0;
+//	i = 0;
+//	j = 0;
 	if (!str)
 		return (ft_strdup(""));
 	if (!inhibit)

@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-char	*my_get_working_directory(const char *for_whom)
+t_status my_get_working_directory(const char *for_whom, char **dst)
 {
 	char	*ret;
 	char	buf[PATH_MAX];
@@ -21,12 +21,14 @@ char	*my_get_working_directory(const char *for_whom)
 	ret = getcwd(buf, PATH_MAX);
 	if (!ret)
 	{
-		if (errno == ENOMEM)
-			return (NULL);
+		*dst = NULL;
 		ft_putstr_fd((char *)for_whom, 2);
 		write(2, ": ", 2);
 		perror("get_cwd()");
-		return (NULL);
+		return (KO);
 	}
-	return (ft_strdup(ret));
+	*dst = ft_strdup(ret);
+	if (!*dst)
+		return (FATAL);
+	return (OK);
 }

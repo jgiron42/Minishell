@@ -95,8 +95,7 @@ int		get_next_line(int fd, char **line)
 	str = gnl_ft_use_read(str, str1, fd, &i);
 	if (i == 0 && !str)
 	{
-		*line = (char*)malloc(sizeof(char) * 1);
-		*line[0] = '\0';
+		*line = NULL;
 		return (0);
 	}
 	if (i == -1)

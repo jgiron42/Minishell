@@ -18,17 +18,17 @@ bool	check_file(char *name, t_simple s, t_env *env)
 
 	if (!name || (access(name, X_OK) && (errno == ENOENT || errno == ENOTDIR)))
 	{
-		msg = "Not found";
+		msg = ": Not found";
 		env->err = 127;
 	}
 	else if (is_dir(name))
 	{
-		msg = "Is a directory";
+		msg = ": Is a directory";
 		env->err = 126;
 	}
 	else if (access(name, X_OK))
 	{
-		msg = "Permission denied";
+		msg = ": Permission denied";
 		env->err = 126;
 	}
 	else
