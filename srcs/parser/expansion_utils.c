@@ -25,7 +25,7 @@ int	need_to_expand(char *str, size_t dollars)
 			tab[2] = 0;
 		else if (str[i] == '\"' && !tab[1] && !tab[2] && tab[0] == 0)
 				tab[0] = 1;
-		else if (str[i] == '\"' && !tab[1] && !tab[2] && tab[0] == 0)
+		else if (str[i] == '\"' && !tab[1] && !tab[2] && tab[0])
 				tab[0] = 0;
 		else if (str[i] == '\'' && !tab[0] && !tab[2] && tab[1] == 0)
 				tab[1] = 2;
