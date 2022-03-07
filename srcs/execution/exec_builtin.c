@@ -25,6 +25,6 @@ t_status	exec_special_builtin(t_simple s, t_env *env)
 		return (OK);
 	if (env->is_interactive)
 		return (KO);
-	else
-		return (FATAL);
+	ft_exit(env);
+	return (OK);
 }
