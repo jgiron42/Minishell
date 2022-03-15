@@ -64,7 +64,8 @@ t_status	exec_list(union u_command cmd, t_env *env)
 	while (l)
 	{
 		if ((l->sep == AND_IF && env->err == 0)
-			|| (l->sep == OR_IF && env->err != 0))
+			|| (l->sep == OR_IF && env->err != 0)
+			|| l->sep == SEMI)
 			ret = exec_command(l->command, env);
 		if (ret != OK)
 			break ;
