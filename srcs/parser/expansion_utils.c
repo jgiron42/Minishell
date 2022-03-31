@@ -89,7 +89,7 @@ t_status	ft_field_split(t_token_list **lst)
 			arg = ft_strdup((*lst)->arg + i + 1);
 			if (!arg)
 				return (FATAL);
-			if (!ft_strcmp(arg, ""))
+			if (!*arg)
 				free(arg);
 			else if (ft_lstinsertword(lst, arg) == FATAL)
 				return (free(arg), FATAL);

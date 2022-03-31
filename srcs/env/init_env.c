@@ -52,6 +52,7 @@ int	readline_hack(void)
 
 t_status	init_env(t_env *env)
 {
+	env->current_tree_root = NULL;
 	env->is_interactive = (isatty(0) && isatty(2));
 	if (env->is_interactive)
 	{
