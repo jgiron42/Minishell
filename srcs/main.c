@@ -35,6 +35,7 @@ t_status	ft_shell(t_env *env, char *line)
 	else if (!env->is_interactive)
 		ret = FATAL;
 	destroy_tree(&tree);
+	env->current_tree_root = NULL;
 	return (ret);
 }
 
