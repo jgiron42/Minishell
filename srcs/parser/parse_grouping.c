@@ -31,7 +31,7 @@ void	parse_grouping2(t_token_list **current, t_env *env, t_command *tree,
 	(*tree) = (t_command){.type = GROUPING};
 	(*current) = (*current)->next;
 	(*next) = parsing(current, RPARENTHESIS, env);
-	if ((*current) && (*current)->type != RPARENTHESIS)
+	if (!(*current) || (*current)->type != RPARENTHESIS)
 	{
 		destroy_tree(next);
 		(*next).type = PARSE_ERROR;
@@ -59,8 +59,8 @@ t_command	parse_grouping(t_token_list **current, t_env *env)
 	{
 		ret = new_redir_list(current, &tmp, env);
 		if (ret != OK || !tmp)
-			return (parse_error((t_command[2]){tree},
-				(t_command){.type = ret - 1 + PARSE_ERROR}));
+			return (parse_error((t_command[2])
+					{tree}, (t_command){.type = ret - 1 + PARSE_ERROR}));
 		ft_lstadd_back_redir(&(tree.command.grouping->redir_list), tmp);
 		(*current) = (*current)->next;
 	}

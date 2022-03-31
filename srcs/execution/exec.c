@@ -61,6 +61,7 @@ t_status	exec_list(union u_command cmd, t_env *env)
 	t_status	ret;
 
 	l = cmd.list;
+	ret = 0;
 	while (l)
 	{
 		if ((l->sep == AND_IF && env->err == 0)

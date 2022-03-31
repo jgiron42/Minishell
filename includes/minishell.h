@@ -205,7 +205,7 @@ t_status		exec_regular_builtin(t_simple s, t_env *env);
 t_status		exec_program(char *name, t_simple s, t_env *env);
 t_status		exec_pipeline(union u_command cmd, t_env *env);
 t_status		my_fork(pid_t *dst, t_env *env);
-void			ft_exit(t_env *env);
+void			ft_exit(t_env *env) __attribute__((noreturn));
 
 //lst :
 t_var_list		*ft_lstlast(t_var_list *lst);

@@ -14,10 +14,8 @@
 
 unsigned char	sh_unset(char **argv, t_env *env)
 {
-	int		ret;
 	int		i;
 
-	ret = 0;
 	i = 0;
 	while (++argv && *argv)
 	{
@@ -25,16 +23,10 @@ unsigned char	sh_unset(char **argv, t_env *env)
 			&& isvalid_name_letter((*argv)[i]))
 			i++;
 		if ((*argv)[i] != '\0')
-		{
-			ret = 1;
 			ft_putstr_fd("unset : bad variable name\n", 2);
-		}
 		else if (i > 0)
-		{
-			if (remove_var(env, (*argv)))
-				ret = 1;
-		}
+			remove_var(env, (*argv));
 		i = 0;
 	}
-	return (ret);
+	return (0);
 }

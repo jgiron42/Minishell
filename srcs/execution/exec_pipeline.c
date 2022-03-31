@@ -53,6 +53,7 @@ pid_t	exec_pipe_node(t_env *env, t_pipeline *p, int *next_pipe,
 	pid_t	pid;
 
 	next_pipe[0] = -1;
+	next_pipe[1] = -1;
 	if ((p->next && pipe(next_pipe) < -1))
 		return (-1);
 	if (my_fork(&pid, env) == FATAL)
