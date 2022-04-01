@@ -49,8 +49,10 @@ LIBS		=	ft readline
 ##Transform and place every .o from SRC
 OBJ = $(addprefix $(OBJ_DIR)/, $(SRC:%.c=%.o))
 
+DEP = $(addprefix $(OBJ_DIR)/, $(SRC:%.c=%.d))
+
 ##Basics	 flags
-CFLAGS =	-Wall -Wextra -Werror -g3
+CFLAGS =	-Wall -Wextra -Werror -g3 -MMD
 
 ##Create the flags to includes every .h needed by this program
 IFLAGS =	$(foreach dir, $(INC_DIR), -I $(dir))
@@ -64,6 +66,7 @@ CC =	clang
 
 all: $(NAME)
 
+-include $(DEP)
 $(NAME): $(OBJ)
 				@echo "Compiling $(NAME) ...\c"
 				make -C $(LIB_DIR)
@@ -77,6 +80,12 @@ $(OBJ_DIR)/%.o : %.c
 				@echo " DONE"
 
 bonus: $(NAME)
+
+malloc_test: $(OBJ)
+				@echo "Compiling $(NAME) ...\c"
+				make -C $(LIB_DIR)
+				$(CC) $(OBJ) $(CFLAGS) -fsanitize=undefined -rdynamic $(IFLAGS) -L srcs/libft -L. -lmallocator $(LDLIBS) -o malloc_test
+				@echo " DONE"
 
 clean:
 				@rm -rf $(OBJ_DIR)
