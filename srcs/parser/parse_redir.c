@@ -66,7 +66,7 @@ t_status	new_redir_list(t_token_list **current, t_redir **dst, t_env *env)
 		(*current) = ((*current)->next);
 		(*dst)->word = ft_strdup((*current)->arg);
 		if (!(*dst)->word)
-			return (free((*dst)->word), free(*dst), FATAL);
+			return (free(*dst), FATAL);
 	}
 	else
 		return (free((*dst)->word), free(*dst), KO);

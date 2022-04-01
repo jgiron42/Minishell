@@ -69,7 +69,7 @@ char	**serialize_env(t_var_list *env)
 			free(ret);
 			return (NULL);
 		}
-		i++;
+		(void)(env->is_exported && i++);
 		env = env->next;
 	}
 	ret[i] = NULL;

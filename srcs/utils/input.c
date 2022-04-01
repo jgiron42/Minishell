@@ -58,22 +58,24 @@ t_status	readnline(char **line, t_env *env)
 
 	*line = my_readline(env, "PS1");
 	if (!*line)
-		ft_exit(env);
+		return (FATAL);
 	if (!**line || g_int)
-		return (KO);
+		return (free(*line), KO);
 	while (count_trailing_backslashes(*line) % 2)
 	{
 		(*line)[ft_strlen(*line) - 1] = '\0';
 		tmp = my_readline(env, "PS2");
-		if (!tmp || g_int)
+		if (!g_int)
+			return (free(*line), KO);
+		if (!tmp)
 			break ;
 		if (*tmp)
 			*line = ft_strjoinf1(*line, tmp);
+		free(tmp);
 		if (!*line)
 			return (FATAL);
-		free(tmp);
 	}
-	if (**line && !g_int)
+	if (**line)
 		add_history(*line);
-	return (KO * g_int);
+	return (OK);
 }

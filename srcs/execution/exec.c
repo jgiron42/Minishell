@@ -19,7 +19,12 @@ int	find_and_exec(t_env *env, t_simple *s, int ret, char **name)
 	if (!(*s).argv || !(*s).argv[0])
 		ret = OK;
 	else if (ft_strchr((*s).argv[0], '/'))
-		ret = exec_program((*s).argv[0], (*s), env);
+	{
+		*name = ft_strdup((*s).argv[0]);
+		if (*name)
+			ret = exec_program(*name, (*s), env);
+		free((*name));
+	}
 	else if (is_special_built_in((*s).argv[0]))
 		ret = exec_special_builtin((*s), env);
 	else if (is_built_in((*s).argv[0]))

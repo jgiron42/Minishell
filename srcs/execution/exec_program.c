@@ -56,8 +56,10 @@ t_status	exec_program(char *name, t_simple s, t_env *env)
 		if (!envp)
 			return (FATAL);
 		execve(name, s.argv, envp);
-		perror(NAME);
+		my_perror(env, (char *[2]){name, NULL}, true, 0);
 		env->err = 126;
+		ft_free_split(s.argv);
+		(void)((ft_free_split(envp), true) && (free(name), true));
 		ft_exit (env);
 	}
 	return (get_err(env, pid), OK);

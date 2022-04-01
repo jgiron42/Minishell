@@ -107,7 +107,7 @@ t_status	expand_path(t_token_list *lst, t_str_vec *dst)
 		if (tmp == dst->size && lst->arg[0])
 		{
 			tmp_s = ft_strdup(lst->arg);
-			if (!tmp_s || str_vec_push(dst, tmp_s) == FATAL)
+			if (!tmp_s || str_vec_push(dst, tmp_s) == 0)
 				return (free(tmp_s), free_vec(dst), FATAL);
 		}
 		lst = lst->next;
@@ -120,19 +120,18 @@ t_status	expand_path(t_token_list *lst, t_str_vec *dst)
 t_status	expand_simple(t_simple *command, t_env *env)
 {
 	t_status		ret;
-	t_token_list	*begin;
+	t_token_list	*tmp;
 
 	if (!command || !command->argv_tokens)
 		return (KO);
-	begin = command->argv_tokens;
-	while (command->argv_tokens && command->argv_tokens->arg)
+	tmp = command->argv_tokens;
+	while (tmp && tmp->arg)
 	{
-		command->argv_tokens->arg = expand_word(command->argv_tokens->arg, env);
-		if (!command->argv_tokens->arg || ft_field_split(&command->argv_tokens))
+		tmp->arg = expand_word(tmp->arg, env);
+		if (!tmp->arg || ft_field_split(&tmp))
 			return (FATAL);
-		command->argv_tokens = command->argv_tokens->next;
+		tmp = tmp->next;
 	}
-	command->argv_tokens = begin;
 	if (ft_fillargv(command) != OK)
 		return (FATAL);
 	ret = OK;

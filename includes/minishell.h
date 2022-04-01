@@ -81,7 +81,6 @@ union	u_command
 	struct s_pipeline	*pipeline;
 	struct s_list		*list;
 	struct s_grouping	*grouping;
-	t_token_type		error_type;
 };
 
 enum e_command_type
@@ -154,9 +153,9 @@ t_status		export_env(t_var_list *env, char *key);
 char			*get_var_val(t_env *env, char *key);
 t_var_list		*get_var_ptr(t_env *env, char *key);
 void			free_env(t_env *env);
-t_var_list		*dup_var_list(t_var_list *src);
+t_var_list		*dup_var_list(t_var_list *src) __attribute__((malloc));
 // env conversion:
-char			**serialize_env(t_var_list *env);
+char			**serialize_env(t_var_list *env) __attribute__((malloc));
 t_status		parse_env(char **envp, t_env *env);
 //env initialisation:
 t_status		init_env(t_env *env);
@@ -187,7 +186,7 @@ unsigned char	sh_unset(char **argv, t_env *env);
 unsigned char	sh_exit(char **argv, t_env *env);
 unsigned char	sh_cd(char **argv, t_env *env);
 // input
-char			*my_readline(t_env *env, char *prompt);
+char			*my_readline(t_env *env, char *prompt) __attribute__((malloc));
 t_status		readnline(char **line, t_env *env);
 // exec
 t_status		path_find(char *name, t_env *env, char **dst);

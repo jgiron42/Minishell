@@ -19,12 +19,13 @@ t_status	ft_shell(t_env *env, char *line)
 	int				ret;
 
 	ret = tokenise(line, &tokens, env);
+	free(line);
 	if (ret != OK)
 	{
 		if (env->is_interactive)
 			return (ret);
 		else
-			return (FATAL);
+			ft_exit(env);
 	}
 	if (tokens->type == END)
 		return (free_token_list(tokens), OK);
@@ -33,7 +34,7 @@ t_status	ft_shell(t_env *env, char *line)
 	if (ret == OK)
 		ret = exec_command(tree, env);
 	else if (!env->is_interactive)
-		ret = FATAL;
+		ft_exit(env);
 	destroy_tree(&tree);
 	env->current_tree_root = NULL;
 	return (ret);
@@ -50,11 +51,7 @@ t_status	loop(t_env *env)
 		if (ret == FATAL)
 			return (FATAL);
 		if (ret == OK && ft_shell(env, line) == FATAL)
-		{
-			free(line);
 			return (FATAL);
-		}
-		free(line);
 	}
 }
 

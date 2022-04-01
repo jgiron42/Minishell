@@ -71,6 +71,23 @@ char	*ft_replacekey(size_t i, size_t j, char *str, t_env *env)
 	return (str);
 }
 
+t_token_list	*token_list_pop(t_token_list *node, t_token_list **begin)
+{
+	t_token_list	*tmp;
+
+	if (!*begin)
+		return (NULL);
+	tmp = *begin;
+	while (tmp->next && tmp->next != node)
+		tmp = tmp->next;
+	if (tmp->next)
+		tmp->next = tmp->next->next;
+	if (node)
+		free(node->arg);
+	free(node);
+	return (tmp->next);
+}
+
 t_status	ft_field_split(t_token_list **lst)
 {
 	char	*arg;
@@ -79,12 +96,12 @@ t_status	ft_field_split(t_token_list **lst)
 	i = ft_strlen((*lst)->arg);
 	if (i > 0)
 		i -= 1;
-	while (i != 0)
+	while (i >= 0)
 	{
-		while (i != 0 && !(ft_isspace((*lst)->arg[i])
+		while (i >= 0 && !(ft_isspace((*lst)->arg[i])
 				&& need_to_expand((*lst)->arg, i) == 0))
 			i--;
-		if (i != 0)
+		if (i >= 0)
 		{
 			arg = ft_strdup((*lst)->arg + i + 1);
 			if (!arg)
