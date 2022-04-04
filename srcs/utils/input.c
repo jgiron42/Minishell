@@ -12,12 +12,12 @@
 
 #include "minishell.h"
 
-char	*my_readline(t_env *env, char *prompt)
+char		*my_readline(t_env *env, char *prompt)
 {
 	char	*line;
 	int		ret;
 
-	g_int = false;
+	g_int = 0;
 	if (env->is_interactive)
 	{
 		set_signal(SIGINT, sigint_handler, env);
@@ -35,17 +35,17 @@ char	*my_readline(t_env *env, char *prompt)
 	return (line);
 }
 
-int	count_trailing_backslashes(char *str)
+int		count_trailing_backslashes(char *str)
 {
 	size_t	i;
 	int		ret;
 
 	i = ft_strlen(str);
 	ret = 0;
-	while (i > 0)
+	while(i > 0)
 	{
 		if (str[i - 1] != '\\')
-			break ;
+			break;
 		++ret;
 		--i;
 	}
@@ -54,10 +54,10 @@ int	count_trailing_backslashes(char *str)
 
 t_status	readnline(char **line, t_env *env)
 {
-	char	*tmp;
+	char *tmp;
 
 	*line = my_readline(env, "PS1");
-	if (!*line)
+	if(!*line)
 		ft_exit(env);
 	if (!**line || g_int)
 		return (KO);
@@ -66,7 +66,7 @@ t_status	readnline(char **line, t_env *env)
 		(*line)[ft_strlen(*line) - 1] = '\0';
 		tmp = my_readline(env, "PS2");
 		if (!tmp || g_int)
-			break ;
+			break;
 		if (*tmp)
 			*line = ft_strjoinf1(*line, tmp);
 		if (!*line)

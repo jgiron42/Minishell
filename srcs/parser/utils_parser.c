@@ -6,16 +6,41 @@
 /*   By: ereali <ereali@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 00:51:43 by ereali            #+#    #+#             */
-/*   Updated: 2022/03/07 17:11:00 by ereali           ###   ########.fr       */
+/*   Updated: 2022/03/04 11:29:02 by jgiron           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*read_heredoc(t_env *env, int fd, bool quote, const char *word)
+int	isvalid_name_letter(char c)
+{
+	if (c == '_' || (ft_isalnum(c) && c != '\'' && c != '\\' && c != '\"'))
+		return (1);
+	return (0);
+}
+
+int sig_hook(void)
+{
+	printf("coucou\n");
+	return (0);
+}
+
+t_status ft_heredoc(t_env *env, t_redir *redir)
 {
 	char	*rl;
+	int		fd;
+	bool	quote;
+	char	*word;
 
+	quote = false;
+	if (ft_strchr(redir->word, '\'') || ft_strchr(redir->word, '\"'))
+	{
+		quote = true;
+		redir->word = remove_quotes(redir->word);
+	}
+	word = redir->word;
+	if (my_tmp_file(&fd, &redir->word) == KO)
+		return (my_perror(env, (char *[2]) {"can't create here-document", NULL}, true, KO));
 	rl = my_readline(env, "PS2");
 	while (rl && !g_int && ft_strcmp(word, rl))
 	{
@@ -27,99 +52,76 @@ char	*read_heredoc(t_env *env, int fd, bool quote, const char *word)
 		free(rl);
 		rl = my_readline(env, "PS2");
 	}
-	return (rl);
-}
-
-t_status	ft_heredoc(t_env *env, t_redir *redir)
-{
-	char	*rl;
-	int		fd;
-	bool	quote;
-	char	*word;
-
-	quote = false;
-	word = redir->word;
-	if (ft_strchr(redir->word, '\'') || ft_strchr(redir->word, '\"'))
-	{
-		quote = true;
-		if (remove_quotes(redir->word) == FATAL)
-			return (FATAL);
-	}
-	if (my_tmp_file(&fd, &redir->word) == KO)
-		return (my_perror(env, (char *[2]){
-				"can't create here-document", NULL}, true, KO));
-	rl = read_heredoc(env, fd, quote, word);
-	if (close(fd) != 0)
-		return (free(rl), free(word), KO);
+	free(rl);
+	free(word);
+	if(close(fd) != 0)
+		return(KO);
 	if (g_int)
-		return (free(rl), free(word), unlink(redir->word), KO);
-	return (free(rl), free(word), redir->oldfd = fd, OK);
+	{
+		unlink(redir->word);
+		return (KO);
+	}
+	redir->oldfd = fd;
+	return (OK);
 }
 
-t_status	remove_quotes(char	*str)
+char	*remove_quotes(char* str)
 {
 	char	*cpy;
-	size_t	i;
-	size_t	j;
+	size_t		i;
+	size_t		j;
 
 	i = 0;
 	j = 0;
 	cpy = ft_strdup(str);
-	if (!cpy)
-		return (FATAL);
-	while (cpy[i + j])
+	while(cpy[i + j])
 	{
-		if ((ft_strchr("\\\"", cpy[i + j]) && need_to_expand(cpy, i + j) < 2)
-			|| (cpy[i + j] == '\'' && (need_to_expand(cpy, i + j) == 2
-					|| need_to_expand(cpy, i + j) == 0)))
-			str[i] = cpy[i + ++j];
+		if ((ft_strchr("\\\"" , cpy[i + j]) && need_to_expand(cpy, i + j) < 2) ||
+			(cpy[i + j] == '\'' && (need_to_expand(cpy, i + j) == 2 || need_to_expand(cpy, i + j) == 0)))
+		{
+			j++;
+			str[i] = cpy[i + j];
+		}
 		else
 		{
-			(str)[i] = cpy[i + j];
+			str[i] = cpy[i + j];
 			i++;
 		}
 	}
-	(str)[i] = '\0';
+	str[i] = '\0';
 	free(cpy);
-	return (OK);
+	return (str);
 }
 
-char	*ft_fill_with_bslash(char *str, char *new, const char *inhibit)
+char	*ft_inhibit(char *str, const char *inibit)
 {
+	char *new;
 	size_t	i;
 	size_t	j;
 
 	i = 0;
 	j = 0;
-	while (str[i])
+	if (!str)
+		return (ft_strdup(""));
+	if (!inibit)
+		return (str);
+	new = ft_calloc(sizeof(char) , ft_strlen(str) +
+		ft_countoccur(str, inibit) + 1);
+	if (!new)
+		return (NULL);
+	while(str[i])
 	{
-		if (ft_strchr(inhibit, str[i]))
+		if (ft_strchr(inibit, str[i]))
 		{
 			new[i + j++] = '\\';
 			new[i + j] = str[i];
 			i++;
 		}
-		while (!ft_strchr(inhibit, str[i]))
+		while (!ft_strchr(inibit, str[i]))
 		{
 			new[i + j] = str[i];
 			i++;
 		}
 	}
-	return (new);
-}
-
-char	*ft_inhibit(char *str, const char *inhibit)
-{
-	char	*new;
-
-	if (!str)
-		return (ft_strdup(""));
-	if (!inhibit)
-		return (str);
-	new = ft_calloc(sizeof(char), ft_strlen(str)
-			+ ft_countoccur(str, inhibit) + 1);
-	if (!new)
-		return (NULL);
-	new = ft_fill_with_bslash(str, new, inhibit);
 	return (new);
 }

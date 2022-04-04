@@ -44,6 +44,10 @@ static t_status	init_shlvl(t_env *env)
 	free(current);
 	return (OK);
 }
+int readline_hack(void)
+{
+	return (0);
+}
 
 int	readline_hack(void)
 {
