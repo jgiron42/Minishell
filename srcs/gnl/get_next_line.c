@@ -21,9 +21,17 @@ int	gnl_ft_check_str(char **str, char **line)
 	if (k >= 0)
 	{
 		(*line) = gnl_ft_swap(0, k, *str);
+		if (!*line)
+			return (-1);
 		tmp = (*str);
 		(*str) = gnl_ft_swap(k + 1, -1, *str);
 		free(tmp);
+		if (!*str)
+		{
+			free(*line);
+			*line = NULL;
+			return (-1);
+		}
 		return (1);
 	}
 	return (0);

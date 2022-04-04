@@ -41,7 +41,7 @@ t_status	ft_fillargv(t_simple *command)
 	if (!command->argv_tokens)
 		return (OK);
 	if (expand_path(command->argv_tokens, &dst) == FATAL)
-		return (FATAL);
+		return (free_vec(&dst), FATAL);
 	while (j < dst.size - 1)
 	{
 		if (remove_quotes(dst.data[j]) == FATAL)

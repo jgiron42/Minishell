@@ -37,7 +37,7 @@ t_command	parse_list(t_token_list **current, t_command prev_command,
 	int			prev;
 
 	tree.type = LIST;
-	tree.command.list = ft_new_list(prev_command, *current, AND_IF);
+	tree.command.list = ft_new_list(prev_command, *current, SEMI);
 	if (!tree.command.list)
 		return (parse_error((t_command[2]){prev_command},
 			(t_command){.type = PARSE_FATAL}));

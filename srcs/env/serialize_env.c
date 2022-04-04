@@ -62,13 +62,14 @@ char	**serialize_env(t_var_list *env)
 	{
 		if (env->is_exported)
 			ret[i] = join_key_value(env->key, env->value);
-		if (env->is_exported && !ret[i++])
+		if (env->is_exported && !ret[i])
 		{
 			while (i > 0)
-				free(ret[i--]);
+				free(ret[--i]);
 			free(ret);
 			return (NULL);
 		}
+		(void)(env->is_exported && i++);
 		env = env->next;
 	}
 	ret[i] = NULL;

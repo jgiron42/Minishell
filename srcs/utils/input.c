@@ -12,12 +12,12 @@
 
 #include "minishell.h"
 
-char		*my_readline(t_env *env, char *prompt)
+char	*my_readline(t_env *env, char *prompt)
 {
 	char	*line;
 	int		ret;
 
-	g_int = 0;
+	g_int = false;
 	if (env->is_interactive)
 	{
 		set_signal(SIGINT, sigint_handler, env);
@@ -35,17 +35,17 @@ char		*my_readline(t_env *env, char *prompt)
 	return (line);
 }
 
-int		count_trailing_backslashes(char *str)
+int	count_trailing_backslashes(char *str)
 {
 	size_t	i;
 	int		ret;
 
 	i = ft_strlen(str);
 	ret = 0;
-	while(i > 0)
+	while (i > 0)
 	{
 		if (str[i - 1] != '\\')
-			break;
+			break ;
 		++ret;
 		--i;
 	}
@@ -54,26 +54,28 @@ int		count_trailing_backslashes(char *str)
 
 t_status	readnline(char **line, t_env *env)
 {
-	char *tmp;
+	char	*tmp;
 
 	*line = my_readline(env, "PS1");
-	if(!*line)
-		ft_exit(env);
+	if (!*line)
+		return (FATAL);
 	if (!**line || g_int)
-		return (KO);
+		return (free(*line), KO);
 	while (count_trailing_backslashes(*line) % 2)
 	{
 		(*line)[ft_strlen(*line) - 1] = '\0';
 		tmp = my_readline(env, "PS2");
-		if (!tmp || g_int)
-			break;
+		if (!g_int)
+			return (free(*line), KO);
+		if (!tmp)
+			break ;
 		if (*tmp)
 			*line = ft_strjoinf1(*line, tmp);
+		free(tmp);
 		if (!*line)
 			return (FATAL);
-		free(tmp);
 	}
-	if (**line && !g_int)
+	if (**line)
 		add_history(*line);
-	return (KO * g_int);
+	return (OK);
 }
