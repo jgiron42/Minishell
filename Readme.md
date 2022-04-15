@@ -105,11 +105,13 @@ here_end         : WORD                      /* Apply rule 3 */
 				Quote removal shall be applied to the word to determine the delimiter
 				that is used to find the end of the here-document that begins after the next <newline>.
 
+----------------------------------------------------------------------
 Expansion :
 Bonus : attention les doubles quote empeches l'expansion des wildcard '*'
 
 $	:
 		peut etre suivi par :
+		
 			A numeric character
 
 			The name of one of the special parameters (see Special Parameters)
@@ -120,8 +122,20 @@ $	:
 
 			A <left-parenthesis>
 
-	|	si suivi de quote n'expand pas et quote remove
+		si suivi de quote n'expand pas et quote remove
 
 ASSIGNEMENT WORD = ne dois pas commencer par un nombre
 exemple :
 	bash: 1name=ab: command not found
+----------------------------------------------------------------------
+
+Heredoc :
+	Le heredoc est appelé des que le token DLESS est vu dans le parsing
+	Arret quand le delimiter est ecrit ou EOF pour gestion ctr^D
+	Ne jamais expand le delimiter
+
+	expansion : 
+		si delimiter ne contient pas de quote:
+			expand l'integraliter des $quelque chose dans le heredoc 
+		si delimiter contient quote:
+			expand ne rien expand dans le heredoc
